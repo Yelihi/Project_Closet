@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import { NextPage } from 'next';
 import { ThemeProvider } from 'styled-components';
 import '../styles/globals.css';
 
@@ -6,7 +7,9 @@ import GlobalStyle from '../styles/GlobalStyle';
 import theme from '../styles/theme';
 import AppLayout from '../components/AppLayout';
 
-function MyApp({ Component, pageProps }: AppProps) {
+import wrapper from '../store/configureStore';
+
+const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
@@ -15,6 +18,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       </AppLayout>
     </ThemeProvider>
   );
-}
+};
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

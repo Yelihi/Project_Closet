@@ -23,7 +23,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true, // 각각 소스코드 파일을 모듈화. babel 이 TS 파일을 안전하게 트랜스파일 하는 지 확인. 외부도구 사용시 true 해두는게 좋다.
     "jsx": "preserve",
-    "declaration": true // .d.ts 파일 또한 출력물에 포함한다.
+    "declaration": false // .d.ts 파일 또한 출력물에 포함한다.
     // "emitDeclarationOnly": true, // noEmit 과 함께 사용 불과.
     // "baseUrl": ".",
     // "paths": {
