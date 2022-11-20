@@ -5,7 +5,7 @@ import * as t from './type';
 interface InitialState {
   logInLoading: boolean;
   logInDone: boolean;
-  logInError: boolean | null;
+  logInError: string | null;
   me: {} | null;
 }
 
@@ -16,7 +16,7 @@ export const initialState: InitialState = {
   me: null,
 };
 
-interface UserInfo {
+export interface UserInfo {
   email: string;
   password: string;
 }
