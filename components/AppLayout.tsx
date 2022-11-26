@@ -1,11 +1,13 @@
-import React, { Children } from 'react';
+import React from 'react';
 import {
   LaptopOutlined,
   NotificationOutlined,
+  ContainerOutlined,
+  PieChartOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu } from 'antd';
+import { Breadcrumb, Layout, Menu, Button } from 'antd';
 
 import Nav from './Nav';
 import Link from 'next/link';
@@ -17,32 +19,37 @@ interface AppLayoutProps {
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const items1: MenuProps['items'] = ['Home', 'SignUp', 'About'].map(key => ({
-  key,
-  label: `${key}`,
-}));
+const mainMenu: MenuProps['items'] = ['Home', 'SignUp', 'Upload', 'About'].map(
+  (item, index) => ({
+    label: <Link href={`/${item.toLowerCase()}`}>{item}</Link>,
+    key: index,
+  })
+);
 
-const items2: MenuProps['items'] = [
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-].map((icon, index) => {
-  const key = String(index + 1);
-
-  return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
-
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
+const subMenu: MenuProps['items'] = [
+  {
+    label: <Link href="/profile">Profile</Link>,
+    key: 'profile',
+    icon: <UserOutlined />,
+  },
+  {
+    label: 'Closet',
+    key: 'sub1',
+    icon: <LaptopOutlined />,
+    children: [
+      {
+        label: <Link href="/container">Container</Link>,
+        key: 'container',
+        icon: <ContainerOutlined />,
+      },
+      {
+        label: <Link href="/chart">Chart</Link>,
+        key: 'chart',
+        icon: <PieChartOutlined />,
+      },
+    ],
+  },
+];
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   return (
@@ -54,7 +61,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
             theme="dark"
             mode="horizontal"
             defaultSelectedKeys={['2']}
-            items={items1}
+            items={mainMenu}
           />
         </Header>
         <Content style={{ padding: '0 50px ' }}>
@@ -73,7 +80,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
                 defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', borderRight: 0 }}
-                items={items2}
+                items={subMenu}
               />
             </Sider>
             <Content

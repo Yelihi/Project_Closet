@@ -1,14 +1,19 @@
 import React from 'react';
+import Router from 'next/router';
 import { Button, Checkbox, Form, Input } from 'antd';
 
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { loginRequestAction } from '../reducers/user';
 
-const SignIn: React.FC = () => {
+const Signup: React.FC = () => {
   const dispatch = useDispatch();
   const onFinish = (value: any) => {
     dispatch(loginRequestAction(value));
+  };
+
+  const goToSignIn = () => {
+    Router.push('/signin');
   };
   return (
     <>
@@ -24,14 +29,13 @@ const SignIn: React.FC = () => {
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: '이메일을 입력해주세요!' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="NickName"
-            name="nickname"
-            rules={[{ required: true, message: '닉네임을 입력해주세요' }]}
+            rules={[
+              {
+                required: true,
+                message: '이메일을 입력해주세요!',
+                type: 'email',
+              },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -43,21 +47,24 @@ const SignIn: React.FC = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item
-            label="Password Check"
-            name="password check"
-            rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item
             name="remember"
             valuePropName="checked"
             wrapperCol={{ offset: 3, span: 16 }}
           >
-            <Checkbox>사이트 규정에 동의합니다</Checkbox>
+            <Checkbox>이메일 기억</Checkbox>
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 3, span: 16 }}>
+          <Form.Item
+            labelCol={{ span: 4 }}
+            wrapperCol={{ offset: 3, span: 16 }}
+          >
             <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+            <Button
+              htmlType="submit"
+              style={{ margin: '10px' }}
+              onClick={goToSignIn}
+            >
               회원가입
             </Button>
           </Form.Item>
@@ -67,8 +74,20 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default Signup;
 
 const Section = styled.section`
   margin: 25px;
+`;
+
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  & label {
+    font-size: 15px;
+  }
 `;
