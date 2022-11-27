@@ -18,17 +18,10 @@ const Signup: React.FC = () => {
   return (
     <>
       <Section>
-        <Form
-          name="signup"
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 10 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
+        <Form name='signup' labelCol={{ span: 3 }} wrapperCol={{ span: 10 }} initialValues={{ remember: true }} onFinish={onFinish} autoComplete='off'>
           <Form.Item
-            label="Email"
-            name="email"
+            label='Email'
+            name='email'
             rules={[
               {
                 required: true,
@@ -39,32 +32,17 @@ const Signup: React.FC = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}
-          >
+          <Form.Item label='Password' name='password' rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}>
             <Input.Password />
           </Form.Item>
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{ offset: 3, span: 16 }}
-          >
+          <Form.Item name='remember' valuePropName='checked' wrapperCol={{ offset: 3, span: 16 }}>
             <Checkbox>이메일 기억</Checkbox>
           </Form.Item>
-          <Form.Item
-            labelCol={{ span: 4 }}
-            wrapperCol={{ offset: 3, span: 16 }}
-          >
-            <Button type="primary" htmlType="submit">
+          <Form.Item labelCol={{ span: 4 }} wrapperCol={{ offset: 3, span: 16 }}>
+            <Button type='primary' htmlType='submit'>
               Submit
             </Button>
-            <Button
-              htmlType="submit"
-              style={{ margin: '10px' }}
-              onClick={goToSignIn}
-            >
+            <Button htmlType='submit' style={{ margin: '10px' }} onClick={goToSignIn}>
               회원가입
             </Button>
           </Form.Item>

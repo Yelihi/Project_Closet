@@ -12,7 +12,7 @@
     "node": true,
     "es6": true
   },
-  "extends": ["airbnb"], // 좀 더 강하게 스타일을 적용한다. 규제가 강함
+  "extends": ["airbnb", "plugin:prettier/recommended"], // 좀 더 강하게 스타일을 적용한다. 규제가 강함
   "plugins": ["import", "react-hooks"],
   "rules": {
     "jsx-a11y/label-has-associated-control": "off",
@@ -24,6 +24,7 @@
     "react/jsx-one-expression-per-line": "off",
     "object-curly-newline": "off",
     "linebreak-style": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "prettier/prettier": ["error", { "singleQuote": true }]
   }
 }

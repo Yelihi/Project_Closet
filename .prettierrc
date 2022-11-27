@@ -1,6 +1,11 @@
 {
   "tabWidth": 2,
-  "endOfLine": "lf",
+  "useTabs": false,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "semi": true,
   "arrowParens": "avoid",
-  "singleQuote": true
+  "trailingComma": "es5",
+  "minItems": 0,
+  "printWidth": 250
 }
