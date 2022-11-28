@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 
 import { SHOW_UPLOAD_DRAWER } from '../reducers/type';
 import Item from 'antd/es/list/Item';
-import Upload from './Upload';
+import UploadClothes from './Upload';
 
 interface AppLayoutProps {
   // 레이아웃을 담당하는 Props 타입설정
@@ -70,7 +70,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
           <div className='logo' />
           <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['2']} items={mainMenu} onClick={showOpload} />
         </Header>
-        <Upload />
+        <UploadClothes />
         <Content style={{ padding: '0 50px ' }}>
           <Layout className='site-layout-background' style={{ padding: '24px 0' }}>
             <Sider width={200} className='site-layout-background'>

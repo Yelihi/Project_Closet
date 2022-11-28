@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Upload } from 'antd';
 import type { DatePickerProps } from 'antd/es/date-picker';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import { SHOW_UPLOAD_DRAWER } from '../reducers/type';
 
 const { Option } = Select;
 
-const Upload: React.FC = () => {
+const UploadClothes: React.FC = () => {
   const dispatch = useDispatch();
   const { showDrawer } = useSelector((state: ReducerType) => state.post);
 
@@ -28,6 +28,41 @@ const Upload: React.FC = () => {
   const onOK = useCallback((value: DatePickerProps['value']) => {
     console.log('onOk', value);
   }, []);
+
+  interface HTMLInputEvent extends Event {
+    target: HTMLInputElement & EventTarget;
+  }
+
+  const uploadProps = {
+    action: '/upload.do',
+    multiple: false,
+    data: { a: 1, b: 2 },
+    headers: {
+      Authorization: '$prefix $token',
+    },
+    onStart(file: any) {
+      console.log('onStart', file, file.name);
+    },
+  };
+
+  const onChangeImages = useCallback((e: HTMLInputEvent) => {
+    console.log('images', e.target.files);
+    const imageFormData = new FormData();
+    Array.prototype.forEach.call(e.target.files, f => {
+      imageFormData.append('image', f);
+    });
+    // dispatch({
+    //   type: UPLOAD_IMAGES_REQUEST,
+    //   data: imageFormData,
+    // })
+  }, []);
+
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
 
   return (
     <>
@@ -79,6 +114,24 @@ const Upload: React.FC = () => {
             </Col>
           </Row>
           <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name='imageUpload'
+                label='Images'
+                rules={[
+                  {
+                    required: true,
+                    message: '이미지를 넣어주세요',
+                  },
+                ]}
+              >
+                <Upload name='avatar' listType='picture-card' className='avatar-uploader' showUploadList={true} {...uploadProps}>
+                  {uploadButton}
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
             <Col span={24}>
               <Form.Item
                 name='description'
@@ -100,4 +153,4 @@ const Upload: React.FC = () => {
   );
 };
 
-export default Upload;
+export default UploadClothes;
