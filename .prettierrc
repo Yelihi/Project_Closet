@@ -7,5 +7,5 @@
   "arrowParens": "avoid",
   "trailingComma": "es5",
   "minItems": 0,
-  "printWidth": 250
+  "printWidth": 200
 }

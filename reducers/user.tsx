@@ -2,6 +2,31 @@ import { AnyAction } from 'redux';
 import produce from 'immer';
 import * as t from './type';
 
+const dumyUser = () => ({
+  id: 1,
+  NickName: '원익',
+  Cloths: [
+    {
+      id: 1,
+      productName: '자바나스 화이트코트',
+      description: '실험중',
+      price: 230000,
+      color: '#ffffff',
+      categori: 'outer',
+      purchaseDay: '2019-02-10',
+      Outers: [
+        {
+          id: 1,
+          shoulder: 20,
+          arm: 10,
+          totalLength: 110,
+          chest: 60,
+        },
+      ],
+    },
+  ],
+});
+
 interface InitialState {
   logInLoading: boolean;
   logInDone: boolean;

@@ -18,7 +18,7 @@ const Signup: React.FC = () => {
   return (
     <>
       <Section>
-        <Form name='signup' labelCol={{ span: 3 }} wrapperCol={{ span: 10 }} initialValues={{ remember: true }} onFinish={onFinish} autoComplete='off'>
+        <Form name='signup' style={{ width: '500px' }} labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} initialValues={{ remember: true }} onFinish={onFinish} autoComplete='off'>
           <Form.Item
             label='Email'
             name='email'
@@ -55,7 +55,10 @@ const Signup: React.FC = () => {
 export default Signup;
 
 const Section = styled.section`
-  margin: 25px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoginForm = styled.form`

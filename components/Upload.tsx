@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Upload } from 'antd';
+import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Upload, Modal } from 'antd';
 import type { DatePickerProps } from 'antd/es/date-picker';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import type { UploadFile } from 'antd/es/upload/interface';
 
 import { ReducerType } from '../reducers';
 import { SHOW_UPLOAD_DRAWER, UPLOAD_IMAGES_REQUEST } from '../reducers/type';
@@ -11,6 +12,9 @@ import { SHOW_UPLOAD_DRAWER, UPLOAD_IMAGES_REQUEST } from '../reducers/type';
 const { Option } = Select;
 
 const UploadClothes: React.FC = () => {
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
   const dispatch = useDispatch();
   const { showDrawer } = useSelector((state: ReducerType) => state.post);
 
@@ -39,7 +43,6 @@ const UploadClothes: React.FC = () => {
     onStart(file: any) {
       const imageFormData = new FormData();
       imageFormData.append('image', file);
-      console.log(imageFormData);
       for (let v of imageFormData.values()) {
         // 어차피 이부분은 백엔드랑 통신하면서 맞출것임 일단 이정도만
         console.log(v);
@@ -49,6 +52,16 @@ const UploadClothes: React.FC = () => {
         });
       }
     },
+  };
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const onPreview = async (file: UploadFile) => {
+    // 추후에 백엔드와 통신하면, 그냥 모달창 오픈 만 해주면 된다.
+    console.log('preview', file);
+    setPreviewImage(file.name || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
   };
 
   const uploadButton = (
@@ -119,9 +132,12 @@ const UploadClothes: React.FC = () => {
                   },
                 ]}
               >
-                <Upload name='avatar' listType='picture-card' className='avatar-uploader' showUploadList={true} {...uploadProps}>
+                <Upload name='avatar' listType='picture-card' className='avatar-uploader' showUploadList={true} {...uploadProps} onPreview={onPreview}>
                   {uploadButton}
                 </Upload>
+                <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+                  <img alt='example' style={{ width: '100%' }} src={previewImage} />
+                </Modal>
               </Form.Item>
             </Col>
           </Row>
