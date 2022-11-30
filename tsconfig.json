@@ -2,16 +2,10 @@
   "compilerOptions": {
     // "outDir": "./dist/",
     "target": "es5",
-    "lib": [
-      "DOM",
-      "DOM.iterable",
-      "ESNEXT",
-      "ES6",
-      "ScriptHost",
-      "ES2016.Array.Include"
-    ],
+    "lib": ["DOM", "DOM.iterable", "ESNEXT", "ES6", "ScriptHost", "ES2016.Array.Include"],
     "allowJs": true,
     "skipLibCheck": true,
+    "downlevelIteration": true,
     "sourceMap": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { ReducerType } from '../reducers';
-import { SHOW_UPLOAD_DRAWER } from '../reducers/type';
+import { SHOW_UPLOAD_DRAWER, UPLOAD_IMAGES_REQUEST } from '../reducers/type';
 
 const { Option } = Select;
 
@@ -29,33 +29,27 @@ const UploadClothes: React.FC = () => {
     console.log('onOk', value);
   }, []);
 
-  interface HTMLInputEvent extends Event {
-    target: HTMLInputElement & EventTarget;
-  }
-
   const uploadProps = {
-    action: '/upload.do',
+    // action: '/upload.do',
     multiple: false,
     data: { a: 1, b: 2 },
     headers: {
       Authorization: '$prefix $token',
     },
     onStart(file: any) {
-      console.log('onStart', file, file.name);
+      const imageFormData = new FormData();
+      imageFormData.append('image', file);
+      console.log(imageFormData);
+      for (let v of imageFormData.values()) {
+        // 어차피 이부분은 백엔드랑 통신하면서 맞출것임 일단 이정도만
+        console.log(v);
+        dispatch({
+          type: UPLOAD_IMAGES_REQUEST,
+          data: v,
+        });
+      }
     },
   };
-
-  const onChangeImages = useCallback((e: HTMLInputEvent) => {
-    console.log('images', e.target.files);
-    const imageFormData = new FormData();
-    Array.prototype.forEach.call(e.target.files, f => {
-      imageFormData.append('image', f);
-    });
-    // dispatch({
-    //   type: UPLOAD_IMAGES_REQUEST,
-    //   data: imageFormData,
-    // })
-  }, []);
 
   const uploadButton = (
     <div>
@@ -74,7 +68,7 @@ const UploadClothes: React.FC = () => {
         bodyStyle={{ paddingBottom: 80 }}
         extra={
           <Space>
-            <Button onClick={OnClose}>Calcel</Button>
+            <Button onClick={OnClose}>Cancel</Button>
             <Button onClick={OnClose} type='primary'>
               Eroll
             </Button>
