@@ -2,14 +2,7 @@ import { AnyAction } from 'redux';
 import produce from 'immer';
 import * as t from './type';
 
-interface InitialState {
-  showDrawer: boolean;
-  uploadItems: {} | null;
-  imageUploadLoding: boolean;
-  imageUploadDone: boolean;
-  imageUploadError: boolean;
-  user: Object[];
-}
+import type { InitialState } from './types/post';
 
 export const initialState: InitialState = {
   showDrawer: false,

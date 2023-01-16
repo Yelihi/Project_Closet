@@ -3,7 +3,8 @@ import axios, { AxiosResponse } from 'axios';
 import { all, call, delay, fork, put, takeLatest } from 'redux-saga/effects';
 import * as t from '../reducers/type';
 
-import { UserInfo } from '../reducers/user';
+// reducers
+import { UserInfo } from '../reducers/types/user';
 
 interface Success {
   data: Object;

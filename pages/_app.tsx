@@ -12,9 +12,7 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <AppLayout>
-        <Component {...pageProps} />
-      </AppLayout>
+      <Component {...pageProps} />
     </ThemeProvider>
   );
 };

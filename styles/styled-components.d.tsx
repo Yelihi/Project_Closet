@@ -1,17 +1,11 @@
 import 'styled-components';
+import { FontTypes, FontWeight, Colors } from './theme';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
     breakPoint: string;
-
-    colors: {
-      black: string;
-      white: string;
-      lightGrey: string;
-      middleGrey: string;
-      deepGrey: string;
-      hoverGrey: string;
-      symbol: string;
-    };
+    font: FontTypes;
+    fontWeight: FontWeight;
+    colors: Colors;
   }
 }

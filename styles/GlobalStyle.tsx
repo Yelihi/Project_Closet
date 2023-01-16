@@ -14,10 +14,29 @@ const GlobalStyle = createGlobalStyle`
   *::before,
   *::after {
     box-sizing: inherit;
+    margin: 0;
   }
 
-  * { font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP','Sans-serif'}
+  * { font-family: ${({ theme }) => theme.font.Kfont}}
   a { cursor: pointer; text-decoration: none}
+
+  input,
+  input:active,
+  input:focus{
+    border: none;
+    outline: none;
+    -webkit-appearance:none;
+    -moz-appearance: none;
+    -o-appearance:none;
+    appearance: none;
+    font-family: ${({ theme }) => theme.font.Efont};
+  }
+
+  button {
+    border: none;
+    cursor: pointer;
+    font-family: ${({ theme }) => theme.font.Efont};
+  }
 
   
 `;

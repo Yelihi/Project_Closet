@@ -1,4 +1,7 @@
 import { all, fork } from 'redux-saga/effects';
+import axios, { AxiosRequestConfig } from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:8080';
 
 import userSaga from './user';
 import postSage from './post';
