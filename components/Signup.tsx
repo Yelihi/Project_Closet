@@ -41,9 +41,9 @@ const Signup = (props: SIprops) => {
       if (password !== passwordCheck) {
         setIsCollect(false);
       }
-      dispatch(signinRequestAction({ email: email, password: password }));
+      dispatch(signinRequestAction({ email: email, nickname: name, password: password, src: '' }));
     },
-    [email, password, passwordCheck]
+    [email, password, passwordCheck, name]
   );
 
   useEffect(() => {

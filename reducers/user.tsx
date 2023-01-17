@@ -4,7 +4,7 @@ import * as t from './type';
 
 import Router from 'next/router';
 
-import { InitialState, UserInfo } from './types/user';
+import { InitialState, UserInfo, UserSignUp } from './types/user';
 
 const dumyUser = () => ({
   id: 1,
@@ -35,6 +35,9 @@ export const initialState: InitialState = {
   logInLoading: false,
   logInDone: false,
   logInError: null,
+  logOutLoading: false,
+  logOutDone: false,
+  logOutError: null,
   signInLoading: false,
   signInDone: false,
   signInError: null,
@@ -48,7 +51,7 @@ export const loginRequestAction = (data: UserInfo) => {
   };
 };
 
-export const signinRequestAction = (data: UserInfo) => {
+export const signinRequestAction = (data: UserSignUp) => {
   return {
     type: t.SIGNIN_REQUEST,
     data,
@@ -69,8 +72,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.logInDone = true;
         draft.logInError = null;
         draft.me = action.data;
-        alert(action.data.message);
-        localStorage.setItem('Token', action.data.token);
+        console.log(action.data);
         Router.push('/closet');
         break;
       }
@@ -78,7 +80,29 @@ export default (state = initialState, action: AnyAction) => {
         draft.logInLoading = false;
         draft.logInDone = false;
         draft.logInError = action.error;
-        alert(action.error.details);
+        console.log(action.error);
+        break;
+      }
+      case t.LOGOUT_REQUEST: {
+        draft.logOutLoading = true;
+        draft.logOutDone = false;
+        draft.logOutError = null;
+        break;
+      }
+      case t.LOGOUT_SUCCESE: {
+        draft.logOutLoading = false;
+        draft.logOutDone = true;
+        draft.logOutError = null;
+        draft.me = action.data;
+        console.log(action.data);
+        Router.push('/auth');
+        break;
+      }
+      case t.LOGOUT_FAILURE: {
+        draft.logInLoading = false;
+        draft.logInDone = false;
+        draft.logInError = action.error;
+        console.log(action.error);
         break;
       }
       case t.SIGNIN_REQUEST: {
@@ -92,14 +116,14 @@ export default (state = initialState, action: AnyAction) => {
         draft.signInDone = true;
         draft.signInError = null;
         draft.me = action.data;
-        alert(action.data.message);
+        console.log(action.data);
         break;
       }
       case t.SIGNIN_FAILURE: {
         draft.signInLoading = false;
         draft.signInDone = false;
         draft.signInError = action.error;
-        alert(action.error.details);
+        console.log(action.error);
         break;
       }
     }
