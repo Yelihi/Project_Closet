@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import type { UploadFile } from 'antd/es/upload/interface';
 
-import { ReducerType } from '../reducers';
+import { RootState } from '../reducers/types';
 import { SHOW_UPLOAD_DRAWER, UPLOAD_IMAGES_REQUEST } from '../reducers/type';
 
 const { Option } = Select;
@@ -16,7 +16,7 @@ const UploadClothes: React.FC = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const dispatch = useDispatch();
-  const { showDrawer } = useSelector((state: ReducerType) => state.post);
+  const { showDrawer } = useSelector((state: RootState) => state.post);
 
   const OnClose = useCallback(() => {
     dispatch({

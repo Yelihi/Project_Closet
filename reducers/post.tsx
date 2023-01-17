@@ -2,9 +2,9 @@ import { AnyAction } from 'redux';
 import produce from 'immer';
 import * as t from './type';
 
-import type { InitialState } from './types/post';
+import type { PostInitialState } from './types/post';
 
-export const initialState: InitialState = {
+export const initialState: PostInitialState = {
   showDrawer: false,
   uploadItems: null,
   imageUploadLoding: false,

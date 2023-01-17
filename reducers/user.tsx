@@ -4,7 +4,7 @@ import * as t from './type';
 
 import Router from 'next/router';
 
-import { InitialState, UserInfo, UserSignUp } from './types/user';
+import { UserInitialState, UserInfo, UserSignUp } from './types/user';
 
 const dumyUser = () => ({
   id: 1,
@@ -31,7 +31,7 @@ const dumyUser = () => ({
   ],
 });
 
-export const initialState: InitialState = {
+export const initialState: UserInitialState = {
   logInLoading: false,
   logInDone: false,
   logInError: null,
@@ -55,6 +55,12 @@ export const signinRequestAction = (data: UserSignUp) => {
   return {
     type: t.SIGNIN_REQUEST,
     data,
+  };
+};
+
+export const logoutRequestAction = () => {
+  return {
+    type: t.LOGOUT_REQUEST,
   };
 };
 

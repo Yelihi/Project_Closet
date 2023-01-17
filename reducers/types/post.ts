@@ -1,4 +1,4 @@
-export interface InitialState {
+export interface PostInitialState {
   showDrawer: boolean;
   uploadItems: {} | null;
   imageUploadLoding: boolean;

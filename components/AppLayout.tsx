@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 
 import { SHOW_UPLOAD_DRAWER } from '../reducers/type';
+import { logoutRequestAction } from '../reducers/user';
 import Item from 'antd/es/list/Item';
 import UploadClothes from './Upload';
 
@@ -18,8 +19,8 @@ interface AppLayoutProps {
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const mainMenu: MenuProps['items'] = ['Home', 'SignUp', 'Upload', 'About'].map((item, index) =>
-  index === 2
+const mainMenu: MenuProps['items'] = ['Home', 'SignUp', 'Upload', 'Logout'].map((item, index) =>
+  index === 2 || index === 3
     ? { label: item, key: index }
     : {
         label: <Link href={`/${item.toLowerCase()}`}>{item}</Link>,
@@ -61,6 +62,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       dispatch({
         type: SHOW_UPLOAD_DRAWER,
       });
+    }
+    if (e.key === '3') {
+      dispatch(logoutRequestAction());
     }
   };
   return (

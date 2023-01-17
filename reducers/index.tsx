@@ -4,20 +4,21 @@ import { AnyAction, combineReducers } from 'redux';
 import user from './user';
 import post from './post';
 
-const rootReducer = combineReducers({
-  index: (state: Object = {}, action: AnyAction) => {
-    switch (action.type) {
-      case HYDRATE:
-        console.log('HYDRATE', action);
-        return { ...state, ...action.payload };
-      default:
-        return state;
-    }
-  },
-  user,
-  post,
-});
+import { rootReducerType } from './types';
 
-export type ReducerType = ReturnType<typeof rootReducer>;
+const rootReducer = (state: rootReducerType | undefined, action: AnyAction) => {
+  switch (action.type) {
+    case HYDRATE:
+      console.log('HYDRATE', action);
+      return action.payload;
+    default: {
+      const combineReducer = combineReducers({
+        user,
+        post,
+      });
+      return combineReducer(state, action);
+    }
+  }
+};
 
 export default rootReducer;
