@@ -72,6 +72,27 @@ function* signIn(action: AnyAction) {
   }
 }
 
+function loadToMyInfoAPI() {
+  return axios.get('/user');
+}
+
+function* loadToMyInfo(action: AnyAction) {
+  try {
+    console.log('saga loadToMyInfo');
+    const result: AxiosResponse<LoginSuccess> = yield call(loadToMyInfoAPI);
+    yield put({
+      type: t.LOAD_TO_MY_INFO_SUCCESE,
+      data: result.data,
+    });
+  } catch (err: any) {
+    console.error(err);
+    yield put({
+      type: t.LOAD_TO_MY_INFO_FAILURE,
+      error: axios.isAxiosError(err) ? err.response?.data : err.response.data,
+    });
+  }
+}
+
 function* watchLogIn() {
   yield takeLatest(t.LOGIN_REQUEST, logIn);
 }
@@ -84,6 +105,10 @@ function* watchSignIn() {
   yield takeLatest(t.SIGNIN_REQUEST, signIn);
 }
 
+function* watchLoadToMyInfo() {
+  yield takeLatest(t.LOAD_TO_MY_INFO_REQUEST, loadToMyInfo);
+}
+
 export default function* userSaga() {
-  yield all([fork(watchLogIn), fork(watchSignIn), fork(watchLogOut)]);
+  yield all([fork(watchLogIn), fork(watchSignIn), fork(watchLogOut), fork(watchLoadToMyInfo)]);
 }

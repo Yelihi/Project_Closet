@@ -1,14 +1,18 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import { END } from 'redux-saga';
 
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 
 import type { RootState } from '../reducers/types';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
+import type { SagaStore } from '../store/configureStore';
 
 import wrapper from '../store/configureStore';
+
+import * as t from '../reducers/type';
 
 const closet = () => {
   const { logOutDone } = useSelector((state: RootState) => state.user);
@@ -32,7 +36,13 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
-  if (!context.req) {
+  store.dispatch({
+    type: t.LOAD_TO_MY_INFO_REQUEST,
+  });
+
+  store.dispatch(END);
+  await (store as SagaStore).sagaTask?.toPromise();
+  if (!store.getState().user.me) {
     return {
       redirect: {
         destination: '/auth',

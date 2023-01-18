@@ -1,4 +1,8 @@
 // user
+export const LOAD_TO_MY_INFO_REQUEST = 'LOAD_TO_MY_INFO_REQUEST' as const;
+export const LOAD_TO_MY_INFO_SUCCESE = 'LOAD_TO_MY_INFO_SUCCESE' as const;
+export const LOAD_TO_MY_INFO_FAILURE = 'LOAD_TO_MY_INFO_FAILURE' as const;
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST' as const;
 export const LOGIN_SUCCESE = 'LOGIN_SUCCESE' as const;
 export const LOGIN_FAILURE = 'LOGIN_FAILURE' as const;

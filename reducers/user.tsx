@@ -32,6 +32,8 @@ const dumyUser = () => ({
 });
 
 export const initialState: UserInitialState = {
+  loadToMyInfoDone: false,
+  loadToMyInfoError: null,
   logInLoading: false,
   logInDone: false,
   logInError: null,
@@ -67,6 +69,22 @@ export const logoutRequestAction = () => {
 export default (state = initialState, action: AnyAction) => {
   return produce(state, draft => {
     switch (action.type) {
+      case t.LOAD_TO_MY_INFO_REQUEST: {
+        draft.loadToMyInfoDone = false;
+        draft.loadToMyInfoError = null;
+        break;
+      }
+      case t.LOAD_TO_MY_INFO_SUCCESE: {
+        draft.loadToMyInfoDone = true;
+        draft.loadToMyInfoError = null;
+        draft.me = action.data;
+        break;
+      }
+      case t.LOAD_TO_MY_INFO_FAILURE: {
+        draft.loadToMyInfoDone = false;
+        draft.loadToMyInfoError = action.error;
+        break;
+      }
       case t.LOGIN_REQUEST: {
         draft.logInLoading = true;
         draft.logInDone = false;

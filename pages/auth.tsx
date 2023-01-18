@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { END } from 'redux-saga';
 import styled from 'styled-components';
 import Image from 'next/image';
 
@@ -6,6 +8,12 @@ import todoImage from '../public/images/todo2.jpg';
 
 import Login from '../components/Login';
 import Signup from '../components/Signup';
+
+import { GetServerSidePropsContext } from 'next';
+import { SagaStore } from '../store/configureStore';
+import * as t from '../reducers/type';
+
+import wrapper from '../store/configureStore';
 
 const Auth = () => {
   const [gotoAccount, setGotoAccount] = useState<boolean>(false);
@@ -25,6 +33,32 @@ const Auth = () => {
     </Container>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(store => async (context: GetServerSidePropsContext) => {
+  console.log(context);
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  store.dispatch({
+    type: t.LOAD_TO_MY_INFO_REQUEST,
+  });
+
+  store.dispatch(END);
+  await (store as SagaStore).sagaTask?.toPromise();
+  if (store.getState().user.me) {
+    return {
+      redirect: {
+        destination: '/closet',
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+});
 
 export default Auth;
 

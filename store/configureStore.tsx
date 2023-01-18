@@ -7,7 +7,7 @@ import reducer from '../reducers/';
 import { RootState } from '../reducers/types';
 import rootSaga from '../sagas';
 
-interface SagaStore extends Store {
+export interface SagaStore extends Store {
   sagaTask?: Task;
 }
 

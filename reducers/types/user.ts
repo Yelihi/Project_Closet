@@ -1,4 +1,6 @@
-export interface InitialState {
+export interface UserInitialState {
+  loadToMyInfoDone: boolean;
+  loadToMyInfoError: string | null;
   logInLoading: boolean;
   logInDone: boolean;
   logInError: string | null;
