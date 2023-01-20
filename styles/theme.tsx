@@ -20,7 +20,7 @@ const colors = {
   middleGrey: '#717171',
   deepGrey: '#222222',
   hoverGrey: '#DBDBDB',
-  symbol: '#7A0BC0',
+  symbol: '#205281',
 };
 
 export type FontTypes = typeof font;

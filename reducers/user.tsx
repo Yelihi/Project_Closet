@@ -96,7 +96,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.logInDone = true;
         draft.logInError = null;
         draft.me = action.data;
-        console.log(action.data);
+        alert(`반갑습니다! ${action.data.nickname}님!`);
         Router.push('/closet');
         break;
       }
@@ -104,7 +104,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.logInLoading = false;
         draft.logInDone = false;
         draft.logInError = action.error;
-        console.log(action.error);
+        alert(action.error);
         break;
       }
       case t.LOGOUT_REQUEST: {
@@ -118,7 +118,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.logOutDone = true;
         draft.logOutError = null;
         draft.me = action.data;
-        console.log(action.data);
+        alert(`로그아웃 되셨습니다.`);
         Router.push('/auth');
         break;
       }
@@ -126,7 +126,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.logInLoading = false;
         draft.logInDone = false;
         draft.logInError = action.error;
-        console.log(action.error);
+        alert(action.error);
         break;
       }
       case t.SIGNIN_REQUEST: {
@@ -140,14 +140,14 @@ export default (state = initialState, action: AnyAction) => {
         draft.signInDone = true;
         draft.signInError = null;
         draft.me = action.data;
-        console.log(action.data);
+        alert(action.data);
         break;
       }
       case t.SIGNIN_FAILURE: {
         draft.signInLoading = false;
         draft.signInDone = false;
         draft.signInError = action.error;
-        console.log(action.error);
+        alert(action.error);
         break;
       }
     }

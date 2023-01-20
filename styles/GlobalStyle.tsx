@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   * { font-family: ${({ theme }) => theme.font.Kfont}}
+
   a { cursor: pointer; text-decoration: none}
 
   input,

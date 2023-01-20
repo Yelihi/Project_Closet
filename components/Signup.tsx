@@ -71,7 +71,7 @@ const Signup = (props: SIprops) => {
             <br />
             비밀번호는 8자리 이상 해주세요
           </span>
-          <input type='text' value={name} onChange={onChangeName} placeholder='Name' />
+          <input type='text' value={name} onChange={onChangeName} placeholder='Name' required />
           <div></div>
           <input type='email' value={email} onChange={onChangeEmail} placeholder='Email' />
           <div>{email && !isEmailValid && `이메일이 올바르지 않습니다`}</div>

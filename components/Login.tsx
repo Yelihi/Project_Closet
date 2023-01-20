@@ -36,7 +36,7 @@ const Login = (props: SIprops) => {
         <LoginSection>
           <LoginForm>
             <h1>Welcome!</h1>
-            <span>하루의 스케줄을 관리해보세요!</span>
+            <span>하루의 스케줄을 관리해 보세요.</span>
             <input type='email' value={email} onChange={onChangeEmail} placeholder='Email' />
             <div>{email && !isEmailValid && `이메일이 올바르지 않습니다`}</div>
             <input type='password' value={password} onChange={onChangePassword} placeholder='Password' />

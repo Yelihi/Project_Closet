@@ -37,12 +37,14 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
     axios.defaults.headers.Cookie = cookie;
   }
   store.dispatch({
+    // store에서 dispatch 하는 api
     type: t.LOAD_TO_MY_INFO_REQUEST,
   });
 
   store.dispatch(END);
   await (store as SagaStore).sagaTask?.toPromise();
   if (!store.getState().user.me) {
+    // getState() 는 store의 트리를 가져와준다.
     return {
       redirect: {
         destination: '/auth',
