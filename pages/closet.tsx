@@ -47,7 +47,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
     // getState() 는 store의 트리를 가져와준다.
     return {
       redirect: {
-        destination: '/auth',
+        destination: '/userlogin',
         permanent: false,
       },
     };

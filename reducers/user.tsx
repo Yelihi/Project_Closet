@@ -119,7 +119,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.logOutError = null;
         draft.me = action.data;
         alert(`로그아웃 되셨습니다.`);
-        Router.push('/auth');
+        Router.push('/userlogin');
         break;
       }
       case t.LOGOUT_FAILURE: {

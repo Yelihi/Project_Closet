@@ -15,7 +15,7 @@ import * as t from '../reducers/type';
 
 import wrapper from '../store/configureStore';
 
-const Auth = () => {
+const UserLogin = () => {
   const [gotoAccount, setGotoAccount] = useState<boolean>(false);
 
   const toggleGotoAccount = () => {
@@ -60,7 +60,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   };
 });
 
-export default Auth;
+export default UserLogin;
 
 const Container = styled.div`
   display: flex;

@@ -1,8 +1,9 @@
 import React from 'react';
-import Router from 'next/router';
 
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+
+import GoogleButton from './GoogleButton';
 
 import useInput from '../hooks/useInput';
 
@@ -35,8 +36,8 @@ const Login = (props: SIprops) => {
         </LeftTopBrand>
         <LoginSection>
           <LoginForm>
-            <h1>Welcome!</h1>
-            <span>하루의 스케줄을 관리해 보세요.</span>
+            <h1>Welcome to Closet!</h1>
+            <span>의류를 계획적으로 관리해 보세요.</span>
             <input type='email' value={email} onChange={onChangeEmail} placeholder='Email' />
             <div>{email && !isEmailValid && `이메일이 올바르지 않습니다`}</div>
             <input type='password' value={password} onChange={onChangePassword} placeholder='Password' />
@@ -47,6 +48,7 @@ const Login = (props: SIprops) => {
             <Button color='' onClick={toggleGotoAccount} disabled={false}>
               Create account
             </Button>
+            <GoogleButton />
           </LoginForm>
         </LoginSection>
       </LoginBox>
