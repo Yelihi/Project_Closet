@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { END } from 'redux-saga';
+import { ConfigProvider } from 'antd';
+import { defaultTheme } from '../styles/antd/theme';
 
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
@@ -15,17 +17,12 @@ import wrapper from '../store/configureStore';
 import * as t from '../reducers/type';
 
 const closet = () => {
-  const { logOutDone } = useSelector((state: RootState) => state.user);
-  // useEffect(() => {
-  //   if (!logOutDone) {
-  //     Router.push('/auth');
-  //   }
-  // }, [logOutDone]);
-
   return (
-    <AppLayout>
-      <div>실험중</div>
-    </AppLayout>
+    <ConfigProvider theme={defaultTheme}>
+      <AppLayout>
+        <div>실험중</div>
+      </AppLayout>
+    </ConfigProvider>
   );
 };
 

@@ -2,12 +2,12 @@ import React, { useState, useCallback, useReducer, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import { signinRequestAction } from '../reducers/user';
+import { signinRequestAction } from '../../reducers/user';
 
-import useInput from '../hooks/useInput';
+import useInput from '../../hooks/useInput';
 import { useSelector } from 'react-redux';
 
-import type { RootState } from '../reducers/types';
+import type { RootState } from '../../reducers/types';
 
 export interface SIprops {
   toggleGotoAccount: () => void;

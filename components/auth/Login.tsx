@@ -2,12 +2,14 @@ import React from 'react';
 
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import 'antd/dist/reset.css';
+import { Divider } from 'antd';
 
 import GoogleButton from './GoogleButton';
 
-import useInput from '../hooks/useInput';
+import useInput from '../../hooks/useInput';
 
-import { loginRequestAction } from '../reducers/user';
+import { loginRequestAction } from '../../reducers/user';
 
 import type { SIprops } from './Signup';
 
@@ -48,6 +50,7 @@ const Login = (props: SIprops) => {
             <Button color='' onClick={toggleGotoAccount} disabled={false}>
               Create account
             </Button>
+            <LDivider plain>OR</LDivider>
             <GoogleButton />
           </LoginForm>
         </LoginSection>
@@ -140,4 +143,12 @@ const Button = styled.button<{ color: string; disabled: boolean }>`
   border: ${({ theme, color }) => (!color ? `1px solid ${theme.colors.black}` : 'none')};
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+`;
+
+const LDivider = styled(Divider)`
+  .ant-divider-inner-text {
+    font-family: ${({ theme }) => theme.font.Efont};
+    font-size: 12px;
+    font-weight: ${({ theme }) => theme.fontWeight.Light};
+  }
 `;

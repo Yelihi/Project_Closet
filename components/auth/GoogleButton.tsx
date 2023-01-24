@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import google from '../public/images/google.webp';
+import google from '../../public/images/google.webp';
 
 const GoogleButton = () => {
-  const signInGoogle = () => {};
   return (
     <GoogleLink href='http://localhost:3065/auth/google'>
       <Image src={google} alt='google button' />

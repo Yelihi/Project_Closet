@@ -6,8 +6,8 @@ import Image from 'next/image';
 
 import todoImage from '../public/images/todo2.jpg';
 
-import Login from '../components/Login';
-import Signup from '../components/Signup';
+import Login from '../components/auth/Login';
+import Signup from '../components/auth/Signup';
 
 import { GetServerSidePropsContext } from 'next';
 import { SagaStore } from '../store/configureStore';
