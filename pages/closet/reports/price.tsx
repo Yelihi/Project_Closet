@@ -1,21 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Nav = () => {
+import AppLayout from '../../../components/AppLayout';
+
+const price = () => {
   return (
-    <>
-      <TestContainer>네브바</TestContainer>
-    </>
+    <AppLayout>
+      <TestContainer>price</TestContainer>
+    </AppLayout>
   );
 };
 
-export default Nav;
+export default price;
 
 const TestContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 25px;
+  width: 300px;
+  height: 300px;
   background-color: ${({ theme }) => theme.colors.middleGrey};
 `;

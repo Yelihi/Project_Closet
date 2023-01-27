@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Nav = () => {
-  return (
-    <>
-      <TestContainer>네브바</TestContainer>
-    </>
-  );
-};
+import AppLayout from '../../../components/AppLayout';
 
-export default Nav;
+export default function sort() {
+  return (
+    <AppLayout>
+      <TestContainer>sort</TestContainer>
+    </AppLayout>
+  );
+}
 
 const TestContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 25px;
+  width: 300px;
+  height: 300px;
   background-color: ${({ theme }) => theme.colors.middleGrey};
 `;

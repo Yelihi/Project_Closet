@@ -50,7 +50,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   if (store.getState().user.me) {
     return {
       redirect: {
-        destination: '/closet',
+        destination: '/closet/overview',
         permanent: false,
       },
     };

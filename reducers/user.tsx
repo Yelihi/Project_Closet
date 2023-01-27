@@ -97,7 +97,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.logInError = null;
         draft.me = action.data;
         alert(`반갑습니다! ${action.data.nickname}님!`);
-        Router.push('/closet');
+        Router.push('/closet/overview');
         break;
       }
       case t.LOGIN_FAILURE: {

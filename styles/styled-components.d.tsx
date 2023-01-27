@@ -1,5 +1,5 @@
 import 'styled-components';
-import { FontTypes, FontWeight, Colors } from './theme';
+import { FontTypes, FontWeight, Colors, Size, Media } from './theme';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -7,5 +7,7 @@ declare module 'styled-components' {
     font: FontTypes;
     fontWeight: FontWeight;
     colors: Colors;
+    size: Size;
+    media: Media;
   }
 }

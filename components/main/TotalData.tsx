@@ -1,21 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Nav = () => {
-  return (
-    <>
-      <TestContainer>네브바</TestContainer>
-    </>
-  );
+const TotalData = () => {
+  return <TestContainer>총 데이터</TestContainer>;
 };
 
-export default Nav;
+export default TotalData;
 
 const TestContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 25px;
+  height: auto;
   background-color: ${({ theme }) => theme.colors.middleGrey};
 `;
