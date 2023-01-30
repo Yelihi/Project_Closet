@@ -1,46 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
+import { media } from '../styles/media';
 
 import { HiOutlineMenuAlt2, HiOutlineSearch } from 'react-icons/hi';
 
 const Nav = () => {
   return (
     <>
-      <TestContainer>
-        <NavContainer>
-          <MenuContainer>
-            <div>
-              <Menu />
-            </div>
-            <div>
-              <Search />
-            </div>
-          </MenuContainer>
-          <InfoContainer>
-            <HeadBox>
-              <span>Closet Official</span>
-              <p>user name</p>
-            </HeadBox>
-            <IconBox>
-              <div></div>
-            </IconBox>
-          </InfoContainer>
-        </NavContainer>
-      </TestContainer>
+      <NavContainer>
+        <MenuContainer>
+          <div>
+            <Menu />
+          </div>
+          <div>
+            <Search />
+          </div>
+        </MenuContainer>
+        <InfoContainer>
+          <HeadBox>
+            <span>Closet Official</span>
+            <p>user name</p>
+          </HeadBox>
+          <IconBox>
+            <div></div>
+          </IconBox>
+        </InfoContainer>
+      </NavContainer>
     </>
   );
 };
 
 export default Nav;
-
-const TestContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  background-color: ${({ theme }) => theme.colors.middleGrey};
-`;
 
 const NavContainer = styled.div`
   display: flex;
@@ -49,6 +39,13 @@ const NavContainer = styled.div`
   width: 100%;
   height: auto;
   padding: 13px 24px;
+  background-color: ${({ theme }) => theme.colors.brown};
+
+  ${media.tablet} {
+    background-color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.black};
+    border-radius: 8px;
+  }
 `;
 
 const MenuContainer = styled.div`

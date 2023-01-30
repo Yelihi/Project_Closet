@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { media } from '../../styles/media';
 
 import axios from 'axios';
 import { END } from 'redux-saga';
@@ -81,17 +82,17 @@ const Container = styled.div`
   height: auto;
   gap: 100px;
   padding: 24px;
-  ${({ theme }) => theme.media.tablet`
+  ${media.tablet} {
     display: grid;
     grid-template-rows: 50px 0.45fr 0.45fr;
     grid-template-columns: 0.6fr 0.4fr;
     grid-template-areas:
-    'nav nav'
-    'intro data'
-    'recently myinfo';
+      'nav nav'
+      'intro data'
+      'recently myinfo';
     gap: 1rem;
     height: 100%;
-  `}
+  }
 `;
 
 const NavRow = styled.div`
@@ -104,12 +105,12 @@ const NavRow = styled.div`
   width: 100%;
   height: 50px;
   background-color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.media.tablet`
+  ${media.tablet} {
     display: flex;
     align-items: center;
     position: relative;
     height: 50px;
-  `}
+  }
 `;
 
 const IntroRow = styled.div`
@@ -120,12 +121,12 @@ const IntroRow = styled.div`
   width: 100%;
   height: 300px;
   background-color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.media.tablet`
+  ${media.tablet} {
     display: flex;
     align-items: center;
     height: 400px;
     margin-top: 0;
-  `}
+  }
 `;
 
 const DataRow = styled.div`
@@ -135,11 +136,11 @@ const DataRow = styled.div`
   width: 100%;
   height: 300px;
   background-color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.media.tablet`
+  ${media.tablet} {
     display: flex;
     align-items: center;
     height: 400px;
-  `}
+  }
 `;
 
 const ResRow = styled.div`
@@ -149,11 +150,11 @@ const ResRow = styled.div`
   width: 100%;
   height: 300px;
   background-color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.media.tablet`
+  ${media.tablet} {
     display: flex;
     align-items: center;
     height: 400px;
-  `}
+  }
 `;
 
 const InfoRow = styled.div`
@@ -163,9 +164,9 @@ const InfoRow = styled.div`
   width: 100%;
   height: 300px;
   background-color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.media.tablet`
+  ${media.tablet} {
     display: flex;
     align-items: center;
     height: 400px;
-  `}
+  }
 `;

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
+import { media } from '../styles/media';
 import { LaptopOutlined, NotificationOutlined, ContainerOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, Button } from 'antd';
@@ -66,12 +67,12 @@ const SideBar = styled.div`
   height: auto;
   background: #9aaab7;
   padding: 0.25rem;
-  ${({ theme }) => theme.media.tablet`
+  ${media.tablet} {
     display: flex;
     width: 100px;
-  `}
-  ${({ theme }) => theme.media.desktop`
+  }
+  ${media.desktop} {
     display: flex;
     width: 255px;
-  `}
+  }
 `;
