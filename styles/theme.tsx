@@ -3,6 +3,8 @@ import { DefaultTheme, CSSProp, css } from 'styled-components';
 const font = {
   Kfont: `'Noto Sans KR', sans-serif`,
   Efont: `'Roboto', sans-serif`,
+  Efont2: `'CastleBegaleTTF', sans-serif`,
+  Logo: `'Julius Sans One', sans-serif`,
 };
 
 const fontWeight = {

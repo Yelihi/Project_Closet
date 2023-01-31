@@ -27,6 +27,7 @@ const Overview = () => {
         <NavRow>
           <Nav />
         </NavRow>
+        <Intersection></Intersection>
         <IntroRow>
           <MainRecycle title='인트로' subTitle='여러분의 의류를 저장해보세요'>
             <IntroSection />
@@ -93,10 +94,11 @@ const Container = styled.div`
   padding: 24px;
   ${media.tablet} {
     display: grid;
-    grid-template-rows: 50px 0.45fr 0.45fr;
+    grid-template-rows: 60px 1px 0.45fr 0.45fr;
     grid-template-columns: 0.6fr 0.4fr;
     grid-template-areas:
       'nav nav'
+      'inter inter'
       'intro data'
       'recently myinfo';
     gap: 1.5rem;
@@ -122,6 +124,13 @@ const NavRow = styled.div`
     height: auto;
     border-radius: 10px;
   }
+`;
+
+const Intersection = styled.div`
+  grid-area: inter;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(30, 40, 51, 0.0671438);
 `;
 
 const IntroRow = styled.div`

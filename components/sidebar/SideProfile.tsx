@@ -1,12 +1,18 @@
 import React from 'react';
 import Image from 'next/image';
+import styled from 'styled-components';
 
 const SideProfile = () => {
   return (
-    <div>
-      <Image src='/images/closetLogo.png' alt='로고' width={100} height={100} />
-    </div>
+    <ImageContainer>
+      <Image src='/images/newClosetLogo.png' alt='로고' width={120} height={130} />
+    </ImageContainer>
   );
 };
 
 export default SideProfile;
+
+const ImageContainer = styled.div`
+  margin-top: 50px;
+  margin-bottom: 50px;
+`;

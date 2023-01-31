@@ -5,8 +5,10 @@ import { LaptopOutlined, NotificationOutlined, ContainerOutlined, PieChartOutlin
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, Button } from 'antd';
 
-import Nav from './Nav';
 import Link from 'next/link';
+
+import Nav from './Nav';
+import Footer from './Footer';
 import { useDispatch } from 'react-redux';
 
 import { SHOW_UPLOAD_DRAWER } from '../reducers/type';
@@ -30,10 +32,15 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       <AppLay>
         <MenuContainer>
           <SideBar>
-            <SideProfile />
-            <SideList />
+            <StickyBox>
+              <SideProfile />
+              <SideList />
+            </StickyBox>
           </SideBar>
-          <Main>{children}</Main>
+          <MainFooterBox>
+            <Main>{children}</Main>
+            <Footer />
+          </MainFooterBox>
         </MenuContainer>
       </AppLay>
     </>
@@ -43,14 +50,19 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 export default AppLayout;
 
 const AppLay = styled(Layout)`
-  height: 100%;
+  min-height: 200%;
 `;
 
 const MenuContainer = styled.div`
   display: flex;
   width: 100%;
-  height: auto;
+  height: 100%;
   color: ${({ theme }) => theme.colors.white};
+`;
+
+const MainFooterBox = styled.div`
+  width: 100%;
+  height: auto;
 `;
 
 const Main = styled.div`
@@ -76,10 +88,20 @@ const SideBar = styled.div`
   }
   ${media.desktop} {
     display: flex;
-    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     width: 300px;
   }
+`;
+
+const StickyBox = styled.div`
+  position: sticky;
+  top: -1px;
+  width: inherit;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 `;

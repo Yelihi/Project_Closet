@@ -4,10 +4,22 @@ import normalize from 'styled-normalize';
 const GlobalStyle = createGlobalStyle`
   ${normalize}
 
+    /* font */
+
+  @font-face {
+    font-family: CastleBegaleTTF;
+    src: url('/fonts/CastleBegaleTTF.ttf');
+  }
+
   html {
     box-sizing: border-box;
     font-size: 62.5%;
     min-width: 320px;
+    height: 100%;
+  }
+
+  body {
+    height: 100%;
   }
 
   *,
@@ -17,7 +29,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
-  * { font-family: ${({ theme }) => theme.font.Kfont}}
+  * { font-family: ${({ theme }) => theme.font.Logo}}
 
   a { cursor: pointer; text-decoration: none}
 
@@ -48,6 +60,8 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
 
   }
+
+
 
   
 `;
