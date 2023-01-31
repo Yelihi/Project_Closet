@@ -12,6 +12,6 @@ const TestContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: auto;
+  height: 300px;
   background-color: ${({ theme }) => theme.colors.middleGrey};
 `;

@@ -50,29 +50,36 @@ const MenuContainer = styled.div`
   display: flex;
   width: 100%;
   height: auto;
-  color: white;
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 const Main = styled.div`
   width: 100%;
   height: auto;
-  background: #1f2128;
-  color: white;
+  background: ${({ theme }) => theme.colors.mainGrey};
+  color: ${({ theme }) => theme.colors.white};
   padding: 0.25rem;
 `;
 
 const SideBar = styled.div`
   display: none;
-  width: 255px;
+  width: fit-content;
   height: auto;
-  background: #9aaab7;
+  background: ${({ theme }) => theme.colors.brown};
   padding: 0.25rem;
   ${media.tablet} {
     display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     width: 100px;
   }
   ${media.desktop} {
     display: flex;
-    width: 255px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 300px;
   }
 `;

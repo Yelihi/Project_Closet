@@ -13,6 +13,7 @@ import wrapper from '../../store/configureStore';
 import * as t from '../../reducers/type';
 
 import AppLayout from '../../components/AppLayout';
+import MainRecycle from '../../components/recycle/mainRecycle';
 import IntroSection from '../../components/main/IntroSection';
 import TotalData from '../../components/main/TotalData';
 import RecentlyItem from '../../components/main/RecentlyItem';
@@ -27,16 +28,24 @@ const Overview = () => {
           <Nav />
         </NavRow>
         <IntroRow>
-          <IntroSection />
+          <MainRecycle title='인트로' subTitle='여러분의 의류를 저장해보세요'>
+            <IntroSection />
+          </MainRecycle>
         </IntroRow>
         <DataRow>
-          <TotalData />
+          <MainRecycle title='총 저장의류' subTitle='분류별 의류 갯수'>
+            <TotalData />
+          </MainRecycle>
         </DataRow>
         <ResRow>
-          <RecentlyItem />
+          <MainRecycle title='최근 등록 의류' subTitle='클릭시 상세페이지 이동합니다.'>
+            <RecentlyItem />
+          </MainRecycle>
         </ResRow>
         <InfoRow>
-          <MyInfo />
+          <MainRecycle title='나의 사이즈' subTitle='평균적인 나의 의류 사이즈'>
+            <MyInfo />
+          </MainRecycle>
         </InfoRow>
       </Container>
     </AppLayout>
@@ -80,7 +89,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: auto;
-  gap: 100px;
+  gap: 50px;
   padding: 24px;
   ${media.tablet} {
     display: grid;
@@ -90,7 +99,7 @@ const Container = styled.div`
       'nav nav'
       'intro data'
       'recently myinfo';
-    gap: 1rem;
+    gap: 1.5rem;
     height: 100%;
   }
 `;
@@ -103,13 +112,15 @@ const NavRow = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 50px;
+  height: auto;
   background-color: ${({ theme }) => theme.colors.white};
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   ${media.tablet} {
     display: flex;
     align-items: center;
     position: relative;
-    height: 50px;
+    height: auto;
+    border-radius: 10px;
   }
 `;
 
@@ -119,12 +130,11 @@ const IntroRow = styled.div`
   align-items: center;
   margin-top: 100px;
   width: 100%;
-  height: 300px;
-  background-color: ${({ theme }) => theme.colors.white};
+  height: auto;
   ${media.tablet} {
     display: flex;
     align-items: center;
-    height: 400px;
+    height: auto;
     margin-top: 0;
   }
 `;
@@ -134,12 +144,11 @@ const DataRow = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 300px;
-  background-color: ${({ theme }) => theme.colors.white};
+  height: auto;
   ${media.tablet} {
     display: flex;
     align-items: center;
-    height: 400px;
+    height: auto;
   }
 `;
 
@@ -148,12 +157,11 @@ const ResRow = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 300px;
-  background-color: ${({ theme }) => theme.colors.white};
+  height: auto;
   ${media.tablet} {
     display: flex;
     align-items: center;
-    height: 400px;
+    height: auto;
   }
 `;
 
@@ -162,11 +170,10 @@ const InfoRow = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 300px;
-  background-color: ${({ theme }) => theme.colors.white};
+  height: auto;
   ${media.tablet} {
     display: flex;
     align-items: center;
-    height: 400px;
+    height: auto;
   }
 `;

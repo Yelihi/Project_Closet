@@ -1,20 +1,38 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 import { media } from '../styles/media';
+
+import { phoneSearch } from '../styles/animation';
 
 import { HiOutlineMenuAlt2, HiOutlineSearch } from 'react-icons/hi';
 
 const Nav = () => {
+  const [phoneSearchClick, setPhoneSearchClick] = useState<boolean>(false);
+
+  const onClickPhoneSearch = () => {
+    setPhoneSearchClick(prev => !prev);
+  };
+
+  const searchSubmit = () => {};
   return (
     <>
       <NavContainer>
-        <MenuContainer>
+        <MenuContainer search={phoneSearchClick}>
           <div>
             <Menu />
           </div>
           <div>
-            <Search />
+            <Search onClick={onClickPhoneSearch} />
           </div>
+          {phoneSearchClick && <input />}
+          <InputBox>
+            <form onSubmit={searchSubmit}>
+              <input type='text' placeholder='Search' />
+            </form>
+            <div>
+              <InputSearch />
+            </div>
+          </InputBox>
         </MenuContainer>
         <InfoContainer>
           <HeadBox>
@@ -48,36 +66,105 @@ const NavContainer = styled.div`
   }
 `;
 
-const MenuContainer = styled.div`
+const MenuContainer = styled.div<{ search: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
 
   > div {
+    &:first-child {
+      ${props =>
+        props.search &&
+        css`
+          animation: ${phoneSearch} 0.5s forwards;
+        `}
+    }
     display: flex;
     justify-content: center;
     align-items: center;
     width: 24px;
     height: 24px;
   }
+
+  ${media.tablet} {
+    width: 100%;
+
+    > div {
+      display: none;
+    }
+  }
 `;
 
 const Menu = styled(HiOutlineMenuAlt2)`
   width: 24px;
   height: 24px;
+  ${media.tablet} {
+    display: none;
+  }
 `;
 
 const Search = styled(HiOutlineSearch)`
   width: 24px;
   height: 24px;
+  ${media.tablet} {
+    display: none;
+  }
+`;
+
+const InputSearch = styled(Search)`
+  ${media.tablet} {
+    display: block;
+  }
+`;
+
+const InputBox = styled.section`
+  position: relative;
+  display: none;
+  color: ${({ theme }) => theme.colors.lightGrey};
+  border: 1px solid ${({ theme }) => theme.colors.lightGrey};
+  border-radius: 16px;
+  width: fit-content;
+  height: fit-content;
+
+  ${media.tablet} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 1;
+    width: 100%;
+
+    > form {
+      width: 100%;
+      > input {
+        width: 100%;
+        height: 36px;
+        padding: 7px 46px;
+        border-radius: 16px;
+      }
+    }
+
+    > div {
+      position: absolute;
+      top: 5px;
+      left: 15px;
+      width: fit-content;
+      height: fit-content;
+    }
+  }
 `;
 
 const InfoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: 16px;
+
+  ${media.tablet} {
+    flex-shrink: 0;
+    margin-left: 135px;
+  }
 `;
 
 const HeadBox = styled.div`

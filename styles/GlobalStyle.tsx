@@ -39,6 +39,16 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${({ theme }) => theme.font.Efont};
   }
 
+  ul,
+  li,
+  li:active,
+  li:hover{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+  }
+
   
 `;
 

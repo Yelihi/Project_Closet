@@ -20,6 +20,7 @@ const colors = {
   middleGrey: '#717171',
   deepGrey: '#222222',
   hoverGrey: '#DBDBDB',
+  mainGrey: '#EDECEC',
   symbol: '#205281',
   brown: '#363740',
 };
