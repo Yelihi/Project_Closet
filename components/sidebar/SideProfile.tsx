@@ -2,11 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 
+import useBreakpoints from '../../hooks/useBreakpoints';
+
 const SideProfile = () => {
+  const { desktop } = useBreakpoints();
+
   return (
-    <ImageContainer>
-      <Image src='/images/newClosetLogo.png' alt='로고' width={120} height={130} />
-    </ImageContainer>
+    <ImageContainer>{desktop ? <Image src='/images/newClosetLogo.png' alt='로고' width={120} height={130} /> : <Image src='/images/smallLogo.png' alt='로고' width={50} height={50} />}</ImageContainer>
   );
 };
 

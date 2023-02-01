@@ -8,6 +8,7 @@ import {
   MdOutlineColorLens,
   MdOutlineAttachMoney,
   MdSortByAlpha,
+  MdLogout,
 } from 'react-icons/md';
 
 export const sidebarList = [
@@ -35,6 +36,11 @@ export const sidebarList = [
     name: 'Administration',
     path: '/closet/administration',
     icon: <MdOutlineAdminPanelSettings className='logo' />,
+  },
+  {
+    name: 'Logout',
+    path: '',
+    icon: <MdLogout className='logo' />,
   },
 ];
 
