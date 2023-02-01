@@ -33,6 +33,9 @@ const GlobalStyle = createGlobalStyle`
 
   a { cursor: pointer; text-decoration: none}
 
+  a {color: #fff; text-decoration: none; outline: none}
+  a:hover, a:active {text-decoration: none; color:#fff; background-color:#f59000;}
+
   input,
   input:active,
   input:focus{

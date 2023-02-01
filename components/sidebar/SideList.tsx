@@ -1,95 +1,57 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components';
+import Link from 'next/link';
 
 import { media } from '../../styles/media';
-import { clickDropToggle, returnDropToggle } from '../../styles/animation';
 
-import {
-  MdDashboardCustomize,
-  MdOutlineSaveAlt,
-  MdOutlineInsertChartOutlined,
-  MdNoteAdd,
-  MdOutlineAdminPanelSettings,
-  MdOutlineKeyboardArrowDown,
-  MdOutlineColorLens,
-  MdOutlineAttachMoney,
-  MdSortByAlpha,
-} from 'react-icons/md';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
-const sidebarList = {
-  '1': 'Overview',
-  '2': 'Store',
-  '3': 'Reports',
-  '4': 'Add',
-  '5': 'Administration',
-};
-
-const chartList = {
-  '1': 'Color',
-  '2': 'Price',
-  '3': 'Sort',
-};
-
-const listIcon = {
-  '1': <MdDashboardCustomize className='logo' />,
-  '2': <MdOutlineSaveAlt className='logo' />,
-  '3': <MdOutlineInsertChartOutlined className='logo' />,
-  '4': <MdNoteAdd className='logo' />,
-  '5': <MdOutlineAdminPanelSettings className='logo' />,
-};
-
-const DropListIcon = {
-  '1': <MdOutlineColorLens className='logo' />,
-  '2': <MdOutlineAttachMoney className='logo' />,
-  '3': <MdSortByAlpha className='logo' />,
-};
-
-type ObjectShape = typeof sidebarList;
-type keys = keyof ObjectShape;
-
-type DropObjectShape = typeof chartList;
-type DropKeys = keyof DropObjectShape;
+import { sidebarList, dropList } from './ListName';
 
 const SideList = () => {
-  const [clickDrop, setClickDrop] = useState<string>('');
+  const [clickDrop, setClickDrop] = useState<boolean>(false);
+
+  console.log(clickDrop);
 
   const onClickDrop = useCallback(() => {
-    if (clickDrop === '' || clickDrop === 'off') {
-      setClickDrop('on');
-    } else {
-      setClickDrop('off');
-    }
-  }, [clickDrop]);
+    setClickDrop(prev => !prev);
+  }, []);
 
   return (
     <ListContainer>
       <ul>
-        {(Object.keys(sidebarList) as Array<keys>).map((key, i) => {
-          return key === '3' ? (
+        {sidebarList.map((prop, i) => {
+          return i === 2 ? (
             <>
-              <ListBox key={i} direction={true} onClick={onClickDrop}>
-                <div>
+              <Link href={prop.path}>
+                <ListBox key={i} direction={true} onClick={onClickDrop}>
                   <div>
-                    {listIcon[key]}
-                    <li>{sidebarList[key]}</li>
+                    <div>
+                      {prop.icon}
+                      <li>{prop.name}</li>
+                    </div>
+                    <MdOutlineKeyboardArrowDown className='logo' />
                   </div>
-                  <MdOutlineKeyboardArrowDown className='logo' />
-                </div>
-              </ListBox>
-              {(Object.keys(chartList) as Array<DropKeys>).map((key, j) => {
+                </ListBox>
+              </Link>
+              {dropList.map((prop, j) => {
                 return (
-                  <DropListBox key={j} clickDrop={clickDrop}>
-                    {DropListIcon[key]}
-                    <li>{chartList[key]}</li>
-                  </DropListBox>
+                  <Link href={prop.path}>
+                    <DropListBox key={j} clickDrop={clickDrop}>
+                      <div>{prop.icon}</div>
+                      <li>{prop.name}</li>
+                    </DropListBox>
+                  </Link>
                 );
               })}
             </>
           ) : (
-            <ListBox key={i} direction={false}>
-              {listIcon[key]}
-              <li>{sidebarList[key]}</li>
-            </ListBox>
+            <Link href={prop.path}>
+              <ListBox key={i} direction={false}>
+                {prop.icon}
+                <li>{prop.name}</li>
+              </ListBox>
+            </Link>
           );
         })}
       </ul>
@@ -156,7 +118,7 @@ const ListBox = styled.div<{ direction: boolean }>`
   }
 `;
 
-const DropListBox = styled.div<{ clickDrop: string }>`
+const DropListBox = styled.div<{ clickDrop: boolean }>`
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -165,7 +127,46 @@ const DropListBox = styled.div<{ clickDrop: string }>`
   padding: 0 30px;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  opacity: 0;
+  transition: all 0.5s ease-out;
+
+  > div {
+    opacity: 0;
+    transition: all 0.2s ease-out;
+  }
+
+  > li {
+    opacity: 0;
+    transition: all 0.2s ease-out;
+  }
+
+  ${props =>
+    props.clickDrop
+      ? css`
+          height: 38px;
+          padding-top: 9px;
+          padding-bottom: 9px;
+
+          > div {
+            opacity: 1;
+          }
+
+          > li {
+            opacity: 1;
+          }
+        `
+      : css`
+          height: 0px;
+          padding-top: 0;
+          padding-bottom: 0;
+
+          > div {
+            opacity: 0;
+          }
+
+          > li {
+            opacity: 0;
+          }
+        `}
 
   .logo {
     width: 20px;
@@ -177,15 +178,4 @@ const DropListBox = styled.div<{ clickDrop: string }>`
     border-left: 2px solid white;
     background-color: rgba(0, 0, 0, 0.8);
   }
-
-  ${props =>
-    props.clickDrop === 'on' &&
-    css`
-      animation: ${clickDropToggle} 0.7s forwards;
-    `}
-  ${props =>
-    props.clickDrop === 'off' &&
-    css`
-      animation: ${returnDropToggle} 0.7s forwards;
-    `}
 `;

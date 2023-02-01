@@ -4,11 +4,8 @@ import { END } from 'redux-saga';
 import { ConfigProvider } from 'antd';
 import { defaultTheme } from '../styles/antd/theme';
 
-import Router from 'next/router';
-import { useSelector } from 'react-redux';
 import AppLayout from '../components/AppLayout';
 
-import type { RootState } from '../reducers/types';
 import { GetServerSidePropsContext } from 'next';
 import type { SagaStore } from '../store/configureStore';
 
