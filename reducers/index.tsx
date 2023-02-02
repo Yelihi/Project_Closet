@@ -9,7 +9,7 @@ import { rootReducerType } from './types';
 const rootReducer = (state: rootReducerType | undefined, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE:
-      console.log('HYDRATE', action);
+      // console.log('HYDRATE', action);
       return action.payload;
     default: {
       const combineReducer = combineReducers({

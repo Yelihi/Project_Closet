@@ -114,12 +114,12 @@ export default (state = initialState, action: AnyAction) => {
         break;
       }
       case t.LOGOUT_SUCCESE: {
+        document.cookie = 'connect.sid=; max-age=-1; path=/';
         draft.logOutLoading = false;
         draft.logOutDone = true;
         draft.logOutError = null;
         draft.me = action.data;
         alert(`로그아웃 되셨습니다.`);
-        Router.push('/userlogin');
         break;
       }
       case t.LOGOUT_FAILURE: {
