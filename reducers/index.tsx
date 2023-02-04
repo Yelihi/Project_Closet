@@ -3,6 +3,7 @@ import { AnyAction, combineReducers } from 'redux';
 
 import user from './user';
 import post from './post';
+import screenEvent from './screenEvent';
 
 import { rootReducerType } from './types';
 
@@ -15,6 +16,7 @@ const rootReducer = (state: rootReducerType | undefined, action: AnyAction) => {
       const combineReducer = combineReducers({
         user,
         post,
+        screenEvent,
       });
       return combineReducer(state, action);
     }
