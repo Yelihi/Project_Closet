@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
+import useToggle from '../hooks/useToggle';
 import { media } from '../styles/media';
 
 import { phoneSearch } from '../styles/animation';
 
+import MoblieSideList from './sidebar/MoblieSideList';
+
 import { HiOutlineMenuAlt2, HiOutlineSearch } from 'react-icons/hi';
 
 const Nav = () => {
-  const [phoneSearchClick, setPhoneSearchClick] = useState<boolean>(false);
+  const [phoneMenuClick, onPhoneMenuClick] = useToggle(false);
+  const [phoneSearchClick, onClickPhoneSearch] = useToggle(false);
 
-  const onClickPhoneSearch = () => {
-    setPhoneSearchClick(prev => !prev);
-  };
+  console.log(phoneMenuClick);
 
   const searchSubmit = () => {};
   return (
     <>
+      {phoneMenuClick && <MoblieSideList phoneMenuClick={phoneMenuClick} onPhoneMenuClick={onPhoneMenuClick} />}
       <NavContainer>
         <MenuContainer search={phoneSearchClick}>
           <div>
-            <Menu />
+            <Menu onClick={onPhoneMenuClick} />
           </div>
           <div>
             <Search onClick={onClickPhoneSearch} />
