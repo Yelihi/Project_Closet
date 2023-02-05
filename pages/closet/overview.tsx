@@ -105,7 +105,7 @@ const Container = styled.div`
   }
 `;
 
-const NavRow = styled.div`
+export const NavRow = styled.div`
   grid-area: nav;
   position: fixed;
   display: flex;
@@ -115,7 +115,7 @@ const NavRow = styled.div`
   width: 100%;
   height: auto;
   background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
   ${media.tablet} {
     display: flex;
     align-items: center;
@@ -125,7 +125,7 @@ const NavRow = styled.div`
   }
 `;
 
-const Intersection = styled.div`
+export const Intersection = styled.div`
   grid-area: inter;
   width: 100%;
   height: 1px;

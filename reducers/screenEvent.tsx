@@ -10,6 +10,12 @@ export const initialState: ScreenEventinitialState = {
   isPhoneSearchClick: false,
 };
 
+export const onPhoneMenuClick = () => {
+  return {
+    type: t.PHONE_MENU_CLICK,
+  };
+};
+
 export default (state = initialState, action: AnyAction) => {
   return produce(state, draft => {
     switch (action.type) {
@@ -19,6 +25,11 @@ export default (state = initialState, action: AnyAction) => {
       }
       case t.PHONE_SEARCH_CLICK: {
         draft.isPhoneSearchClick = !draft.isPhoneSearchClick;
+        break;
+      }
+      case t.RESET_MENU_CLICK: {
+        draft.isPhoneMenuClick = false;
+        break;
       }
     }
   });

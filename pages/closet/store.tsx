@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
 
-import AppLayout from '../../components/AppLayout';
+import PageLayout from '../../components/recycle/PageLayout';
 
 const store = () => {
   return (
-    <AppLayout>
-      <div></div>
-    </AppLayout>
+    <PageLayout>
+      <TestContainer>store</TestContainer>
+    </PageLayout>
   );
 };
 
 export default store;
+
+const TestContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 2000px;
+  background-color: ${({ theme }) => theme.colors.middleGrey};
+`;

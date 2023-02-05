@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { rootReducerType } from '../reducers/types';
+import { onPhoneMenuClick } from '../reducers/screenEvent';
+
 import styled, { css } from 'styled-components';
 import useToggle from '../hooks/useToggle';
 import { media } from '../styles/media';
 
 import { phoneSearch } from '../styles/animation';
 
-import MoblieSideList from './sidebar/MoblieSideList';
+import MoblieSideList from './sidebar/MobileSideList';
 
 import { HiOutlineMenuAlt2, HiOutlineSearch } from 'react-icons/hi';
 
 const Nav = () => {
-  const [phoneMenuClick, onPhoneMenuClick] = useToggle(false);
+  const dispatch = useDispatch();
+  const { isPhoneMenuClick } = useSelector((state: rootReducerType) => state.screenEvent);
   const [phoneSearchClick, onClickPhoneSearch] = useToggle(false);
-
-  console.log(phoneMenuClick);
 
   const searchSubmit = () => {};
   return (
     <>
-      {phoneMenuClick && <MoblieSideList phoneMenuClick={phoneMenuClick} onPhoneMenuClick={onPhoneMenuClick} />}
+      <MoblieSideList />
       <NavContainer>
         <MenuContainer search={phoneSearchClick}>
           <div>
-            <Menu onClick={onPhoneMenuClick} />
+            <Menu onClick={() => dispatch(onPhoneMenuClick())} />
           </div>
           <div>
             <Search onClick={onClickPhoneSearch} />
@@ -66,6 +70,7 @@ const NavContainer = styled.div`
     background-color: ${({ theme }) => theme.colors.white};
     color: ${({ theme }) => theme.colors.black};
     border-radius: 8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   }
 `;
 

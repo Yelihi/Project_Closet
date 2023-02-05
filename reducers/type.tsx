@@ -4,6 +4,8 @@ export const PHONE_MENU_CLICK = 'PHONE_MENU_CLICK' as const;
 
 export const PHONE_SEARCH_CLICK = 'PHONE_SEARCH_CLICK' as const;
 
+export const RESET_MENU_CLICK = 'RESET_MENU_CLICK' as const;
+
 // user
 export const LOAD_TO_MY_INFO_REQUEST = 'LOAD_TO_MY_INFO_REQUEST' as const;
 export const LOAD_TO_MY_INFO_SUCCESE = 'LOAD_TO_MY_INFO_SUCCESE' as const;
