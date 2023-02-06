@@ -68,7 +68,7 @@ const MainFooterBox = styled.div`
 const Main = styled.div`
   width: 100%;
   height: auto;
-  background: ${({ theme }) => theme.colors.mainGrey};
+  background: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.white};
   padding: 0.25rem;
 `;

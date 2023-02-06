@@ -85,6 +85,7 @@ const MenuIcon = styled.div`
     width: 25px;
     height: 25px;
     margin-top: 5px;
+    cursor: pointer;
   }
 `;
 

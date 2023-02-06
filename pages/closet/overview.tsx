@@ -20,6 +20,8 @@ import RecentlyItem from '../../components/main/RecentlyItem';
 import MyInfo from '../../components/main/MyInfo';
 import Nav from '../../components/Nav';
 
+import Intersection from '../../components/recycle/element/Intersection';
+
 const Overview = () => {
   return (
     <AppLayout>
@@ -125,18 +127,18 @@ export const NavRow = styled.div`
   }
 `;
 
-export const Intersection = styled.div`
-  grid-area: inter;
-  width: 100%;
-  height: 1px;
-  background-color: rgba(30, 40, 51, 0.0671438);
-`;
+// export const Intersection = styled.div`
+//   grid-area: inter;
+//   width: 100%;
+//   height: 1px;
+//   background-color: rgba(30, 40, 51, 0.0671438);
+// `;
 
 const IntroRow = styled.div`
   grid-area: intro;
   display: flex;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 50px;
   width: 100%;
   height: auto;
   ${media.tablet} {

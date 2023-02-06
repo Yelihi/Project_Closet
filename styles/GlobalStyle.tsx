@@ -36,10 +36,10 @@ const GlobalStyle = createGlobalStyle`
 
   * { font-family: ${({ theme }) => theme.font.Logo}}
 
-  a { cursor: pointer; text-decoration: none}
+  a {  cursor: pointer; text-decoration: none}
 
-  a {color: #fff; text-decoration: none; outline: none}
-  a:hover, a:active {text-decoration: none; color:#fff; background-color:#f59000;}
+  a { text-decoration: none; outline: none}
+  a:hover, a:active {text-decoration: none}
 
   input,
   input:active,

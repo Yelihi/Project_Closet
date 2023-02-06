@@ -84,6 +84,10 @@ const ListContainer = styled.div`
     position: -webkit-sticky;
     top: -1px;
   }
+
+  a {
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const ListBox = styled.div<{ direction: boolean }>`

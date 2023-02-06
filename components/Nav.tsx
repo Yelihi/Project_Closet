@@ -107,6 +107,7 @@ const MenuContainer = styled.div<{ search: boolean }>`
 const Menu = styled(HiOutlineMenuAlt2)`
   width: 24px;
   height: 24px;
+  cursor: pointer;
   ${media.tablet} {
     display: none;
   }
@@ -115,6 +116,7 @@ const Menu = styled(HiOutlineMenuAlt2)`
 const Search = styled(HiOutlineSearch)`
   width: 24px;
   height: 24px;
+  cursor: pointer;
   ${media.tablet} {
     display: none;
   }

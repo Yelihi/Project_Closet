@@ -76,6 +76,10 @@ export default MobileList;
 const ListContainer = styled.div`
   width: 100%;
   height: fit-content;
+
+  a {
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
 
 const ListBox = styled.div<{ direction: boolean }>`
