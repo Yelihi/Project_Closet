@@ -6,7 +6,9 @@ import type { PostInitialState } from './types/post';
 
 export const initialState: PostInitialState = {
   showDrawer: false,
-  uploadItems: null,
+  uploadItemsLoding: false,
+  uploadItemsDone: false,
+  uploadItemsError: false,
   imageUploadLoding: false,
   imageUploadDone: false,
   imageUploadError: false,
@@ -33,10 +35,28 @@ export default (state = initialState, action: AnyAction) => {
         draft.user.unshift(action.data);
         break;
       }
-      case t.UPLOAD_IMAGES_REQUEST: {
+      case t.UPLOAD_IMAGES_FAILURE: {
         draft.imageUploadLoding = false;
         draft.imageUploadDone = false;
         draft.imageUploadError = action.error;
+        break;
+      }
+      case t.UPLOAD_ITEMS_REQUEST: {
+        draft.uploadItemsLoding = true;
+        draft.uploadItemsDone = false;
+        draft.uploadItemsError = false;
+        break;
+      }
+      case t.UPLOAD_ITEMS_SUCCESS: {
+        draft.uploadItemsLoding = false;
+        draft.uploadItemsDone = true;
+        draft.uploadItemsError = false;
+        break;
+      }
+      case t.UPLOAD_ITEMS_FAILURE: {
+        draft.uploadItemsLoding = false;
+        draft.uploadItemsDone = false;
+        draft.uploadItemsError = action.error;
         break;
       }
     }

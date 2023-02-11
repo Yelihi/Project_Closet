@@ -36,10 +36,35 @@ function* uploadImage(action: AnyAction) {
   }
 }
 
+function uploadItemsAPI(data: Iterable<[PropertyKey, Object]>) {
+  return axios.post('/post/clothes', data);
+}
+
+function* uploadItems(action: AnyAction) {
+  try {
+    console.log('saga imageUpload');
+    const result: AxiosResponse<Success> = yield call(uploadItemsAPI, action.data);
+    yield put({
+      type: t.UPLOAD_ITEMS_SUCCESS,
+      data: action.data.name,
+    });
+  } catch (err: any) {
+    console.log(err);
+    yield put({
+      type: t.UPLOAD_ITEMS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchImageUpload() {
   yield takeLatest(t.UPLOAD_IMAGES_REQUEST, uploadImage);
 }
 
+function* watchItemsUpload() {
+  yield takeLatest(t.UPLOAD_ITEMS_REQUEST, uploadItems);
+}
+
 export default function* postSaga() {
-  yield all([fork(watchImageUpload)]);
+  yield all([fork(watchImageUpload), fork(watchItemsUpload)]);
 }
