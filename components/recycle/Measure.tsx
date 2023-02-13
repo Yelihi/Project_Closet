@@ -77,5 +77,6 @@ export default Measure;
 
 const Row = styled.div`
   width: 100%;
-  height: 100%;
+  height: auto;
+  margin-bottom: 10px;
 `;

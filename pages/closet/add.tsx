@@ -15,6 +15,8 @@ import AInput from '../../components/recycle/element/AInput';
 import ANumberInput from '../../components/recycle/element/ANumberInput';
 import ASelectInput from '../../components/recycle/element/ASelectInput';
 import Measure from '../../components/recycle/Measure';
+import ADatepicker from '../../components/recycle/element/ADatepicker';
+import ADescription from '../../components/recycle/element/ADescription';
 
 export interface Measures {
   shoulder?: number;
@@ -106,6 +108,9 @@ const add = () => {
                 <Row>
                   <ASelectInput control={control} name='categori' options={categoriOption} defaultValue='카테고리를 선택해주세요' />
                 </Row>
+                <Row>
+                  <ADatepicker control={control} name='purchaseDay' />
+                </Row>
                 {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? (
                   <Row>
                     <Measure control={control} nameArray={topMeasure} rules={{ required: '입력해주세요' }} placeholder='cm' />
@@ -126,7 +131,9 @@ const add = () => {
                     <Measure control={control} nameArray={mufflerMeasure} rules={{ required: '입력해주세요' }} placeholder='cm' />
                   </Row>
                 ) : null}
-
+                <Row>
+                  <ADescription control={control} name='description' rules={{ required: '입력해주세요' }} />
+                </Row>
                 <button type='submit'>전송</button>
               </AddForm>
             </FormProvider>
