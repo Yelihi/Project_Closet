@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { CirclePicker } from 'react-color';
 import * as t from '../../reducers/type';
 
 import { FieldValues, useForm, FormProvider, FieldPath } from 'react-hook-form';
@@ -17,6 +18,7 @@ import ASelectInput from '../../components/recycle/element/ASelectInput';
 import Measure from '../../components/recycle/Measure';
 import ADatepicker from '../../components/recycle/element/ADatepicker';
 import ADescription from '../../components/recycle/element/ADescription';
+import AColorPicker from '../../components/recycle/element/AColorPicker';
 
 export interface Measures {
   shoulder?: number;
@@ -38,10 +40,6 @@ export interface AddInitialValue extends FieldValues {
   categori: string;
   purchaseDay: string;
   categoriItem: Measures;
-}
-
-export interface InputValue {
-  name: string;
 }
 
 const categoriOption = [
@@ -100,7 +98,7 @@ const add = () => {
                   <AInput control={control} name='productName' rules={{ required: '입력해주세요' }} />
                 </Row>
                 <Row>
-                  <AInput control={control} name='color' rules={{ required: '입력해주세요' }} />
+                  <AColorPicker control={control} name='color' rules={{ required: '선택해주세요' }} />
                 </Row>
                 <Row>
                   <ANumberInput control={control} name='price' placeholder='won' rules={{ required: '입력해주세요' }} />
@@ -164,6 +162,16 @@ const AddSection = styled.div`
 const Row = styled.div`
   width: 100%;
   height: 100%;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+
+  ${media.tablet} {
+    grid-template-columns: 0.5fr 0.5fr;
+  }
 `;
 
 const AddForm = styled.form`
