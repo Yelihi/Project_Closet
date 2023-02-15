@@ -13,6 +13,7 @@ export const initialState: PostInitialState = {
   imageUploadDone: false,
   imageUploadError: false,
   user: [],
+  imagePath: null,
 };
 
 export default (state = initialState, action: AnyAction) => {
@@ -32,7 +33,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.imageUploadLoding = false;
         draft.imageUploadDone = true;
         draft.imageUploadError = false;
-        draft.user.unshift(action.data);
+        draft.imagePath = action.data;
         break;
       }
       case t.UPLOAD_IMAGES_FAILURE: {

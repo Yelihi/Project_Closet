@@ -1,8 +1,11 @@
 export interface PostInitialState {
   showDrawer: boolean;
-  uploadItems: {} | null;
+  uploadItemsLoding: boolean;
+  uploadItemsDone: boolean;
+  uploadItemsError: boolean;
   imageUploadLoding: boolean;
   imageUploadDone: boolean;
   imageUploadError: boolean;
   user: Object[];
+  imagePath: Object | null;
 }

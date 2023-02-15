@@ -22,10 +22,10 @@ function uploadImageAPI(data: Iterable<[PropertyKey, Object]>) {
 function* uploadImage(action: AnyAction) {
   try {
     console.log('saga imageUpload');
-    // const result: AxiosResponse<Success> = yield call(uploadImageAPI, action.data);
+    const result: AxiosResponse<Success> = yield call(uploadImageAPI, action.data);
     yield put({
       type: t.UPLOAD_IMAGES_SUCCESS,
-      data: action.data.name,
+      data: result.data,
     });
   } catch (err: any) {
     console.log(err);

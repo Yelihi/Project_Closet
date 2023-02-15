@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState, useRef, MutableRefObject } from 'react';
+import styled, { css } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { CirclePicker } from 'react-color';
 import * as t from '../../reducers/type';
@@ -35,6 +35,7 @@ export interface Measures {
 export interface AddInitialValue extends FieldValues {
   productName: string;
   description: string;
+  image: FormData;
   price: number;
   color: string;
   categori: string;
@@ -58,11 +59,14 @@ export const mufflerMeasure = ['categoriItem.totalLength'];
 
 const add = () => {
   const dispatch = useDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [dragActive, setDragActive] = useState<boolean>(false);
   const methods = useForm<AddInitialValue>({
     mode: 'onSubmit',
     defaultValues: {
       productName: '',
       description: '',
+      image: {},
       price: 0,
       color: '',
       categori: '',
@@ -80,7 +84,56 @@ const add = () => {
       },
     },
   });
-  const { handleSubmit, control, watch } = methods;
+  const { handleSubmit, control, watch, register } = methods;
+
+  const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      console.log('image', e.dataTransfer.files);
+      const imageFormData = new FormData(); // 멀티파트 형식으로 데이터 보내기
+      [].forEach.call(e.dataTransfer.files, file => {
+        imageFormData.append('image', file);
+      });
+      dispatch({
+        type: t.UPLOAD_IMAGES_REQUEST,
+        data: imageFormData,
+      });
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      console.log('image', e.target.files);
+      const imageFormData = new FormData(); // 멀티파트 형식으로 데이터 보내기
+      [].forEach.call(e.target.files, file => {
+        imageFormData.append('image', file);
+      });
+      dispatch({
+        type: t.UPLOAD_IMAGES_REQUEST,
+        data: imageFormData,
+      });
+    }
+  };
+
+  const onButtonClick = () => {
+    if (inputRef.current) {
+      // inputRef.current 가 null 일 수 있으니, 조건문으로 확인해주기
+      inputRef.current.click();
+    }
+  };
 
   const onSubmit = (data: AddInitialValue) => {
     // dispatch({ type: t.UPLOAD_ITEMS_REQUEST, data });
@@ -132,6 +185,29 @@ const add = () => {
                 <Row>
                   <ADescription control={control} name='description' rules={{ required: '입력해주세요' }} />
                 </Row>
+                <ImageUploadContainer onDragEnter={handleDrag}>
+                  <input
+                    {...(register('image'),
+                    {
+                      onChange: handleChange,
+                      ref: inputRef,
+                    })}
+                    // ref={inputRef}
+                    name='image'
+                    type='file'
+                    id='image'
+                    multiple={true}
+                    hidden
+                  />
+                  <LabelFileUpload htmlFor='image' dragActive={dragActive}>
+                    <div>
+                      <p>Drag and Drop your file here or</p>
+                      <UploadButton onClick={onButtonClick}>Upload a file</UploadButton>
+                    </div>
+                  </LabelFileUpload>
+                  {dragActive && <DragFileElement onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></DragFileElement>}
+                </ImageUploadContainer>
+
                 <button type='submit'>전송</button>
               </AddForm>
             </FormProvider>
@@ -185,4 +261,52 @@ const AddForm = styled.form`
   ${media.tablet} {
     grid-template-columns: 0.5fr 0.5fr;
   }
+`;
+
+const ImageUploadContainer = styled.div`
+  height: 16rem;
+  max-width: 100%;
+  text-align: center;
+  position: relative;
+`;
+
+const LabelFileUpload = styled.label<{ dragActive: boolean }>`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed ${({ theme }) => theme.colors.brown};
+  border-radius: 1rem;
+  background-color: ${({ theme }) => theme.colors.mainGrey};
+
+  ${props =>
+    props.dragActive &&
+    css`
+      background-color: white;
+    `}
+`;
+
+const UploadButton = styled.button`
+  cursor: pointer;
+  height: 25px;
+  padding: 0.25rem;
+  font-size: 13px;
+  border: none;
+  opacity: 1;
+  background-color: ${({ theme }) => theme.colors.brown};
+  border-radius: 5px;
+  transition: all 0.25 ease-out;
+
+  :hover {
+    opacity: 0.6;
+  }
+`;
+
+const DragFileElement = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  top: 0px;
+  left: 0px;
 `;
