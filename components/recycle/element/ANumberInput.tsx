@@ -18,7 +18,6 @@ function ANumberInput<T extends FieldValues>({ name, rules, control, ...props }:
   } = useController({ name, rules, control });
   return (
     <>
-      <label htmlFor={name}>{name.includes('.') ? name.split('.')[1] : name}</label>
       <InputNumber value={value} id={name} min={1} onChange={onChange} {...props} style={{ height: '30px', width: '100%' }} placeholder={placeholder} />
       {/* {error && <span>에러</span>} */}
     </>

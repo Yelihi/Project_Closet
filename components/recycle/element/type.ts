@@ -12,4 +12,5 @@ export interface TControlArray<T extends FieldValues> {
   control: Control<T>;
   rules?: RegisterOptions<T>;
   subTitle?: string;
+  subTitleArray?: string[];
 }

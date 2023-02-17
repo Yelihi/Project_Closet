@@ -6,19 +6,16 @@ import * as t from '../../reducers/type';
 
 import { FieldValues, useForm, FormProvider, FieldPath } from 'react-hook-form';
 import { TControlArray } from '../../components/recycle/element/type';
+import { clothData, categori, descriptionData } from '../../components/add/ElementData';
+import { topMeasure, bottomMeasure, shoesMeasure, mufflerMeasure } from '../../components/add/ElementData';
 
 import { Input } from 'antd';
 import { media } from '../../styles/media';
 import PageLayout from '../../components/recycle/PageLayout';
 import PageMainLayout from '../../components/recycle/PageMainLayout';
 
-import AInput from '../../components/recycle/element/AInput';
-import ANumberInput from '../../components/recycle/element/ANumberInput';
-import ASelectInput from '../../components/recycle/element/ASelectInput';
+import AInputElement from '../../components/recycle/element/AInputElement';
 import Measure from '../../components/recycle/Measure';
-import ADatepicker from '../../components/recycle/element/ADatepicker';
-import ADescription from '../../components/recycle/element/ADescription';
-import AColorPicker from '../../components/recycle/element/AColorPicker';
 
 export interface Measures {
   shoulder?: number;
@@ -43,19 +40,15 @@ export interface AddInitialValue extends FieldValues {
   categoriItem: Measures;
 }
 
-const categoriOption = [
-  { value: 'Outer', label: 'Outer' },
-  { value: 'Shirt', label: 'Shirt' },
-  { value: 'Top', label: 'Top' },
-  { value: 'Pant', label: 'Pant' },
-  { value: 'Shoes', label: 'Shoes' },
-  { value: 'Muffler', label: 'Muffler' },
-];
+const topMeasureName = topMeasure.map(v => v.sort);
+const bottomMeasureName = bottomMeasure.map(v => v.sort);
+const shoesMeasureName = shoesMeasure.map(v => v.sort);
+const mufflerMeasureName = mufflerMeasure.map(v => v.sort);
 
-export const topMeasure = ['categoriItem.chest', 'categoriItem.shoulder', 'categoriItem.arm', 'categoriItem.totalLength'];
-export const bottomMeasure = ['categoriItem.totalLength', 'categoriItem.rise', 'categoriItem.hem', 'categoriItem.waist', 'categoriItem.thigh'];
-export const shoesMeasure = ['categoriItem.size'];
-export const mufflerMeasure = ['categoriItem.totalLength'];
+const topMeasureSub = topMeasure.map(v => v.subtitle);
+const bottomMeasureSub = bottomMeasure.map(v => v.subtitle);
+const shoesMeasureSub = shoesMeasure.map(v => v.subtitle);
+const mufflerMeasureSub = mufflerMeasure.map(v => v.subtitle);
 
 const add = () => {
   const dispatch = useDispatch();
@@ -147,44 +140,39 @@ const add = () => {
           <AddSection>
             <FormProvider {...methods}>
               <AddForm onSubmit={handleSubmit(onSubmit)}>
-                <Row>
-                  <AInput control={control} name='productName' rules={{ required: '입력해주세요' }} />
-                </Row>
-                <Row>
-                  <AColorPicker control={control} name='color' rules={{ required: '선택해주세요' }} />
-                </Row>
-                <Row>
-                  <ANumberInput control={control} name='price' placeholder='won' rules={{ required: '입력해주세요' }} />
-                </Row>
-                <Row>
-                  <ASelectInput control={control} name='categori' options={categoriOption} defaultValue='카테고리를 선택해주세요' />
-                </Row>
-                <Row>
-                  <ADatepicker control={control} name='purchaseDay' />
-                </Row>
+                {clothData.map(v => {
+                  return (
+                    <Row>
+                      <AInputElement control={control} name={v.name} subTitle={v.subTitle} placeholder={v.placeholder} rules={{ required: '입력해주세요' }} />
+                    </Row>
+                  );
+                })}
+                {categori.map(v => {
+                  return <AInputElement control={control} name={v.name} subTitle={v.subTitle} options={v.options} defaultValue={v.defaultValue} rules={{ required: '입력해주세요' }} />;
+                })}
                 {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? (
                   <Row>
-                    <Measure control={control} nameArray={topMeasure} rules={{ required: '입력해주세요' }} placeholder='cm' />
+                    <Measure control={control} nameArray={topMeasureName} subTitleArray={topMeasureSub} rules={{ required: '입력해주세요' }} placeholder='cm' />
                   </Row>
                 ) : null}
                 {['Pant'].includes(watch('categori')) ? (
                   <Row>
-                    <Measure control={control} nameArray={bottomMeasure} rules={{ required: '입력해주세요' }} placeholder='cm' />
+                    <Measure control={control} nameArray={bottomMeasureName} subTitleArray={bottomMeasureSub} rules={{ required: '입력해주세요' }} placeholder='cm' />
                   </Row>
                 ) : null}
                 {['Shoes'].includes(watch('categori')) ? (
                   <Row>
-                    <Measure control={control} nameArray={shoesMeasure} rules={{ required: '입력해주세요' }} placeholder='cm' />
+                    <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} rules={{ required: '입력해주세요' }} placeholder='mm' />
                   </Row>
                 ) : null}
                 {['Muffler'].includes(watch('categori')) ? (
                   <Row>
-                    <Measure control={control} nameArray={mufflerMeasure} rules={{ required: '입력해주세요' }} placeholder='cm' />
+                    <Measure control={control} nameArray={mufflerMeasureName} subTitleArray={mufflerMeasureSub} rules={{ required: '입력해주세요' }} placeholder='cm' />
                   </Row>
                 ) : null}
-                <Row>
-                  <ADescription control={control} name='description' rules={{ required: '입력해주세요' }} />
-                </Row>
+                {descriptionData.map(v => {
+                  return <AInputElement control={control} name={v.name} subTitle={v.subTitle} placeholder={v.placeholder} rules={{ required: '입력해주세요' }} />;
+                })}
                 <ImageUploadContainer onDragEnter={handleDrag}>
                   <input
                     {...(register('image'),
@@ -225,8 +213,8 @@ const TestContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 2000px;
-  background-color: ${({ theme }) => theme.colors.middleGrey};
+  height: auto;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const AddSection = styled.div`
@@ -240,16 +228,6 @@ const Row = styled.div`
   height: 100%;
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-
-  ${media.tablet} {
-    grid-template-columns: 0.5fr 0.5fr;
-  }
-`;
-
 const AddForm = styled.form`
   display: grid;
   grid-template-columns: 1fr;
@@ -257,10 +235,6 @@ const AddForm = styled.form`
   width: 100%;
   height: auto;
   padding: 10px 0;
-
-  ${media.tablet} {
-    grid-template-columns: 0.5fr 0.5fr;
-  }
 `;
 
 const ImageUploadContainer = styled.div`
