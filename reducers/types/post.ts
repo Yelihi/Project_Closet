@@ -1,3 +1,8 @@
+export interface ImagePathObject {
+  filename: string;
+  visionSearch: Object[];
+}
+
 export interface PostInitialState {
   showDrawer: boolean;
   uploadItemsLoding: boolean;
@@ -7,5 +12,5 @@ export interface PostInitialState {
   imageUploadDone: boolean;
   imageUploadError: boolean;
   user: Object[];
-  imagePath: Object | null;
+  imagePath: ImagePathObject[];
 }

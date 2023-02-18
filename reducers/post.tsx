@@ -13,7 +13,7 @@ export const initialState: PostInitialState = {
   imageUploadDone: false,
   imageUploadError: false,
   user: [],
-  imagePath: null,
+  imagePath: [],
 };
 
 export default (state = initialState, action: AnyAction) => {
@@ -21,6 +21,10 @@ export default (state = initialState, action: AnyAction) => {
     switch (action.type) {
       case t.SHOW_UPLOAD_DRAWER: {
         draft.showDrawer = !draft.showDrawer;
+        break;
+      }
+      case t.REMOVE_IMAGE: {
+        draft.imagePath = draft.imagePath.filter((v, i) => i !== action.data);
         break;
       }
       case t.UPLOAD_IMAGES_REQUEST: {
@@ -33,7 +37,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.imageUploadLoding = false;
         draft.imageUploadDone = true;
         draft.imageUploadError = false;
-        draft.imagePath = action.data;
+        draft.imagePath.push(action.data);
         break;
       }
       case t.UPLOAD_IMAGES_FAILURE: {

@@ -23,7 +23,7 @@ function DropImageInput<T extends FieldValues>({ name, rules, control, ...props 
 
   return (
     <>
-      <form>
+      <form onDragEnter={handleDrag}>
         <input type='file' id={name} multiple={true} />
         <label htmlFor={name}>{name}</label>
       </form>

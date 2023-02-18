@@ -1,21 +1,24 @@
-import React, { useEffect, useState, useRef, MutableRefObject } from 'react';
+import React, { useEffect, useState, useRef, MutableRefObject, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { CirclePicker } from 'react-color';
 import * as t from '../../reducers/type';
+import Image from 'next/image';
 
 import { FieldValues, useForm, FormProvider, FieldPath } from 'react-hook-form';
 import { TControlArray } from '../../components/recycle/element/type';
 import { clothData, categori, descriptionData } from '../../components/add/ElementData';
 import { topMeasure, bottomMeasure, shoesMeasure, mufflerMeasure } from '../../components/add/ElementData';
 
-import { Input } from 'antd';
+import { backUrl } from '../../config/config';
 import { media } from '../../styles/media';
 import PageLayout from '../../components/recycle/PageLayout';
 import PageMainLayout from '../../components/recycle/PageMainLayout';
 
 import AInputElement from '../../components/recycle/element/AInputElement';
 import Measure from '../../components/recycle/Measure';
+import { useSelector } from 'react-redux';
+import { rootReducerType } from '../../reducers/types';
 
 export interface Measures {
   shoulder?: number;
@@ -52,6 +55,7 @@ const mufflerMeasureSub = mufflerMeasure.map(v => v.subtitle);
 
 const add = () => {
   const dispatch = useDispatch();
+  const { imagePath } = useSelector((state: rootReducerType) => state.post);
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState<boolean>(false);
   const methods = useForm<AddInitialValue>({
@@ -128,6 +132,16 @@ const add = () => {
     }
   };
 
+  const onRemoveImage = useCallback(
+    (index: number) => () => {
+      dispatch({
+        type: t.REMOVE_IMAGE,
+        data: index,
+      });
+    },
+    []
+  );
+
   const onSubmit = (data: AddInitialValue) => {
     // dispatch({ type: t.UPLOAD_ITEMS_REQUEST, data });
     console.log(data);
@@ -143,12 +157,12 @@ const add = () => {
                 {clothData.map(v => {
                   return (
                     <Row>
-                      <AInputElement control={control} name={v.name} subTitle={v.subTitle} placeholder={v.placeholder} rules={{ required: '입력해주세요' }} />
+                      <AInputElement key={v.name} control={control} name={v.name} subTitle={v.subTitle} placeholder={v.placeholder} rules={{ required: '입력해주세요' }} />
                     </Row>
                   );
                 })}
                 {categori.map(v => {
-                  return <AInputElement control={control} name={v.name} subTitle={v.subTitle} options={v.options} defaultValue={v.defaultValue} rules={{ required: '입력해주세요' }} />;
+                  return <AInputElement key={v.name} control={control} name={v.name} subTitle={v.subTitle} options={v.options} defaultValue={v.defaultValue} rules={{ required: '입력해주세요' }} />;
                 })}
                 {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? (
                   <Row>
@@ -171,7 +185,7 @@ const add = () => {
                   </Row>
                 ) : null}
                 {descriptionData.map(v => {
-                  return <AInputElement control={control} name={v.name} subTitle={v.subTitle} placeholder={v.placeholder} rules={{ required: '입력해주세요' }} />;
+                  return <AInputElement key={v.name} control={control} name={v.name} subTitle={v.subTitle} placeholder={v.placeholder} rules={{ required: '입력해주세요' }} />;
                 })}
                 <ImageUploadContainer onDragEnter={handleDrag}>
                   <input
@@ -195,7 +209,18 @@ const add = () => {
                   </LabelFileUpload>
                   {dragActive && <DragFileElement onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></DragFileElement>}
                 </ImageUploadContainer>
-
+                {imagePath.map((v, i) => {
+                  return (
+                    <div key={v.filename} style={{ display: 'inline-block' }}>
+                      {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
+                      <PreviewImage src={`${backUrl}/${v.filename}`} alt={v.filename} width={250} height={250} />
+                      <div>{watch('categori')}</div>
+                      <div>
+                        <button onClick={onRemoveImage(i)}>제거</button>
+                      </div>
+                    </div>
+                  );
+                })}
                 <button type='submit'>전송</button>
               </AddForm>
             </FormProvider>
@@ -283,4 +308,9 @@ const DragFileElement = styled.div`
   border-radius: 1rem;
   top: 0px;
   left: 0px;
+`;
+
+const PreviewImage = styled(Image)`
+  width: 200px;
+  height: auto;
 `;
