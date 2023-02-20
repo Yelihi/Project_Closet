@@ -119,6 +119,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.logOutDone = true;
         draft.logOutError = null;
         draft.me = action.data;
+        Router.push('/userlogin');
         alert(`로그아웃 되셨습니다.`);
         break;
       }

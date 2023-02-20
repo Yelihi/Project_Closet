@@ -68,15 +68,15 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
 
   store.dispatch(END);
   await (store as SagaStore).sagaTask?.toPromise();
-  if (!store.getState().user.me) {
-    // getState() 는 store의 트리를 가져와준다.
-    return {
-      redirect: {
-        destination: '/userlogin',
-        permanent: false,
-      },
-    };
-  }
+  // if (!store.getState().user.me) {
+  //   // getState() 는 store의 트리를 가져와준다.
+  //   return {
+  //     redirect: {
+  //       destination: '/userlogin',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
   return {
     props: {},
   };
