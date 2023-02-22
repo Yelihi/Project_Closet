@@ -25,6 +25,7 @@ const colors = {
   mainGrey: '#EDECEC',
   symbol: '#205281',
   brown: '#363740',
+  red: '#EE4B2B',
 };
 
 export type FontTypes = typeof font;

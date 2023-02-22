@@ -30,30 +30,36 @@ export const clothData = [
     name: 'productName',
     subTitle: '저장하시고 싶은 의류를 구별될 수 있도록 작성해주세요',
     placeholder: 'product name',
+    errorMessage: '기입해주세요',
   },
   {
     name: 'price',
     subTitle: '구매하셨을 당시의 금액을 대략적으로 (원) 단위로 작성해주세요',
     placeholder: 'price',
+    errorMessage: '가격을 기입해주세요',
   },
   {
     name: 'color',
     subTitle: '현 의류의 대표색상을 주어진 파레트에 따라 대략적으로 선택해주세요',
     placeholder: 'color',
+    errorMessage: '색상을 선택해주세요',
   },
   {
     name: 'purchaseDay',
     subTitle: '월 단위로 언제 구매를 하셨는지 날짜를 기입해주세요',
     placeholder: 'purchase month',
+    errorMessage: '대략적인 구매시기를 선택해주세요(월)',
   },
 ];
 
 export const categori = [
   {
     name: 'categori',
-    subTitle: '의류 분류를 위해 저장하려는 의류의 카테고리를 선택해주세요. 선택에 따라 기입해야할 수치가 다릅니다.',
+    subTitle: `의류 분류를 위해 저장하려는 의류의 카테고리를 선택해주세요.
+    선택에 따라 기입해야할 수치가 다릅니다.`,
     options: categoriOption,
     defaultValue: '카테고리를 선택헤주세요',
+    errorMessage: '카테고리는 필수적으로 선택하여야 합니다',
   },
 ];
 
@@ -62,5 +68,6 @@ export const descriptionData = [
     name: 'description',
     subTitle: '필수 기입사항 외 등록의류에 대한 정보가 있다면 작성해주세요',
     placeholder: '상세정보를 기입해주세요',
+    errorMessage: '특이사항들에 대해서 기입해주세요',
   },
 ];

@@ -5,6 +5,7 @@ export interface TControl<T extends FieldValues> {
   name: FieldPath<T>;
   rules?: RegisterOptions<T>;
   subTitle?: string;
+  errorMessage?: string;
 }
 
 export interface TControlArray<T extends FieldValues> {

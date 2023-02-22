@@ -1,6 +1,11 @@
+export interface VisionSearch {
+  name: string;
+  confidence: number;
+}
+
 export interface ImagePathObject {
   filename: string;
-  visionSearch: Object[];
+  visionSearch: VisionSearch[];
 }
 
 export interface PostInitialState {
