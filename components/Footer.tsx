@@ -15,8 +15,12 @@ const Footer = () => {
       <FooterListBox>
         {sidebarList
           .filter((v, i) => i < 5)
-          .map(elem => {
-            return <Link href={elem.path}>{elem.name}</Link>;
+          .map((elem, j) => {
+            return (
+              <Link href={elem.path} key={j}>
+                {elem.name}
+              </Link>
+            );
           })}
       </FooterListBox>
       <Intersection />

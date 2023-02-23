@@ -31,8 +31,8 @@ const SideList = () => {
         {sidebarList.map((prop, i) => {
           return i === 2 ? (
             <>
-              <Link href={prop.path}>
-                <ListBox key={i} direction={true} onClick={onClickDrop}>
+              <Link href={prop.path} key={i}>
+                <ListBox direction={true} onClick={onClickDrop}>
                   <div>
                     <div>
                       {prop.icon}
@@ -44,8 +44,8 @@ const SideList = () => {
               </Link>
               {dropList.map((prop, j) => {
                 return (
-                  <Link href={prop.path}>
-                    <DropListBox key={j} clickDrop={clickDrop}>
+                  <Link href={prop.path} key={j}>
+                    <DropListBox clickDrop={clickDrop}>
                       <div>{prop.icon}</div>
                       <li>{prop.name}</li>
                     </DropListBox>
@@ -54,15 +54,15 @@ const SideList = () => {
               })}
             </>
           ) : i == 5 ? (
-            <Link href={prop.path}>
-              <ListBox key={i} direction={false} onClick={logout}>
+            <Link href={prop.path} key={i}>
+              <ListBox direction={false} onClick={logout}>
                 {prop.icon}
                 <li>{prop.name}</li>
               </ListBox>
             </Link>
           ) : (
-            <Link href={prop.path}>
-              <ListBox key={i} direction={false}>
+            <Link href={prop.path} key={i}>
+              <ListBox direction={false}>
                 {prop.icon}
                 <li>{prop.name}</li>
               </ListBox>

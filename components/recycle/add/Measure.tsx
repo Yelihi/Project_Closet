@@ -2,12 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { FieldValues, useFormContext } from 'react-hook-form';
 
-import { TControl, TControlArray } from './element/type';
-import { AddInitialValue } from '../../pages/closet/add';
+import { TControl, TControlArray } from '../element/type';
+import { AddInitialValue } from '../../../pages/closet/add';
 
-import ANumberInput from './element/ANumberInput';
+import InputBackground from './InputBackgroud';
+import ANumberInput from '../element/ANumberInput';
 
-import { media } from '../../styles/media';
+import { media } from '../../../styles/media';
 
 export type CustomSelectProps<T> = {
   placeholder: string;
@@ -23,15 +24,9 @@ function Measure<T extends FieldValues>(props: TPorps<T>) {
     <>
       {nameArray.map((categori, i) => {
         return (
-          <Container>
-            <div>
-              <Title>{categori.split('.')[1]}</Title>
-              <SubTitme>{subTitleArray && subTitleArray[i]}</SubTitme>
-            </div>
-            <div>
-              <ANumberInput control={control} name={categori} rules={rules} placeholder={placeholder} />
-            </div>
-          </Container>
+          <InputBackground title={categori.split('.')[1]} subTitle={subTitleArray && subTitleArray[i]}>
+            <ANumberInput control={control} name={categori} rules={rules} placeholder={placeholder} />
+          </InputBackground>
         );
       })}
     </>

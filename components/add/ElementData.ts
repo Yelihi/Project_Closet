@@ -23,6 +23,16 @@ export const bottomMeasure = [
 export const shoesMeasure = [{ sort: 'categoriItem.size', subtitle: '평균적인 신발 사이즈(한국기준)를 작성해주세요(mm)' }];
 export const mufflerMeasure = [{ sort: 'categoriItem.totalLength', subtitle: '머플러의 총 기장을 측정해주세요(cm)' }];
 
+export const topMeasureName = topMeasure.map(v => v.sort);
+export const bottomMeasureName = bottomMeasure.map(v => v.sort);
+export const shoesMeasureName = shoesMeasure.map(v => v.sort);
+export const mufflerMeasureName = mufflerMeasure.map(v => v.sort);
+
+export const topMeasureSub = topMeasure.map(v => v.subtitle);
+export const bottomMeasureSub = bottomMeasure.map(v => v.subtitle);
+export const shoesMeasureSub = shoesMeasure.map(v => v.subtitle);
+export const mufflerMeasureSub = mufflerMeasure.map(v => v.subtitle);
+
 export const colors = ['#f44336', '#e91e63', '#673ab7', '#3f51b5', '#03a9f4', '#4caf50', '#ffc107', '#ff9800', '#ff5722', '#795548'];
 
 export const clothData = [

@@ -56,6 +56,9 @@ export default (state = initialState, action: AnyAction) => {
         draft.uploadItemsLoding = false;
         draft.uploadItemsDone = true;
         draft.uploadItemsError = false;
+        draft.user.push(action.data);
+        draft.imagePath = [];
+        alert('저장되었습니다.');
         break;
       }
       case t.UPLOAD_ITEMS_FAILURE: {

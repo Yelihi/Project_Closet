@@ -46,7 +46,7 @@ function* uploadItems(action: AnyAction) {
     const result: AxiosResponse<Success> = yield call(uploadItemsAPI, action.data);
     yield put({
       type: t.UPLOAD_ITEMS_SUCCESS,
-      data: action.data.name,
+      data: action.data,
     });
   } catch (err: any) {
     console.log(err);

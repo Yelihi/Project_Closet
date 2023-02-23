@@ -25,28 +25,20 @@ export type CustomSelectProps<T> = {
 export type TPorps<T extends FieldValues> = CustomSelectProps<T> & TControl<T>;
 
 function AInputElement<T extends FieldValues>(props: TPorps<T>) {
-  const { name, rules, control, subTitle, errorMessage, options, defaultValue, placeholder } = props;
+  const { name, rules, control, errorMessage, options, defaultValue, placeholder } = props;
   const {
     field: { value, onChange },
     fieldState: { isDirty, isTouched, error },
   } = useController({ name, rules, control });
   return (
     <>
-      <Container>
-        <div>
-          <Title>{name}</Title>
-          <SubTitme>{subTitle}</SubTitme>
-        </div>
-        <InputContainer>
-          {name == 'productName' ? <Input value={value} id={name} onChange={onChange} {...props} style={{ height: '30px' }} /> : null}
-          {name == 'color' ? <CirclePicker color={value} colors={colors} onChange={(color, event) => onChange(color.hex)} {...props} circleSize={25} width='100%' /> : null}
-          {name == 'price' ? <InputNumber value={value} id={name} min={1} onChange={onChange} style={{ height: '30px', width: '100%' }} placeholder={placeholder} /> : null}
-          {name == 'purchaseDay' ? <DatePicker onChange={(value, dateString) => onChange(dateString)} picker='month' style={{ width: '100%', height: '30px' }} /> : null}
-          {name == 'description' ? <TextArea value={value} id={name} onChange={onChange} placeholder={placeholder} rows={5} style={{ width: '100%' }} /> : null}
-          {name == 'categori' ? <Select defaultValue={defaultValue} id={name} options={options} onChange={onChange} style={{ height: '30px', width: '100%' }} /> : null}
-          {error && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        </InputContainer>
-      </Container>
+      {name == 'productName' ? <Input value={value} id={name} onChange={onChange} {...props} style={{ height: '30px' }} /> : null}
+      {name == 'color' ? <CirclePicker color={value} colors={colors} onChange={(color, event) => onChange(color.hex)} {...props} circleSize={25} width='100%' /> : null}
+      {name == 'price' ? <InputNumber value={value} id={name} min={1} onChange={onChange} style={{ height: '30px', width: '100%' }} placeholder={placeholder} /> : null}
+      {name == 'purchaseDay' ? <DatePicker onChange={(value, dateString) => onChange(dateString)} picker='month' style={{ width: '100%', height: '30px' }} /> : null}
+      {name == 'description' ? <TextArea value={value} id={name} onChange={onChange} placeholder={placeholder} rows={5} style={{ width: '100%' }} /> : null}
+      {name == 'categori' ? <Select defaultValue={defaultValue} id={name} options={options} onChange={onChange} style={{ height: '30px', width: '100%' }} /> : null}
+      {error && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </>
   );
 }
@@ -93,7 +85,11 @@ const SubTitme = styled.p`
 `;
 
 const InputContainer = styled.div`
-  max-width: 150px;
+  width: 100%;
+
+  ${media.tablet} {
+    width: 200px;
+  }
 `;
 
 const ErrorMessage = styled.span`

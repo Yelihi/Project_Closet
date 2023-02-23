@@ -1,25 +1,28 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
+import Intersection from '../element/Intersection';
+
 type myComponent = {
   children: ReactNode;
   title: string;
   subTitle: string;
 };
 
-const MainRecycle = ({ children, title, subTitle }: myComponent) => {
+const PageMainLayout = ({ children, title, subTitle }: myComponent) => {
   return (
     <MainContainer>
       <ComponentHead>
         <h1>{title}</h1>
         <span>{subTitle}</span>
       </ComponentHead>
+      <Intersection />
       <div>{children}</div>
     </MainContainer>
   );
 };
 
-export default MainRecycle;
+export default PageMainLayout;
 
 const MainContainer = styled.div`
   display: flex;
@@ -32,7 +35,6 @@ const MainContainer = styled.div`
   border-radius: 10px;
   color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.white};
-  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 
   > div {

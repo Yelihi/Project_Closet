@@ -11,9 +11,8 @@ import type { SagaStore } from '../../store/configureStore';
 import wrapper from '../../store/configureStore';
 
 import * as t from '../../reducers/type';
-
 import AppLayout from '../../components/AppLayout';
-import MainRecycle from '../../components/recycle/mainRecycle';
+import PageMainLayout from '../../components/recycle/main/PageMainLayout';
 import IntroSection from '../../components/main/IntroSection';
 import TotalData from '../../components/main/TotalData';
 import RecentlyItem from '../../components/main/RecentlyItem';
@@ -31,24 +30,24 @@ const Overview = () => {
         </NavRow>
         <Intersection></Intersection>
         <IntroRow>
-          <MainRecycle title='인트로' subTitle='여러분의 의류를 저장해보세요'>
+          <PageMainLayout title='인트로' subTitle='여러분의 의류를 저장해보세요'>
             <IntroSection />
-          </MainRecycle>
+          </PageMainLayout>
         </IntroRow>
         <DataRow>
-          <MainRecycle title='총 저장의류' subTitle='분류별 의류 갯수'>
+          <PageMainLayout title='총 저장의류' subTitle='분류별 의류 갯수'>
             <TotalData />
-          </MainRecycle>
+          </PageMainLayout>
         </DataRow>
         <ResRow>
-          <MainRecycle title='최근 등록 의류' subTitle='클릭시 상세페이지 이동합니다.'>
+          <PageMainLayout title='최근 등록 의류' subTitle='클릭시 상세페이지 이동합니다.'>
             <RecentlyItem />
-          </MainRecycle>
+          </PageMainLayout>
         </ResRow>
         <InfoRow>
-          <MainRecycle title='나의 사이즈' subTitle='평균적인 나의 의류 사이즈'>
+          <PageMainLayout title='나의 사이즈' subTitle='평균적인 나의 의류 사이즈'>
             <MyInfo />
-          </MainRecycle>
+          </PageMainLayout>
         </InfoRow>
       </Container>
     </AppLayout>
@@ -117,6 +116,7 @@ export const NavRow = styled.div`
   width: 100%;
   height: auto;
   background-color: ${({ theme }) => theme.colors.white};
+  z-index: 2;
 
   ${media.tablet} {
     display: flex;
