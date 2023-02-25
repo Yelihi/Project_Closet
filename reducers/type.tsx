@@ -6,6 +6,8 @@ export const PHONE_SEARCH_CLICK = 'PHONE_SEARCH_CLICK' as const;
 
 export const RESET_MENU_CLICK = 'RESET_MENU_CLICK' as const;
 
+export const RESET_UPLOAD_PAGE = 'RESET_UPLOAD_PAGE' as const;
+
 // user
 export const LOAD_TO_MY_INFO_REQUEST = 'LOAD_TO_MY_INFO_REQUEST' as const;
 export const LOAD_TO_MY_INFO_SUCCESE = 'LOAD_TO_MY_INFO_SUCCESE' as const;
@@ -35,3 +37,7 @@ export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE' as const;
 export const UPLOAD_ITEMS_REQUEST = 'UPLOAD_ITEMS_REQUEST' as const;
 export const UPLOAD_ITEMS_SUCCESS = 'UPLOAD_ITEMS_SUCCESS' as const;
 export const UPLOAD_ITEMS_FAILURE = 'UPLOAD_ITEMS_FAILURE' as const;
+
+export const LOAD_ITEM_REQUEST = 'LOAD_ITEM_REQUEST' as const;
+export const LOAD_ITEM_SUCCESS = 'LOAD_ITEM_SUCCESS' as const;
+export const LOAD_ITEM_FAILURE = 'LOAD_ITEM_FAILURE' as const;

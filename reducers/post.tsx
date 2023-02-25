@@ -6,14 +6,19 @@ import type { PostInitialState } from './types/post';
 
 export const initialState: PostInitialState = {
   showDrawer: false,
+  loadItemLoding: false,
+  loadItemDone: false,
+  loadItemError: false,
   uploadItemsLoding: false,
   uploadItemsDone: false,
   uploadItemsError: false,
   imageUploadLoding: false,
   imageUploadDone: false,
   imageUploadError: false,
-  user: [],
+  lastAddDataIndex: '',
+  user: null,
   imagePath: [],
+  singleItem: null,
 };
 
 export default (state = initialState, action: AnyAction) => {
@@ -25,6 +30,29 @@ export default (state = initialState, action: AnyAction) => {
       }
       case t.REMOVE_IMAGE: {
         draft.imagePath = draft.imagePath.filter((v, i) => i !== action.data);
+        break;
+      }
+      case t.RESET_UPLOAD_PAGE: {
+        draft.uploadItemsDone = false;
+        break;
+      }
+      case t.LOAD_ITEM_REQUEST: {
+        draft.loadItemLoding = true;
+        draft.loadItemDone = false;
+        draft.loadItemError = false;
+        break;
+      }
+      case t.LOAD_ITEM_SUCCESS: {
+        draft.loadItemLoding = false;
+        draft.loadItemDone = true;
+        draft.loadItemError = false;
+        draft.singleItem = action.data;
+        break;
+      }
+      case t.LOAD_ITEM_FAILURE: {
+        draft.loadItemLoding = false;
+        draft.loadItemDone = false;
+        draft.loadItemError = action.error;
         break;
       }
       case t.UPLOAD_IMAGES_REQUEST: {
@@ -56,7 +84,8 @@ export default (state = initialState, action: AnyAction) => {
         draft.uploadItemsLoding = false;
         draft.uploadItemsDone = true;
         draft.uploadItemsError = false;
-        draft.user.push(action.data);
+        draft.user = action.data;
+        draft.lastAddDataIndex = action.data.id;
         draft.imagePath = [];
         alert('저장되었습니다.');
         break;

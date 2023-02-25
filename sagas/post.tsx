@@ -46,12 +46,39 @@ function* uploadItems(action: AnyAction) {
     const result: AxiosResponse<Success> = yield call(uploadItemsAPI, action.data);
     yield put({
       type: t.UPLOAD_ITEMS_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err: any) {
     console.log(err);
     yield put({
       type: t.UPLOAD_ITEMS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+type LoadItem = {
+  clothId: number;
+  userId: number;
+};
+
+function loadItemAPI(data: LoadItem) {
+  return axios.get(`/post/clothes/${data.clothId}`);
+}
+
+function* loadItem(action: AnyAction) {
+  try {
+    console.log('saga item');
+    console.log(action.data);
+    const result: AxiosResponse<Success> = yield call(loadItemAPI, action.data);
+    yield put({
+      type: t.LOAD_ITEM_SUCCESS,
+      data: result.data,
+    });
+  } catch (err: any) {
+    console.log(err);
+    yield put({
+      type: t.LOAD_ITEM_FAILURE,
       error: err.response.data,
     });
   }
@@ -65,6 +92,10 @@ function* watchItemsUpload() {
   yield takeLatest(t.UPLOAD_ITEMS_REQUEST, uploadItems);
 }
 
+function* watchItemLoad() {
+  yield takeLatest(t.LOAD_ITEM_REQUEST, loadItem);
+}
+
 export default function* postSaga() {
-  yield all([fork(watchImageUpload), fork(watchItemsUpload)]);
+  yield all([fork(watchImageUpload), fork(watchItemsUpload), fork(watchItemLoad)]);
 }

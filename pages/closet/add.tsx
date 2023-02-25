@@ -17,6 +17,7 @@ import PageMainLayout from '../../components/recycle/main/PageMainLayout';
 import AInputElement from '../../components/recycle/element/AInputElement';
 import Measure from '../../components/recycle/add/Measure';
 import InputBackground from '../../components/recycle/add/InputBackgroud';
+import SortingResultComponent from '../../components/recycle/submitSuccess/SortingResultComponent';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
 
@@ -49,7 +50,7 @@ const add = () => {
   const dispatch = useDispatch();
   const [isClothes, setIsClothes] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const { imagePath, uploadItemsDone } = useSelector((state: rootReducerType) => state.post);
+  const { imagePath, uploadItemsDone, lastAddDataIndex } = useSelector((state: rootReducerType) => state.post);
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState<boolean>(false);
   const methods = useForm<AddInitialValue>({
@@ -76,9 +77,17 @@ const add = () => {
     },
   });
 
+  const { handleSubmit, control, watch, register } = methods;
+
   // 짜증난다... 도대체 왜.
   useEffect(() => {
     setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: t.RESET_UPLOAD_PAGE,
+    });
   }, []);
 
   useEffect(() => {
@@ -92,8 +101,6 @@ const add = () => {
       setIsClothes(false);
     }
   }, [imagePath]);
-
-  const { handleSubmit, control, watch, register } = methods;
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -137,7 +144,9 @@ const add = () => {
     }
   };
 
-  const onButtonClick = () => {
+  const onButtonClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (inputRef.current) {
       // inputRef.current 가 null 일 수 있으니, 조건문으로 확인해주기
       inputRef.current.click();
@@ -168,86 +177,91 @@ const add = () => {
 
   return (
     <PageLayout>
-      <PageMainLayout title='Add Clothes' subTitle='Fill out a few details to add your clothes database'>
-        <TestContainer>
-          <AddSection>
-            <FormProvider {...methods}>
-              <AddForm onSubmit={handleSubmit(onSubmit)}>
-                {clothData.map(v => {
-                  return (
-                    <InputBackground key={v.name} title={v.name} subTitle={v.subTitle}>
-                      <AInputElement control={control} name={v.name} errorMessage={v.errorMessage} placeholder={v.placeholder} rules={{ required: true }} />
-                    </InputBackground>
-                  );
-                })}
-                {categori.map(v => {
-                  return (
-                    <InputBackground key={v.name} title={v.name} subTitle={v.subTitle}>
-                      <AInputElement key={v.name} control={control} name={v.name} errorMessage={v.errorMessage} options={v.options} defaultValue={v.defaultValue} rules={{ required: true }} />
-                    </InputBackground>
-                  );
-                })}
-                {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? <Measure control={control} nameArray={topMeasureName} subTitleArray={topMeasureSub} placeholder='cm' /> : null}
-                {['Pant'].includes(watch('categori')) ? <Measure control={control} nameArray={bottomMeasureName} subTitleArray={bottomMeasureSub} placeholder='cm' /> : null}
-                {['Shoes'].includes(watch('categori')) ? <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} placeholder='mm' /> : null}
-                {['Muffler'].includes(watch('categori')) ? <Measure control={control} nameArray={mufflerMeasureName} subTitleArray={mufflerMeasureSub} placeholder='cm' /> : null}
-                {descriptionData.map(v => {
-                  return (
-                    <InputBackground key={v.name} title={v.name} subTitle={v.subTitle} textArea={true}>
-                      <AInputElement key={v.name} control={control} name={v.name} placeholder={v.placeholder} />
-                    </InputBackground>
-                  );
-                })}
-                <ImageUploadContainer onDragEnter={handleDrag}>
-                  <input
-                    {...(register('image'),
-                    {
-                      onChange: handleChange,
-                      ref: inputRef,
-                    })}
-                    // ref={inputRef}
-                    name='image'
-                    type='file'
-                    id='image'
-                    multiple={true}
-                    hidden
-                  />
-                  <LabelFileUpload htmlFor='image' dragActive={dragActive}>
-                    <div>
-                      <p>Drag and Drop your file here or</p>
-                      <UploadButton onClick={onButtonClick}>Upload a file</UploadButton>
-                    </div>
-                  </LabelFileUpload>
-                  {dragActive && <DragFileElement onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></DragFileElement>}
-                </ImageUploadContainer>
-                {imagePath.length > 0 &&
-                  imagePath.map((v, i) => {
-                    let cate = watch('categori');
-                    let confidence = categoriToVisionAI[cate].includes(v.visionSearch[0].name);
+      {!uploadItemsDone && (
+        <PageMainLayout title='Add Clothes' subTitle='Fill out a few details to add your clothes database'>
+          <TestContainer>
+            <AddSection>
+              <FormProvider {...methods}>
+                <AddForm onSubmit={handleSubmit(onSubmit)}>
+                  {clothData.map(v => {
                     return (
-                      <div key={v.filename} style={{ display: 'inline-block' }}>
-                        {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
-                        <PreviewImage src={`${backUrl}/${v.filename}`} alt={v.filename} width={250} height={250} />
-                        <div>
-                          <div>{v.visionSearch.some(v => visionAI.includes(v.name)) ? '다소 적합한 의류 사진입니다.' : '의류 사진을 넣어주세요'}</div>
-                          <div>{v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate].includes(item)) ? '분류에 맞는 사진입니다' : '분류에 적합하진 않지만 저장하실수 있습니다.'}</div>
-                          <div>{confidence ? '적합한 사진입니다' : '사진 전체를 저장하시려는 의류로 지정해주세요'}</div>
-                        </div>
-
-                        <div>
-                          <button onClick={onRemoveImage(i)}>제거</button>
-                        </div>
-                      </div>
+                      <InputBackground key={v.name} title={v.name} subTitle={v.subTitle}>
+                        <AInputElement control={control} name={v.name} errorMessage={v.errorMessage} placeholder={v.placeholder} rules={{ required: true }} />
+                      </InputBackground>
                     );
                   })}
-                <button type='submit' disabled={!isClothes}>
-                  전송
-                </button>
-              </AddForm>
-            </FormProvider>
-          </AddSection>
-        </TestContainer>
-      </PageMainLayout>
+                  {categori.map(v => {
+                    return (
+                      <InputBackground key={v.name} title={v.name} subTitle={v.subTitle}>
+                        <AInputElement control={control} name={v.name} errorMessage={v.errorMessage} options={v.options} defaultValue={v.defaultValue} rules={{ required: true }} />
+                      </InputBackground>
+                    );
+                  })}
+                  {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? <Measure control={control} nameArray={topMeasureName} subTitleArray={topMeasureSub} placeholder='cm' /> : null}
+                  {['Pant'].includes(watch('categori')) ? <Measure control={control} nameArray={bottomMeasureName} subTitleArray={bottomMeasureSub} placeholder='cm' /> : null}
+                  {['Shoes'].includes(watch('categori')) ? <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} placeholder='mm' /> : null}
+                  {['Muffler'].includes(watch('categori')) ? <Measure control={control} nameArray={mufflerMeasureName} subTitleArray={mufflerMeasureSub} placeholder='cm' /> : null}
+                  {descriptionData.map(v => {
+                    return (
+                      <InputBackground key={v.name} title={v.name} subTitle={v.subTitle} textArea={true}>
+                        <AInputElement control={control} name={v.name} placeholder={v.placeholder} />
+                      </InputBackground>
+                    );
+                  })}
+                  <ImageUploadContainer onDragEnter={handleDrag}>
+                    <input
+                      {...(register('image'),
+                      {
+                        onChange: handleChange,
+                        ref: inputRef,
+                      })}
+                      // ref={inputRef}
+                      name='image'
+                      type='file'
+                      id='image'
+                      multiple={true}
+                      hidden
+                    />
+                    <LabelFileUpload htmlFor='image' dragActive={dragActive}>
+                      <div>
+                        <p>Drag and Drop your file here or</p>
+                        <UploadButton onClick={onButtonClick}>Upload a file</UploadButton>
+                      </div>
+                    </LabelFileUpload>
+                    {dragActive && <DragFileElement onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></DragFileElement>}
+                  </ImageUploadContainer>
+                  {imagePath.length > 0 &&
+                    imagePath.map((v, i) => {
+                      let cate = watch('categori');
+                      let confidence = categoriToVisionAI[cate].includes(v.visionSearch[0].name);
+                      return (
+                        <div key={v.filename} style={{ display: 'inline-block' }}>
+                          {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
+                          <PreviewImage src={`${backUrl}/${v.filename}`} alt={v.filename} width={250} height={250} />
+                          <div>
+                            <div>{v.visionSearch.some(v => visionAI.includes(v.name)) ? '다소 적합한 의류 사진입니다.' : '의류 사진을 넣어주세요'}</div>
+                            <div>
+                              {v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate].includes(item)) ? '분류에 맞는 사진입니다' : '분류에 적합하진 않지만 저장하실수 있습니다.'}
+                            </div>
+                            <div>{confidence ? '적합한 사진입니다' : '사진 전체를 저장하시려는 의류로 지정해주세요'}</div>
+                          </div>
+
+                          <div>
+                            <button onClick={onRemoveImage(i)}>제거</button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  <button type='submit' disabled={!isClothes}>
+                    전송
+                  </button>
+                </AddForm>
+              </FormProvider>
+            </AddSection>
+          </TestContainer>
+        </PageMainLayout>
+      )}
+      {uploadItemsDone && <SortingResultComponent sort='add' id={lastAddDataIndex} />}
     </PageLayout>
   );
 };
@@ -306,7 +320,7 @@ const LabelFileUpload = styled.label<{ dragActive: boolean }>`
     `}
 `;
 
-const UploadButton = styled.button`
+const UploadButton = styled.div`
   cursor: pointer;
   height: 25px;
   padding: 0.25rem;
