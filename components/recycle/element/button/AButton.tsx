@@ -1,20 +1,19 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import Image from 'next/image';
-import type { ButtonProp } from './type';
+import type { ButtonProp } from '../type';
+import { PolymorphicComponentProps } from '../type';
 
-const AButton = ({ color, disabled, src, dest, onClick }: ButtonProp) => {
-  return (
-    <ButtonContainer color={color} disabled={disabled} onClick={onClick}>
-      {src && <Image src={src} alt={dest} />}
-      {dest}
-    </ButtonContainer>
-  );
+import BaseButton from './BaseButton';
+
+type AButtonProps<T extends React.ElementType> = PolymorphicComponentProps<T, ButtonProp>;
+
+const AButton = <T extends React.ElementType = 'button'>({ As, color, disabled, onClick, ...props }: AButtonProps<T>) => {
+  return <ButtonContainer As={As} color={color} disabled={disabled} onClick={onClick} {...props} />;
 };
 
 export default AButton;
 
-const ButtonContainer = styled.button<{ color: string; disabled: boolean }>`
+const ButtonContainer = styled(BaseButton)<{ color: string; disabled: boolean }>`
   position: relative;
   display: flex;
   justify-content: center;
@@ -29,6 +28,7 @@ const ButtonContainer = styled.button<{ color: string; disabled: boolean }>`
   opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   transition: box-shadow 0.5s ease-out;
+  font-family: ${({ theme }) => theme.font.Efont};
 
   &:hover {
     ${props =>

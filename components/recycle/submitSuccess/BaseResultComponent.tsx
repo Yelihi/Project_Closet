@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button, Result } from 'antd';
 import { ResultStatusType } from 'antd/es/result';
 
-import AButton from '../element/AButton';
+import AButton from '../element/button/AButton';
 
 type Props = {
   title: string;

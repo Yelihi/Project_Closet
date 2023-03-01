@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import 'antd/dist/reset.css';
 import { Divider } from 'antd';
 
-import GoogleButton from './GoogleButton';
-import AButton from '../recycle/element/AButton';
+import BaseButton from '../recycle/element/button/BaseButton';
+import google from '../../public/images/google.webp';
+import AButton from '../recycle/element/button/AButton';
 
 import useInput from '../../hooks/useInput';
 
@@ -17,6 +18,8 @@ import type { SIprops } from './Signup';
 const Login = (props: SIprops) => {
   const dispatch = useDispatch();
   const { toggleGotoAccount } = props;
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const LinkRef = useRef<HTMLAnchorElement>(null);
   const [email, setEmail, onChangeEmail] = useInput('');
   const [password, setPassword, onChangePassword] = useInput('');
 
@@ -45,10 +48,10 @@ const Login = (props: SIprops) => {
             <div>{email && !isEmailValid && `이메일이 올바르지 않습니다`}</div>
             <input type='password' value={password} onChange={onChangePassword} placeholder='Password' />
             <div>{password && !isPasswordValid && `비밀번호가 올바르지 않습니다`}</div>
-            <AButton color='black' onClick={onSubmit} disabled={!(isEmailValid && isPasswordValid)} dest='Sign in' />
-            <AButton color='' onClick={toggleGotoAccount} disabled={false} dest='Create account' />
+            <AButton color='black' ref={buttonRef} onClick={onSubmit} disabled={!(isEmailValid && isPasswordValid)} dest='Sign in' />
+            <AButton ref={buttonRef} color='' onClick={toggleGotoAccount} disabled={false} dest='Create account' />
             <LDivider plain>OR</LDivider>
-            <GoogleButton />
+            <AButton As='a' ref={LinkRef} color='' disabled={false} dest='Sign in Google' src={google} href='http://localhost:3065/auth/google' />
           </LoginForm>
         </LoginSection>
       </LoginBox>

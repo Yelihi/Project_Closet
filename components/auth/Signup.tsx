@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useReducer, useEffect } from 'react';
+import React, { useState, useCallback, useReducer, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { signinRequestAction } from '../../reducers/user';
 
+import AButton from '../recycle/element/button/AButton';
 import useInput from '../../hooks/useInput';
 import { useSelector } from 'react-redux';
 
@@ -15,6 +16,7 @@ export interface SIprops {
 
 const Signup = (props: SIprops) => {
   const dispatch = useDispatch();
+  const divref = useRef<HTMLButtonElement>(null);
   const { signInDone } = useSelector((state: RootState) => state.user);
   const { toggleGotoAccount } = props;
   const [isCollect, setIsCollect] = useState<boolean>(false);
@@ -79,12 +81,8 @@ const Signup = (props: SIprops) => {
           <div>{password && !isPasswordValid && `비밀번호가 올바르지 않습니다`}</div>
           <input type='password' value={passwordCheck} onChange={onChangePasswordCheck} placeholder='Password Check' />
           <div>{passwordCheck && !isCollect && `비밀번호가 일치하지 않습니다`}</div>
-          <Button color='black' disabled={!(isEmailValid && isPasswordValid && isCollect)} onClick={onSubmit}>
-            Create account
-          </Button>
-          <Button color='' disabled={false} onClick={toggleGotoAccount}>
-            back
-          </Button>
+          <AButton ref={divref} color='black' disabled={!(isEmailValid && isPasswordValid && isCollect)} onClick={onSubmit} dest='Create account' />
+          <AButton ref={divref} color='' disabled={false} onClick={toggleGotoAccount} dest='back' />
           <div></div>
           <div></div>
         </SignupForm>
