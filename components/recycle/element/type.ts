@@ -1,3 +1,4 @@
+import { StaticImageData } from 'next/image';
 import { Control, FieldPath, FieldValues, RegisterOptions, ControllerRenderProps } from 'react-hook-form';
 
 export interface TControl<T extends FieldValues> {
@@ -12,4 +13,16 @@ export interface TControlArray<T extends FieldValues> {
   control: Control<T>;
   rules?: RegisterOptions<T>;
   subTitleArray?: string[];
+}
+
+/**
+ * button type
+ */
+
+export interface ButtonProp {
+  color: string;
+  disabled: boolean;
+  src?: StaticImageData;
+  dest: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }

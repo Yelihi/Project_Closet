@@ -6,6 +6,7 @@ import 'antd/dist/reset.css';
 import { Divider } from 'antd';
 
 import GoogleButton from './GoogleButton';
+import AButton from '../recycle/element/AButton';
 
 import useInput from '../../hooks/useInput';
 
@@ -44,12 +45,8 @@ const Login = (props: SIprops) => {
             <div>{email && !isEmailValid && `이메일이 올바르지 않습니다`}</div>
             <input type='password' value={password} onChange={onChangePassword} placeholder='Password' />
             <div>{password && !isPasswordValid && `비밀번호가 올바르지 않습니다`}</div>
-            <Button color='black' onClick={onSubmit} disabled={!(isEmailValid && isPasswordValid)}>
-              Sign in
-            </Button>
-            <Button color='' onClick={toggleGotoAccount} disabled={false}>
-              Create account
-            </Button>
+            <AButton color='black' onClick={onSubmit} disabled={!(isEmailValid && isPasswordValid)} dest='Sign in' />
+            <AButton color='' onClick={toggleGotoAccount} disabled={false} dest='Create account' />
             <LDivider plain>OR</LDivider>
             <GoogleButton />
           </LoginForm>
