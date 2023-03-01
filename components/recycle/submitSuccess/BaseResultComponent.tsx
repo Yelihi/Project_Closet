@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Button, Result } from 'antd';
 import { ResultStatusType } from 'antd/es/result';
 
+import AButton from '../element/AButton';
+
 type Props = {
   title: string;
   subTitle: string;
@@ -16,17 +18,13 @@ type Props = {
 const BaseResultComponent = ({ title, subTitle, status, onClickPrimary, onClick, buttonNamePrimary, buttonName }: Props) => {
   return (
     <Container>
-      <Result
+      <CustomResult
         status={status}
         title={title}
         subTitle={subTitle}
         extra={[
-          <Button type='primary' key={buttonNamePrimary} onClick={onClickPrimary}>
-            {buttonNamePrimary}
-          </Button>,
-          <Button key={buttonName} onClick={onClick}>
-            {buttonName}
-          </Button>,
+          <AButton color='black' key={buttonNamePrimary} onClick={onClickPrimary} dest={buttonNamePrimary} disabled={false} />,
+          <AButton color='' key={buttonName} onClick={onClick} dest={buttonName} disabled={false} />,
         ]}
       />
     </Container>
@@ -41,4 +39,10 @@ const Container = styled.section`
   align-items: center;
   width: 100%;
   height: 700px;
+`;
+
+const CustomResult = styled(Result)`
+  .ant-result-extra {
+    display: flex;
+  }
 `;
