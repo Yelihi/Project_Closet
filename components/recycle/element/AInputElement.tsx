@@ -32,7 +32,7 @@ function AInputElement<T extends FieldValues>(props: TPorps<T>) {
   } = useController({ name, rules, control });
   return (
     <>
-      {name == 'productName' ? <Input value={value} id={name} onChange={onChange} {...props} style={{ height: '30px', width: '100%' }} /> : null}
+      {name == 'productName' ? <Input value={value} id={name} onChange={onChange} {...props} style={{ height: '30px', width: '100%' }} autoComplete='off' allowClear /> : null}
       {name == 'color' ? <CirclePicker color={value} colors={colors} onChange={(color, event) => onChange(color.hex)} {...props} circleSize={25} width='100%' /> : null}
       {name == 'price' ? <InputNumber value={value} id={name} min={1} onChange={onChange} style={{ height: '30px', width: '100%' }} placeholder={placeholder} /> : null}
       {name == 'purchaseDay' ? <DatePicker onChange={(value, dateString) => onChange(dateString)} picker='month' style={{ width: '100%', height: '30px' }} /> : null}

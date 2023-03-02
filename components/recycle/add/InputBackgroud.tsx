@@ -63,7 +63,7 @@ const Title = styled.span`
   display: flex;
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
-  font-size: 13px;
+  font-size: 14px;
   margin-bottom: 6px;
 `;
 
