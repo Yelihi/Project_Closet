@@ -81,7 +81,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   };
 });
 
-export default Overview;
+export default React.memo(Overview);
 
 const Container = styled.div`
   display: flex;

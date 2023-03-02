@@ -55,7 +55,7 @@ const SpecificationTitle = styled.h4`
 const SpecificationSub = styled.span`
   display: flex;
   height: auto;
-  max-width: 400px;
+  max-width: 650px;
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
   font-size: 12px;

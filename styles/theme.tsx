@@ -26,6 +26,8 @@ const colors = {
   symbol: '#205281',
   brown: '#363740',
   red: '#EE4B2B',
+  success: '#68C260',
+  warnning: '#F4A100',
 };
 
 export type FontTypes = typeof font;

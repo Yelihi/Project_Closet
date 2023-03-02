@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, MutableRefObject, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { useDispatch } from 'react-redux';
 import * as t from '../../reducers/type';
@@ -20,10 +20,11 @@ import InputBackground from '../../components/recycle/add/InputBackgroud';
 import SortingResultComponent from '../../components/recycle/submitSuccess/SortingResultComponent';
 import AButton from '../../components/recycle/element/button/AButton';
 import InputPartial from '../../components/recycle/add/InputPartial';
+import DropImageInput from '../../components/recycle/element/DropImageInput';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
 
-import { FileImageOutlined } from '@ant-design/icons';
+import { WarningTwoTone, CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 
 import type { ImagePathObject } from '../../reducers/types/post';
 
@@ -50,6 +51,27 @@ export interface AddInitialValue extends FieldValues {
   categoriItem: Measures;
 }
 
+const defaultValues = {
+  productName: '',
+  description: '',
+  image: [],
+  price: 0,
+  color: '',
+  categori: '',
+  purchaseDay: '',
+  categoriItem: {
+    shoulder: 0,
+    arm: 0,
+    totalLength: 0,
+    chest: 0,
+    rise: 0,
+    hem: 0,
+    waist: 0,
+    thigh: 0,
+    size: 0,
+  },
+};
+
 const add = () => {
   const dispatch = useDispatch();
   const [isClothes, setIsClothes] = useState(false);
@@ -59,29 +81,10 @@ const add = () => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const methods = useForm<AddInitialValue>({
     mode: 'onSubmit',
-    defaultValues: {
-      productName: '',
-      description: '',
-      image: [],
-      price: 0,
-      color: '',
-      categori: '',
-      purchaseDay: '',
-      categoriItem: {
-        shoulder: 0,
-        arm: 0,
-        totalLength: 0,
-        chest: 0,
-        rise: 0,
-        hem: 0,
-        waist: 0,
-        thigh: 0,
-        size: 0,
-      },
-    },
+    defaultValues: defaultValues,
   });
 
-  const { handleSubmit, control, watch, register } = methods;
+  const { handleSubmit, control, watch, reset } = methods;
 
   // 짜증난다... 도대체 왜.
   useEffect(() => {
@@ -95,6 +98,10 @@ const add = () => {
   }, []);
 
   useEffect(() => {
+    reset({ defaultValues });
+  }, [uploadItemsDone]);
+
+  useEffect(() => {
     if (imagePath.length === 0) {
       return;
     }
@@ -105,57 +112,6 @@ const add = () => {
       setIsClothes(false);
     }
   }, [imagePath]);
-
-  const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true);
-    } else if (e.type === 'dragleave') {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      console.log('image', e.dataTransfer.files);
-      const imageFormData = new FormData(); // 멀티파트 형식으로 데이터 보내기
-      [].forEach.call(e.dataTransfer.files, file => {
-        imageFormData.append('image', file);
-      });
-      dispatch({
-        type: t.UPLOAD_IMAGES_REQUEST,
-        data: imageFormData,
-      });
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      console.log('image', e.target.files);
-      const imageFormData = new FormData(); // 멀티파트 형식으로 데이터 보내기
-      [].forEach.call(e.target.files, file => {
-        imageFormData.append('image', file);
-      });
-      dispatch({
-        type: t.UPLOAD_IMAGES_REQUEST,
-        data: imageFormData,
-      });
-    }
-  };
-
-  const onButtonClick = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (inputRef.current) {
-      // inputRef.current 가 null 일 수 있으니, 조건문으로 확인해주기
-      inputRef.current.click();
-    }
-  };
 
   const onRemoveImage = useCallback(
     (index: number) => () => {
@@ -218,56 +174,90 @@ const add = () => {
                       );
                     })}
                   </InputPartial>
-                  <ImageUploadContainer onDragEnter={handleDrag}>
-                    <input
-                      {...(register('image'),
-                      {
-                        onChange: handleChange,
-                        ref: inputRef,
-                      })}
-                      // ref={inputRef}
-                      name='image'
-                      type='file'
-                      id='image'
-                      multiple={true}
-                      hidden
-                    />
-                    <LabelFileUpload htmlFor='image' dragActive={dragActive}>
-                      <div>
-                        <div>
-                          <FileImageOutlined style={{ fontSize: '30px' }} />
-                        </div>
-                        <p>Drag and Drop your file here or</p>
-                        <AButton As='div' color='black' disabled={false} dest='Upload files' onClick={onButtonClick} />
-                      </div>
-                    </LabelFileUpload>
-                    {dragActive && <DragFileElement onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></DragFileElement>}
-                  </ImageUploadContainer>
-                  {imagePath.length > 0 &&
-                    imagePath.map((v, i) => {
-                      let cate = watch('categori');
-                      let confidence = categoriToVisionAI[cate].includes(v.visionSearch[0].name);
-                      return (
-                        <div key={v.filename} style={{ display: 'inline-block' }}>
-                          {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
-                          <PreviewImage src={`${backUrl}/${v.filename}`} alt={v.filename} width={250} height={250} />
-                          <div>
-                            <div>{v.visionSearch.some(v => visionAI.includes(v.name)) ? '다소 적합한 의류 사진입니다.' : '의류 사진을 넣어주세요'}</div>
-                            <div>
-                              {v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate].includes(item)) ? '분류에 맞는 사진입니다' : '분류에 적합하진 않지만 저장하실수 있습니다.'}
-                            </div>
-                            <div>{confidence ? '적합한 사진입니다' : '사진 전체를 저장하시려는 의류로 지정해주세요'}</div>
-                          </div>
+                  <InputPartial
+                    title='IMAGE UPLOAD'
+                    subtitle='이미지를 하나씩 업로드 할 수 있습니다. 필수 기입사항입니다. 이미지를 업로드 할 시 vision AI 를 통해 이미지의 적합성을 판단하게 됩니다. 허나 이는 참고용으로서 부정확할 수 있으니 주의바랍니다.'
+                  >
+                    <DropImageInput />
+                  </InputPartial>
+                  <PreviewSection>
+                    {imagePath.length > 0 &&
+                      imagePath.map((v, i) => {
+                        let cate = watch('categori');
+                        let isClothes = v.visionSearch.some(v => visionAI.includes(v.name));
+                        let isCategori = v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate]?.includes(item));
+                        let confidence = categoriToVisionAI[cate]?.includes(v.visionSearch[0].name);
+                        return (
+                          <PreviewContainer key={v.filename} border={isClothes}>
+                            {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
+                            <PreviewImage src={`${backUrl}/${v.filename}`} alt={v.filename} width={250} height={250} />
+                            <PreviewTextContainer>
+                              <PreviewText>
+                                {isClothes ? (
+                                  <TextBox>
+                                    <span>의류 사진여부 판단</span>
+                                    <Text>
+                                      <CheckCircleTwoTone twoToneColor='#52c41a' />
+                                      적절한 사진입니다.
+                                    </Text>
+                                  </TextBox>
+                                ) : (
+                                  <TextBox>
+                                    <span>의류 사진여부 판단</span>
+                                    <Text>
+                                      <CloseCircleTwoTone twoToneColor='#E7373C' />
+                                      의류 사진을 넣어주세요
+                                    </Text>
+                                  </TextBox>
+                                )}
+                                {isCategori ? (
+                                  <TextBox>
+                                    <span>카테고리 적합성</span>
+                                    <Text>
+                                      <CheckCircleTwoTone twoToneColor='#52c41a' />
+                                      카테고리에 적합한 의류입니다
+                                    </Text>
+                                  </TextBox>
+                                ) : (
+                                  <TextBox>
+                                    <span>카테고리 적합성</span>
+                                    <Text>
+                                      <WarningTwoTone twoToneColor='#F4A100' />
+                                      저장하실 순 있지만 적합의류는 아닙니다.
+                                    </Text>
+                                  </TextBox>
+                                )}
+                                {confidence ? (
+                                  <TextBox>
+                                    <span>사진 내 카테고리 이미지 차지 비율</span>
+                                    <Text>
+                                      <CheckCircleTwoTone twoToneColor='#52c41a' />
+                                      의류 비중이 적합합니다.
+                                    </Text>
+                                  </TextBox>
+                                ) : (
+                                  <TextBox>
+                                    <span>사진 내 카테고리 이미지 차지 비율</span>
+                                    <Text>
+                                      <WarningTwoTone twoToneColor='#F4A100' />좀 더 적합의류의 비중이 높은 사진을 올려주세요
+                                    </Text>
+                                  </TextBox>
+                                )}
+                              </PreviewText>
 
-                          <div>
-                            <button onClick={onRemoveImage(i)}>제거</button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  <button type='submit' disabled={!isClothes}>
-                    전송
-                  </button>
+                              <ButtonBox>
+                                <AButton color='' disabled={false} dest='제거' onClick={onRemoveImage(i)} />
+                              </ButtonBox>
+                            </PreviewTextContainer>
+                          </PreviewContainer>
+                        );
+                      })}
+                  </PreviewSection>
+                  <Float>
+                    <SubmitButton>
+                      <AButton type='submit' color='black' dest='저장하기' disabled={!isClothes} />
+                    </SubmitButton>
+                  </Float>
                 </AddForm>
               </FormProvider>
             </AddSection>
@@ -279,7 +269,7 @@ const add = () => {
   );
 };
 
-export default add;
+export default React.memo(add);
 
 const TestContainer = styled.div`
   display: flex;
@@ -310,56 +300,84 @@ const AddForm = styled.form`
   padding: 10px 0;
 `;
 
-const ImageUploadContainer = styled.div`
-  height: 16rem;
-  max-width: 100%;
-  text-align: center;
-  position: relative;
-`;
-
-const LabelFileUpload = styled.label<{ dragActive: boolean }>`
-  height: 100%;
+const PreviewSection = styled.section`
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
-  border: 1px solid ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.mainGrey};
-  transition: border 0.25s ease-in-out;
-
-  ${props =>
-    props.dragActive &&
-    css`
-      background-color: white;
-      border: 1px solid ${({ theme }) => theme.colors.middleGrey};
-    `}
+  gap: 5px;
+  flex-wrap: wrap;
 `;
 
-const UploadButton = styled.div`
-  cursor: pointer;
-  height: 25px;
-  padding: 0.25rem;
-  font-size: 13px;
-  border: none;
-  opacity: 1;
-  background-color: ${({ theme }) => theme.colors.brown};
+const PreviewContainer = styled.div<{ border: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 530px;
+  height: auto;
+  padding: 10px;
+  border: 1px solid ${({ theme, border }) => (border ? theme.colors.success : theme.colors.red)};
   border-radius: 5px;
-  transition: all 0.25 ease-out;
+  gap: 30px;
+  transition: box-shadow 0.25s ease-out;
 
-  :hover {
-    opacity: 0.6;
+  &:hover {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   }
 `;
 
-const DragFileElement = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 1rem;
-  top: 0px;
-  left: 0px;
+const PreviewImage = styled(Image)`
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
 `;
 
-const PreviewImage = styled(Image)`
+const PreviewTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: c;
+  height: 100%;
+`;
+
+const PreviewText = styled.div`
+  margin-top: 10px;
+`;
+
+const TextBox = styled.div`
+  display: inline-block;
+  margin-bottom: 5px;
+
+  > span {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: ${({ theme }) => theme.fontWeight.Light};
+    font-family: ${({ theme }) => theme.font.Efont};
+    color: ${({ theme }) => theme.colors.deepGrey};
+    margin-bottom: 5px;
+  }
+`;
+
+const Text = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: ${({ theme }) => theme.fontWeight.Medium};
+  font-family: ${({ theme }) => theme.font.Efont};
+`;
+
+const ButtonBox = styled.div`
+  margin-top: 20px;
+`;
+
+const Float = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const SubmitButton = styled.div`
   width: 200px;
-  height: auto;
 `;
