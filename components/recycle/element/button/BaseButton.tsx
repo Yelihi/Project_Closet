@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { PolymorphicComponentProps, PolymorphicRef, ButtonProp } from '../type';
 import Image from 'next/image';
 

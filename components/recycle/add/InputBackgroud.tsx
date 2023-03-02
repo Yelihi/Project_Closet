@@ -32,11 +32,14 @@ const Container = styled.div<{ textArea: boolean | undefined }>`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 10px;
+  padding-bottom: 2px;
   width: 100%;
   height: auto;
   background-color: ${({ theme }) => theme.colors.mainGrey};
-  border: 1px solid ${({ theme }) => theme.colors.hoverGrey};
+  border: 0.2px solid ${({ theme }) => theme.colors.hoverGrey};
 
   > div {
   }
@@ -44,7 +47,7 @@ const Container = styled.div<{ textArea: boolean | undefined }>`
   ${media.tablet} {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 
     ${props =>
       props.textArea &&
@@ -57,28 +60,34 @@ const Container = styled.div<{ textArea: boolean | undefined }>`
 `;
 
 const Title = styled.span`
+  display: flex;
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Regular};
-  font-size: 15px;
-  margin-bottom: 5px;
+  font-size: 13px;
+  margin-bottom: 6px;
 `;
 
 const SubTitme = styled.p`
   display: flex;
-  height: 50px;
+  height: auto;
   max-width: 450px;
   font-family: ${({ theme }) => theme.font.Kfont};
   font-weight: ${({ theme }) => theme.fontWeight.Light};
   font-size: 12px;
   color: ${({ theme }) => theme.colors.middleGrey};
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  white-space: pre-wrap;
 `;
 
 const InputContainer = styled.div<{ textArea: boolean | undefined }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
 
   ${media.tablet} {
     width: 200px;
+    margin-top: 10px;
 
     ${props =>
       props.textArea &&

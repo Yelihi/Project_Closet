@@ -18,8 +18,12 @@ import AInputElement from '../../components/recycle/element/AInputElement';
 import Measure from '../../components/recycle/add/Measure';
 import InputBackground from '../../components/recycle/add/InputBackgroud';
 import SortingResultComponent from '../../components/recycle/submitSuccess/SortingResultComponent';
+import AButton from '../../components/recycle/element/button/AButton';
+import InputPartial from '../../components/recycle/add/InputPartial';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
+
+import { FileImageOutlined } from '@ant-design/icons';
 
 import type { ImagePathObject } from '../../reducers/types/post';
 
@@ -178,36 +182,42 @@ const add = () => {
   return (
     <PageLayout>
       {!uploadItemsDone && (
-        <PageMainLayout title='Add Clothes' subTitle='Fill out a few details to add your clothes database'>
+        <PageMainLayout title='ADD CLOTHES' subTitle='현 가정 옷장에 보관되어있는 의류의 이름과 색상, 종류 등 각각의 특성들을 기입하여 저장할 수 있습니다. '>
           <TestContainer>
             <AddSection>
               <FormProvider {...methods}>
                 <AddForm onSubmit={handleSubmit(onSubmit)}>
-                  {clothData.map(v => {
-                    return (
-                      <InputBackground key={v.name} title={v.name} subTitle={v.subTitle}>
-                        <AInputElement control={control} name={v.name} errorMessage={v.errorMessage} placeholder={v.placeholder} rules={{ required: true }} />
-                      </InputBackground>
-                    );
-                  })}
-                  {categori.map(v => {
-                    return (
-                      <InputBackground key={v.name} title={v.name} subTitle={v.subTitle}>
-                        <AInputElement control={control} name={v.name} errorMessage={v.errorMessage} options={v.options} defaultValue={v.defaultValue} rules={{ required: true }} />
-                      </InputBackground>
-                    );
-                  })}
-                  {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? <Measure control={control} nameArray={topMeasureName} subTitleArray={topMeasureSub} placeholder='cm' /> : null}
-                  {['Pant'].includes(watch('categori')) ? <Measure control={control} nameArray={bottomMeasureName} subTitleArray={bottomMeasureSub} placeholder='cm' /> : null}
-                  {['Shoes'].includes(watch('categori')) ? <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} placeholder='mm' /> : null}
-                  {['Muffler'].includes(watch('categori')) ? <Measure control={control} nameArray={mufflerMeasureName} subTitleArray={mufflerMeasureSub} placeholder='cm' /> : null}
-                  {descriptionData.map(v => {
-                    return (
-                      <InputBackground key={v.name} title={v.name} subTitle={v.subTitle} textArea={true}>
-                        <AInputElement control={control} name={v.name} placeholder={v.placeholder} />
-                      </InputBackground>
-                    );
-                  })}
+                  <InputPartial title='SPECIFICATION' subtitle='의류 명칭, 가격 등 특성 정보를 저장해주세요. 필수 기입입니다.'>
+                    {clothData.map(v => {
+                      return (
+                        <InputBackground key={v.name} title={v.name} subTitle={v.subTitle}>
+                          <AInputElement control={control} name={v.name} errorMessage={v.errorMessage} placeholder={v.placeholder} rules={{ required: true }} />
+                        </InputBackground>
+                      );
+                    })}
+                  </InputPartial>
+                  <InputPartial title='SORT CLOTHES' subtitle='카테고리를 선택해주시고, 각 카테고리에 맞는 측정치수를 cm 단위로 기입해주세요. 카테고리를 기입하셔야 이미지체크가 가능합니다'>
+                    {categori.map(v => {
+                      return (
+                        <InputBackground key={v.name} title={v.name} subTitle={v.subTitle}>
+                          <AInputElement control={control} name={v.name} errorMessage={v.errorMessage} options={v.options} defaultValue={v.defaultValue} rules={{ required: true }} />
+                        </InputBackground>
+                      );
+                    })}
+                    {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? <Measure control={control} nameArray={topMeasureName} subTitleArray={topMeasureSub} placeholder='cm' /> : null}
+                    {['Pant'].includes(watch('categori')) ? <Measure control={control} nameArray={bottomMeasureName} subTitleArray={bottomMeasureSub} placeholder='cm' /> : null}
+                    {['Shoes'].includes(watch('categori')) ? <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} placeholder='mm' /> : null}
+                    {['Muffler'].includes(watch('categori')) ? <Measure control={control} nameArray={mufflerMeasureName} subTitleArray={mufflerMeasureSub} placeholder='cm' /> : null}
+                  </InputPartial>
+                  <InputPartial title='ABOUT ITEM' subtitle='의류에 대한 설명을 기입하실 수 있습니다. 구입처나 소재, 보관방법 등 구체적인 사안을 저장하실 수 있습니다.'>
+                    {descriptionData.map(v => {
+                      return (
+                        <InputBackground key={v.name} title={v.name} subTitle={v.subTitle} textArea={true}>
+                          <AInputElement control={control} name={v.name} placeholder={v.placeholder} />
+                        </InputBackground>
+                      );
+                    })}
+                  </InputPartial>
                   <ImageUploadContainer onDragEnter={handleDrag}>
                     <input
                       {...(register('image'),
@@ -224,8 +234,11 @@ const add = () => {
                     />
                     <LabelFileUpload htmlFor='image' dragActive={dragActive}>
                       <div>
+                        <div>
+                          <FileImageOutlined style={{ fontSize: '30px' }} />
+                        </div>
                         <p>Drag and Drop your file here or</p>
-                        <UploadButton onClick={onButtonClick}>Upload a file</UploadButton>
+                        <AButton As='div' color='black' disabled={false} dest='Upload files' onClick={onButtonClick} />
                       </div>
                     </LabelFileUpload>
                     {dragActive && <DragFileElement onDragEnter={handleDrag} onDragLeave={handleDrag} onDragOver={handleDrag} onDrop={handleDrop}></DragFileElement>}
@@ -309,14 +322,15 @@ const LabelFileUpload = styled.label<{ dragActive: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px dashed ${({ theme }) => theme.colors.brown};
-  border-radius: 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.mainGrey};
+  transition: border 0.25s ease-in-out;
 
   ${props =>
     props.dragActive &&
     css`
       background-color: white;
+      border: 1px solid ${({ theme }) => theme.colors.middleGrey};
     `}
 `;
 

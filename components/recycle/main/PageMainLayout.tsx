@@ -17,7 +17,7 @@ const PageMainLayout = ({ children, title, subTitle }: myComponent) => {
         <span>{subTitle}</span>
       </ComponentHead>
       <Intersection />
-      <div>{children}</div>
+      <ChildrenContainer>{children}</ChildrenContainer>
     </MainContainer>
   );
 };
@@ -32,15 +32,17 @@ const MainContainer = styled.div`
   width: 100%;
   height: auto;
   padding: 17px 24px;
+  margin-bottom: 10px;
   border-radius: 10px;
   color: ${({ theme }) => theme.colors.black};
   background-color: ${({ theme }) => theme.colors.white};
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+`;
 
-  > div {
-    width: 100%;
-    height: auto;
-  }
+const ChildrenContainer = styled.div`
+  width: 100%;
+  height: auto;
+  margin-top: 30px;
 `;
 
 const ComponentHead = styled.div`
@@ -50,19 +52,20 @@ const ComponentHead = styled.div`
   justify-content: center;
 
   > h1 {
-    font-size: 17px;
-    line-height: 24px;
-    font-family: ${({ theme }) => theme.font.Kfont};
+    font-size: 25px;
+    line-height: 25px;
+    font-family: ${({ theme }) => theme.font.Logo};
     font-weight: ${({ theme }) => theme.fontWeight.Medium};
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   > span {
     display: block;
-    font-size: 12px;
+    font-size: 15px;
     line-height: 18px;
-    font-family: ${({ theme }) => theme.font.Kfont};
+    font-family: ${({ theme }) => theme.font.Logo};
     font-weight: ${({ theme }) => theme.fontWeight.Light};
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    white-space: pre-wrap;
   }
 `;

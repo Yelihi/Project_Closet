@@ -164,15 +164,3 @@ const SignupForm = styled.form`
     color: red;
   }
 `;
-
-const Button = styled.button<{ color: string; disabled: boolean }>`
-  width: 100%;
-  height: 40px;
-  margin-bottom: 13px;
-  border-radius: 20px;
-  background-color: ${({ theme, color }) => (color ? color : theme.colors.white)};
-  color: ${({ theme, color }) => (color ? theme.colors.white : theme.colors.black)};
-  border: ${({ theme, color }) => (!color ? `1px solid ${theme.colors.black}` : 'none')};
-  opacity: ${({ disabled }) => (disabled ? '0.4' : '1')};
-  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-`;

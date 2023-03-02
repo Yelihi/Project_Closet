@@ -32,67 +32,23 @@ function AInputElement<T extends FieldValues>(props: TPorps<T>) {
   } = useController({ name, rules, control });
   return (
     <>
-      {name == 'productName' ? <Input value={value} id={name} onChange={onChange} {...props} style={{ height: '30px' }} /> : null}
+      {name == 'productName' ? <Input value={value} id={name} onChange={onChange} {...props} style={{ height: '30px', width: '100%' }} /> : null}
       {name == 'color' ? <CirclePicker color={value} colors={colors} onChange={(color, event) => onChange(color.hex)} {...props} circleSize={25} width='100%' /> : null}
       {name == 'price' ? <InputNumber value={value} id={name} min={1} onChange={onChange} style={{ height: '30px', width: '100%' }} placeholder={placeholder} /> : null}
       {name == 'purchaseDay' ? <DatePicker onChange={(value, dateString) => onChange(dateString)} picker='month' style={{ width: '100%', height: '30px' }} /> : null}
       {name == 'description' ? <TextArea value={value} id={name} onChange={onChange} placeholder={placeholder} rows={5} style={{ width: '100%' }} /> : null}
       {name == 'categori' ? <Select defaultValue={defaultValue} id={name} options={options} onChange={onChange} style={{ height: '30px', width: '100%' }} /> : null}
-      {error && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <ErrorMessage>{error && errorMessage}</ErrorMessage>
     </>
   );
 }
 
 export default AInputElement;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 5px;
-  width: 100%;
-  height: auto;
-  background-color: ${({ theme }) => theme.colors.mainGrey};
-  border: 1px solid ${({ theme }) => theme.colors.hoverGrey};
-
-  > div {
-  }
-
-  ${media.tablet} {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
-
-const Title = styled.span`
-  font-family: ${({ theme }) => theme.font.Efont};
-  font-weight: ${({ theme }) => theme.fontWeight.Regular};
-  font-size: 15px;
-  margin-bottom: 5px;
-`;
-
-const SubTitme = styled.p`
-  display: flex;
-  height: 50px;
-  max-width: 450px;
-  font-family: ${({ theme }) => theme.font.Kfont};
-  font-weight: ${({ theme }) => theme.fontWeight.Light};
-  font-size: 12px;
-  color: ${({ theme }) => theme.colors.middleGrey};
-  margin-bottom: 10px;
-`;
-
-const InputContainer = styled.div`
-  width: 100%;
-
-  ${media.tablet} {
-    width: 200px;
-  }
-`;
-
 const ErrorMessage = styled.span`
+  display: inline-block;
+  width: 100%;
+  height: 13px;
   font-size: 11px;
   font-weight: ${({ theme }) => theme.fontWeight.Light};
   color: ${({ theme }) => theme.colors.red};

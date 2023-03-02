@@ -66,7 +66,7 @@ export const categori = [
   {
     name: 'categori',
     subTitle: `의류 분류를 위해 저장하려는 의류의 카테고리를 선택해주세요.
-    선택에 따라 기입해야할 수치가 다릅니다.`,
+선택에 따라 기입해야할 수치가 다릅니다.`,
     options: categoriOption,
     defaultValue: '카테고리를 선택헤주세요',
     errorMessage: '카테고리는 필수적으로 선택하여야 합니다',
