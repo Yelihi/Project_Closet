@@ -69,8 +69,9 @@ const CustomBread = styled(Breadcrumb)`
 const SliceContainer = styled.div``;
 
 const SliceBox = styled.div`
-  max-width: 600px;
-  height: 600px;
+  max-width: 530px;
+  height: auto;
+  border-radius: 20px;
 `;
 
 const ArrayImageContainer = styled.div``;

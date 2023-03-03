@@ -23,16 +23,22 @@ type Props = {
 SwiperCore.use([Navigation]);
 
 const Slice = ({ src }: Props) => {
-  const [swiperRef, setSwiperRef] = useState(null);
-  console.log(src);
+  const swiperRef = useRef(null);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperCore>();
 
   const settings = useMemo(
     () => ({
+      ref: swiperRef,
       navigation: true,
       module: [Navigation],
+      onSwiper: setSwiperInstance,
     }),
     []
   );
+
+  const moveToSlide = (index: number) => () => {
+    swiperInstance?.slideTo(index);
+  };
 
   return (
     <>
@@ -41,7 +47,13 @@ const Slice = ({ src }: Props) => {
           src.map((v, i) => {
             return (
               <CSwiperSlide>
-                <CImage src={`${backUrl}/${v.src}`} alt={v.src} width={600} height={600} />
+                <ThumbnailWrapper>
+                  <Thumbnail>
+                    <Centered>
+                      <CImage src={`${backUrl}/${v.src}`} alt={v.src} width={600} height={600} />
+                    </Centered>
+                  </Thumbnail>
+                </ThumbnailWrapper>
               </CSwiperSlide>
             );
           })}
@@ -49,6 +61,22 @@ const Slice = ({ src }: Props) => {
         <CSwiperSlide>Slide2</CSwiperSlide>
         <CSwiperSlide>Slide3</CSwiperSlide>
       </CSwiper>
+      <SubSection>
+        {src &&
+          src.map((v, i) => {
+            return (
+              <SubContainer>
+                <ThumbnailWrapper>
+                  <Thumbnail>
+                    <Centered>
+                      <CImage src={`${backUrl}/${v.src}`} alt={v.src} width={200} height={200} onClick={moveToSlide(i)} />
+                    </Centered>
+                  </Thumbnail>
+                </ThumbnailWrapper>
+              </SubContainer>
+            );
+          })}
+      </SubSection>
     </>
   );
 };
@@ -58,6 +86,8 @@ export default Slice;
 const CSwiper = styled(Swiper)`
   width: 100%;
   height: 100%;
+  margin-bottom: 20px;
+  border-radius: 20px;
 
   .swiper-button-prev {
     color: ${({ theme }) => theme.colors.brown};
@@ -80,11 +110,53 @@ const CSwiperSlide = styled(SwiperSlide)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px;
   background-color: ${({ theme }) => theme.colors.milk};
 `;
 
+const ThumbnailWrapper = styled.div`
+  width: 100%;
+`;
+
+const Thumbnail = styled.div`
+  position: relative;
+  padding-top: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+`;
+
+const Centered = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transform: translate(50%, 50%);
+  -ms-transform: translate(50%, 50%);
+  transform: translate(50%, 50%);
+`;
+
 const CImage = styled(Image)`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+`;
+
+const SubSection = styled.section`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: auto;
+`;
+
+const SubContainer = styled.div`
+  width: 170px;
+  height: auto;
 `;
