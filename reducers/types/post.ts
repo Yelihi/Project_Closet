@@ -21,6 +21,24 @@ export interface User {
   UserId: number;
 }
 
+type Image = {
+  id: number;
+  src: string;
+  createAt: string;
+  updateAt: string;
+  ClothId: number;
+};
+
+export interface SingleItem {
+  Outer: Object | null;
+  Top: Object | null;
+  Pant: Object | null;
+  Shirt: Object | null;
+  Shoe: Object | null;
+  Muffler: Object | null;
+  Images: Image[] | null;
+}
+
 export interface PostInitialState {
   showDrawer: boolean;
   loadItemLoding: boolean;
@@ -35,5 +53,5 @@ export interface PostInitialState {
   lastAddDataIndex: number | '';
   user: User | null;
   imagePath: ImagePathObject[];
-  singleItem: null | Object;
+  singleItem: (User & SingleItem) | null;
 }

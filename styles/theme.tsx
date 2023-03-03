@@ -21,13 +21,14 @@ const colors = {
   lightGrey: '#B0B0B0',
   middleGrey: '#717171',
   deepGrey: '#222222',
-  hoverGrey: '#DBDBDB',
+  hoverGrey: '#dbdcdc',
   mainGrey: '#EDECEC',
   symbol: '#205281',
   brown: '#363740',
   red: '#EE4B2B',
   success: '#68C260',
   warnning: '#F4A100',
+  milk: '#f7f6ee',
 };
 
 export type FontTypes = typeof font;

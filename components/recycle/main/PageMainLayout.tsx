@@ -5,18 +5,21 @@ import Intersection from '../element/Intersection';
 
 type myComponent = {
   children: ReactNode;
-  title: string;
-  subTitle: string;
+  title?: string;
+  subTitle?: string;
+  istitle?: boolean;
 };
 
-const PageMainLayout = ({ children, title, subTitle }: myComponent) => {
+const PageMainLayout = ({ children, title, subTitle, istitle = true }: myComponent) => {
   return (
     <MainContainer>
-      <ComponentHead>
-        <h1>{title}</h1>
-        <span>{subTitle}</span>
-      </ComponentHead>
-      <Intersection />
+      {istitle && (
+        <ComponentHead>
+          <h1>{title}</h1>
+          <span>{subTitle}</span>
+        </ComponentHead>
+      )}
+      {istitle && <Intersection />}
       <ChildrenContainer>{children}</ChildrenContainer>
     </MainContainer>
   );

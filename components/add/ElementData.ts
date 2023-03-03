@@ -33,7 +33,32 @@ export const bottomMeasureSub = bottomMeasure.map(v => v.subtitle);
 export const shoesMeasureSub = shoesMeasure.map(v => v.subtitle);
 export const mufflerMeasureSub = mufflerMeasure.map(v => v.subtitle);
 
-export const colors = ['#f44336', '#e91e63', '#673ab7', '#3f51b5', '#03a9f4', '#4caf50', '#ffc107', '#ff9800', '#ff5722', '#795548'];
+export const colors = [
+  '#000000',
+  '#ffffff',
+  '#92101c',
+  '#e7373c',
+  '#f1e0e0',
+  '#f8e7ce',
+  '#664032',
+  '#ea601f',
+  '#959187',
+  '#656418',
+  '#caac17',
+  '#ffe200',
+  '#68c260',
+  '#007231',
+  '#46647a',
+  '#0065a2',
+  '#97d0f2',
+  '#5b3e68',
+  '#964089',
+  '#9e8ebd',
+  '#5e1938',
+  '#f9b8be',
+  '#c8c9ca',
+  '#f7f7f7',
+];
 
 export const clothData = [
   {

@@ -4,15 +4,19 @@ import * as t from '../../../reducers/type';
 import { useRouter } from 'next/router';
 
 import PageLayout from '../../../components/recycle/PageLayout';
+import PageMainLayout from '../../../components/recycle/main/PageMainLayout';
+import Slice from '../../../components/recycle/Slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerType } from '../../../reducers/types';
+
+import { Breadcrumb } from 'antd';
+import Link from 'next/link';
 
 const Details = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { user } = useSelector((state: rootReducerType) => state.post);
+  const { user, singleItem } = useSelector((state: rootReducerType) => state.post);
   const { id } = router.query;
-  console.log(id);
 
   const getItem = useCallback(() => {
     dispatch({
@@ -23,20 +27,50 @@ const Details = () => {
 
   return (
     <PageLayout>
-      <TestContainer>
+      <PageMainLayout istitle={false}>
+        <CustomBread separator='>'>
+          <Breadcrumb.Item>
+            <Link href='/closet/overview'>Home</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <Link href='/closet/store'>Store</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>Details</Breadcrumb.Item>
+        </CustomBread>
+        <section>
+          <SliceContainer>
+            <SliceBox>
+              <Slice src={singleItem && singleItem.Images} />
+            </SliceBox>
+            <ArrayImageContainer></ArrayImageContainer>
+          </SliceContainer>
+        </section>
         <button onClick={getItem}>실험중</button>
-      </TestContainer>
+      </PageMainLayout>
     </PageLayout>
   );
 };
 
 export default Details;
 
-const TestContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 2000px;
-  background-color: ${({ theme }) => theme.colors.middleGrey};
+const CustomBread = styled(Breadcrumb)`
+  margin-bottom: 30px;
+  .ant-breadcrumb-link {
+    font-family: ${({ theme }) => theme.font.Efont};
+    font-weight: ${({ theme }) => theme.fontWeight.Medium};
+
+    > a {
+      font-family: ${({ theme }) => theme.font.Efont};
+      font-weight: ${({ theme }) => theme.fontWeight.Light};
+    }
+  }
 `;
+
+const SliceContainer = styled.div``;
+
+const SliceBox = styled.div`
+  max-width: 600px;
+  height: 600px;
+`;
+
+const ArrayImageContainer = styled.div``;

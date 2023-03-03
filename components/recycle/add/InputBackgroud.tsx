@@ -86,13 +86,13 @@ const InputContainer = styled.div<{ textArea: boolean | undefined }>`
   width: 100%;
 
   ${media.tablet} {
-    width: 200px;
+    max-width: 320px;
     margin-top: 10px;
 
     ${props =>
       props.textArea &&
       css`
-        width: 100%;
+        max-width: 100%;
       `}
   }
 `;
