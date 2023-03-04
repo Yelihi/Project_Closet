@@ -59,7 +59,6 @@ function* uploadItems(action: AnyAction) {
 
 type LoadItem = {
   clothId: number;
-  userId: number;
 };
 
 function loadItemAPI(data: LoadItem) {
