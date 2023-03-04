@@ -11,8 +11,8 @@ import { backUrl } from '../../config/config';
 type Image = {
   id: number;
   src: string;
-  createAt: string;
-  updateAt: string;
+  createdAt: string;
+  updatedAt: string;
   ClothId: number;
 };
 
@@ -111,6 +111,7 @@ const CSwiperSlide = styled(SwiperSlide)`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.milk};
+  width: 100%;
 `;
 
 const ThumbnailWrapper = styled.div`
@@ -157,6 +158,7 @@ const SubSection = styled.section`
 `;
 
 const SubContainer = styled.div`
-  width: 170px;
+  max-width: 25%;
+  width: 100%;
   height: auto;
 `;

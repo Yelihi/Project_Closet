@@ -16,26 +16,65 @@ export interface User {
   color: string;
   categori: string;
   purchaseDay: string;
-  createAt: string;
+  createdAt: string;
   updatedAt: string;
   UserId: number;
 }
 
-type Image = {
+export type Image = {
   id: number;
   src: string;
-  createAt: string;
-  updateAt: string;
+  createdAt: string;
+  updatedAt: string;
+  ClothId: number;
+};
+
+export type UpperBody = {
+  id: number;
+  shoulder: number;
+  arm: number;
+  totalLength: number;
+  chest: number;
+  createdAt: string;
+  updatedAt: string;
+  ClothId: number;
+};
+
+export type LowerBody = {
+  id: number;
+  totalLength: number;
+  rise: number;
+  hem: number;
+  waist: number;
+  thigh: number;
+  createdAt: string;
+  updatedAt: string;
+  ClothId: number;
+};
+
+export type FootSize = {
+  id: number;
+  size: number;
+  createdAt: string;
+  updatedAt: string;
+  ClothId: number;
+};
+
+export type TotalLength = {
+  id: number;
+  totalLength: number;
+  createdAt: string;
+  updatedAt: string;
   ClothId: number;
 };
 
 export interface SingleItem {
-  Outer: Object | null;
-  Top: Object | null;
-  Pant: Object | null;
-  Shirt: Object | null;
-  Shoe: Object | null;
-  Muffler: Object | null;
+  Outer: UpperBody | null;
+  Top: UpperBody | null;
+  Pant: LowerBody | null;
+  Shirt: UpperBody | null;
+  Shoe: FootSize | null;
+  Muffler: TotalLength | null;
   Images: Image[] | null;
 }
 

@@ -3,55 +3,164 @@ import styled from 'styled-components';
 import * as t from '../../../reducers/type';
 import { useRouter } from 'next/router';
 
+import axios from 'axios';
+import { END } from 'redux-saga';
+
+import { GetServerSidePropsContext } from 'next';
+import type { SagaStore } from '../../../store/configureStore';
+
+import wrapper from '../../../store/configureStore';
+
+import { Breadcrumb, Rate, Tabs } from 'antd';
+import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import { rootReducerType } from '../../../reducers/types';
+import { User, SingleItem } from '../../../reducers/types/post';
+
 import PageLayout from '../../../components/recycle/PageLayout';
 import PageMainLayout from '../../../components/recycle/main/PageMainLayout';
 import Slice from '../../../components/recycle/Slice';
-import { useDispatch, useSelector } from 'react-redux';
-import { rootReducerType } from '../../../reducers/types';
-
-import { Breadcrumb } from 'antd';
-import Link from 'next/link';
+import AButton from '../../../components/recycle/element/button/AButton';
+import TapChildren from '../../../components/details/TapChidren';
+import Item from 'antd/es/list/Item';
 
 const Details = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { user, singleItem } = useSelector((state: rootReducerType) => state.post);
+  const { singleItem } = useSelector((state: rootReducerType) => state.post);
   const { id } = router.query;
 
-  const getItem = useCallback(() => {
-    dispatch({
-      type: t.LOAD_ITEM_REQUEST,
-      data: { clothId: id, userId: user?.UserId },
+  let measureObject = null;
+  let measureValue: [string, number][] = [['name', 1]];
+
+  if (singleItem !== null) {
+    const { Outer, Top, Pant, Shirt, Shoe, Muffler } = singleItem;
+    measureObject = { Outer, Top, Pant, Shirt, Shoe, Muffler };
+    Object.values(measureObject).forEach(value => {
+      if (value) {
+        const { id, createdAt, updatedAt, ClothId, ...data2 } = value;
+        measureValue = Object.entries(data2);
+      }
     });
-  }, [id, user]);
+  }
+
+  console.log(measureValue);
+
+  if (!singleItem) {
+    return <div>빈페이지</div>;
+  }
 
   return (
     <PageLayout>
       <PageMainLayout istitle={false}>
-        <CustomBread separator='>'>
-          <Breadcrumb.Item>
-            <Link href='/closet/overview'>Home</Link>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <Link href='/closet/store'>Store</Link>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>Details</Breadcrumb.Item>
-        </CustomBread>
-        <section>
-          <SliceContainer>
-            <SliceBox>
-              <Slice src={singleItem && singleItem.Images} />
-            </SliceBox>
-            <ArrayImageContainer></ArrayImageContainer>
-          </SliceContainer>
-        </section>
-        <button onClick={getItem}>실험중</button>
+        <HandleContainer>
+          <CustomBread separator='>'>
+            <Breadcrumb.Item>
+              <Link href='/closet/overview'>Home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link href='/closet/store'>Store</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>Details</Breadcrumb.Item>
+          </CustomBread>
+          <ButtonContainer>
+            <AButton color='black' disabled={false} dest='수정' />
+            <AButton color='' disabled={false} dest='삭제' />
+          </ButtonContainer>
+        </HandleContainer>
+
+        <SliceContainer>
+          <SliceBox>
+            <Slice src={singleItem && singleItem.Images} />
+          </SliceBox>
+          <DataContainer>
+            <Categori>{singleItem && singleItem.categori}</Categori>
+            <ProductName>{singleItem && singleItem.productName}</ProductName>
+            <RateBox>
+              <CRate disabled defaultValue={4.5} />
+              <span>4.5</span>
+            </RateBox>
+            <Descriptions>{singleItem && singleItem.description}</Descriptions>
+            <TapContainer>
+              <Tabs
+                defaultActiveKey='1'
+                items={[
+                  {
+                    label: 'About Item',
+                    key: '1',
+                    children: (
+                      <>
+                        <TapChildren name='Price' unit='₩'>
+                          <span>{singleItem && singleItem.price.toLocaleString('ko-KR')}</span>
+                        </TapChildren>
+                        <TapChildren name='Color' unit='색상'>
+                          <ColorCircle data={singleItem && singleItem.color}></ColorCircle>
+                        </TapChildren>
+                        <TapChildren name='Purchase Day' unit='월'>
+                          <span>{singleItem && `${singleItem.purchaseDay.substring(0, 7)}`}</span>
+                        </TapChildren>
+                      </>
+                    ),
+                  },
+                  {
+                    label: 'Measure Value',
+                    key: '2',
+                    children: (
+                      <>
+                        {measureValue &&
+                          measureValue.map(v => {
+                            return (
+                              <TapChildren name={v[0]} unit='cm'>
+                                <span>{v[1]}</span>
+                              </TapChildren>
+                            );
+                          })}
+                      </>
+                    ),
+                  },
+                ]}
+              />
+            </TapContainer>
+          </DataContainer>
+        </SliceContainer>
       </PageMainLayout>
     </PageLayout>
   );
 };
 
+export const getServerSideProps = wrapper.getServerSideProps(store => async (context: GetServerSidePropsContext) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  store.dispatch({
+    // store에서 dispatch 하는 api
+    type: t.LOAD_TO_MY_INFO_REQUEST,
+  });
+
+  store.dispatch({
+    type: t.LOAD_ITEM_REQUEST,
+    data: { clothId: context.params?.id },
+  });
+
+  store.dispatch(END);
+  await (store as SagaStore).sagaTask?.toPromise();
+  return {
+    props: {},
+  };
+});
+
 export default Details;
+
+const HandleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: 15px 0;
+`;
 
 const CustomBread = styled(Breadcrumb)`
   margin-bottom: 30px;
@@ -66,12 +175,88 @@ const CustomBread = styled(Breadcrumb)`
   }
 `;
 
-const SliceContainer = styled.div``;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 200px;
+`;
+
+const SliceContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: auto;
+  gap: 50px;
+`;
 
 const SliceBox = styled.div`
-  max-width: 530px;
+  max-width: 40%;
+  width: 100%;
   height: auto;
   border-radius: 20px;
 `;
 
-const ArrayImageContainer = styled.div``;
+const DataContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+`;
+
+const Categori = styled.p`
+  font-family: ${({ theme }) => theme.font.Efont};
+  font-size: 15px;
+  font-weight: ${({ theme }) => theme.fontWeight.Medium};
+  color: ${({ theme }) => theme.colors.brown};
+  margin-bottom: 15px;
+`;
+
+const ProductName = styled.h1`
+  font-family: ${({ theme }) => theme.font.Efont};
+  font-size: clamp(20px, 40px, 50px);
+  font-weight: ${({ theme }) => theme.fontWeight.Medium};
+  color: ${({ theme }) => theme.colors.black};
+  margin-bottom: 20px;
+  width: 100%;
+`;
+
+const RateBox = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+`;
+
+const CRate = styled(Rate)`
+  .ant-rate-star-second {
+    svg {
+      font-size: 15px;
+    }
+  }
+`;
+
+const Descriptions = styled.p`
+  display: inline-block;
+  font-family: ${({ theme }) => theme.font.Kfont};
+  font-size: clamp(10px, 16px, 20px);
+  font-weight: ${({ theme }) => theme.fontWeight.Light};
+  color: ${({ theme }) => theme.colors.middleGrey};
+`;
+
+const TapContainer = styled.div`
+  width: 100%;
+  height: auto;
+`;
+
+const ColorCircle = styled.div<{ data: string | number | null }>`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: ${({ data }) => data};
+`;

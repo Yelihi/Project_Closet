@@ -47,6 +47,11 @@ const Container = styled.section`
   gap: 50px;
   padding: 24px;
   ${media.tablet} {
+    width: calc(100vw - 115px);
     gap: 10px;
+  }
+
+  ${media.desktop} {
+    width: calc(100vw - 315px);
   }
 `;

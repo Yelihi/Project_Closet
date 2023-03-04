@@ -50,7 +50,8 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 export default AppLayout;
 
 const AppLay = styled(Layout)`
-  min-height: 200%;
+  /* min-height: 200%; */
+  width: 100%;
 `;
 
 const MenuContainer = styled.div`
@@ -70,7 +71,6 @@ const Main = styled.div`
   height: auto;
   background: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.white};
-  padding: 0.25rem;
 `;
 
 const SideBar = styled.div`
@@ -78,7 +78,6 @@ const SideBar = styled.div`
   width: fit-content;
   height: auto;
   background: ${({ theme }) => theme.colors.brown};
-  padding: 0.25rem;
   ${media.tablet} {
     display: flex;
     flex-direction: column;
