@@ -11,7 +11,7 @@ import type { SagaStore } from '../../../store/configureStore';
 
 import wrapper from '../../../store/configureStore';
 
-import { Breadcrumb, Rate, Tabs } from 'antd';
+import { Breadcrumb, ConfigProvider, Rate, Tabs } from 'antd';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerType } from '../../../reducers/types';
@@ -23,6 +23,8 @@ import Slice from '../../../components/recycle/Slice';
 import AButton from '../../../components/recycle/element/button/AButton';
 import TapChildren from '../../../components/details/TapChidren';
 import Item from 'antd/es/list/Item';
+
+import { media } from '../../../styles/media';
 
 const Details = () => {
   const router = useRouter();
@@ -82,47 +84,54 @@ const Details = () => {
             </RateBox>
             <Descriptions>{singleItem && singleItem.description}</Descriptions>
             <TapContainer>
-              <Tabs
-                defaultActiveKey='1'
-                items={[
-                  {
-                    label: 'About Item',
-                    key: '1',
-                    children: (
-                      <>
-                        <TapChildren name='Price' unit='₩'>
-                          <span>{singleItem && singleItem.price.toLocaleString('ko-KR')}</span>
-                        </TapChildren>
-                        <TapChildren name='Color' unit='색상'>
-                          <ColorCircle data={singleItem && singleItem.color}></ColorCircle>
-                        </TapChildren>
-                        <TapChildren name='Purchase Day' unit='월'>
-                          <span>{singleItem && `${singleItem.purchaseDay.substring(0, 7)}`}</span>
-                        </TapChildren>
-                      </>
-                    ),
-                  },
-                  {
-                    label: 'Measure Value',
-                    key: '2',
-                    children: (
-                      <>
-                        {measureValue &&
-                          measureValue.map(v => {
-                            return (
-                              <TapChildren name={v[0]} unit='cm'>
-                                <span>{v[1]}</span>
-                              </TapChildren>
-                            );
-                          })}
-                      </>
-                    ),
-                  },
-                ]}
-              />
+              <ConfigProvider theme={{ token: { colorPrimary: '#46647a' } }}>
+                <Tabs
+                  defaultActiveKey='1'
+                  items={[
+                    {
+                      label: 'About Item',
+                      key: '1',
+                      children: (
+                        <>
+                          <TapChildren name='Color' unit='색상'>
+                            <ColorCircle data={singleItem && singleItem.color}></ColorCircle>
+                          </TapChildren>
+                          <TapChildren name='Price' unit='₩'>
+                            <span>{singleItem && singleItem.price.toLocaleString('ko-KR')}</span>
+                          </TapChildren>
+
+                          <TapChildren name='Purchase Day' unit='월'>
+                            <span>{singleItem && `${singleItem.purchaseDay.substring(0, 7)}`}</span>
+                          </TapChildren>
+                        </>
+                      ),
+                    },
+                    {
+                      label: 'Measure Value',
+                      key: '2',
+                      children: (
+                        <>
+                          {measureValue &&
+                            measureValue.map(v => {
+                              return (
+                                <TapChildren name={v[0].toUpperCase()} unit='cm'>
+                                  <span>{v[1]}</span>
+                                </TapChildren>
+                              );
+                            })}
+                        </>
+                      ),
+                    },
+                  ]}
+                />
+              </ConfigProvider>
             </TapContainer>
           </DataContainer>
         </SliceContainer>
+        <ButtonBottomContainer>
+          <AButton color='black' disabled={false} dest='수정' />
+          <AButton color='' disabled={false} dest='삭제' />
+        </ButtonBottomContainer>
       </PageMainLayout>
     </PageLayout>
   );
@@ -176,27 +185,56 @@ const CustomBread = styled(Breadcrumb)`
 `;
 
 const ButtonContainer = styled.div`
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 200px;
+
+  ${media.tablet} {
+    display: flex;
+  }
+`;
+
+const ButtonBottomContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   width: 200px;
+  float: right;
+  margin-top: 20px;
+
+  ${media.tablet} {
+    display: none;
+  }
 `;
 
 const SliceContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
   height: auto;
+  min-height: 600px;
   gap: 50px;
+
+  ${media.tablet} {
+    display: flex;
+    flex-direction: row;
+  }
 `;
 
 const SliceBox = styled.div`
-  max-width: 40%;
+  max-width: 100%;
   width: 100%;
   height: auto;
   border-radius: 20px;
+
+  ${media.tablet} {
+    max-width: 50%;
+  }
 `;
 
 const DataContainer = styled.div`
@@ -218,10 +256,10 @@ const Categori = styled.p`
 
 const ProductName = styled.h1`
   font-family: ${({ theme }) => theme.font.Efont};
-  font-size: clamp(20px, 40px, 50px);
+  font-size: clamp(20px, 35px, 50px);
   font-weight: ${({ theme }) => theme.fontWeight.Medium};
   color: ${({ theme }) => theme.colors.black};
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   width: 100%;
 `;
 
@@ -247,12 +285,15 @@ const Descriptions = styled.p`
   font-size: clamp(10px, 16px, 20px);
   font-weight: ${({ theme }) => theme.fontWeight.Light};
   color: ${({ theme }) => theme.colors.middleGrey};
+  margin-bottom: 20px;
 `;
 
 const TapContainer = styled.div`
   width: 100%;
   height: auto;
 `;
+
+const CTaps = styled(Tabs)``;
 
 const ColorCircle = styled.div<{ data: string | number | null }>`
   width: 20px;

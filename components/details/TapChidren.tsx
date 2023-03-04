@@ -41,7 +41,7 @@ const ChildrenName = styled.span`
 
 const DataBox = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   height: auto;
@@ -50,8 +50,10 @@ const DataBox = styled.div`
 
 const ChildrenData = styled(ChildrenName)`
   font-weight: ${({ theme }) => theme.fontWeight.Medium};
+  width: auto;
 `;
 
 const ChildrenUnit = styled(ChildrenName)`
   color: ${({ theme }) => theme.colors.middleGrey};
+  width: auto;
 `;
