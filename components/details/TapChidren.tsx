@@ -27,7 +27,7 @@ const ChildrenBox = styled.div`
   align-items: center;
   width: 100%;
   height: auto;
-  padding: 5px 0;
+  padding: 10px 0;
   border-top: 1px solid ${({ theme }) => theme.colors.hoverGrey};
 `;
 
