@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import { FieldValues, useForm, FormProvider, FieldPath } from 'react-hook-form';
 import { WarningTwoTone, CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Image from 'next/image';
+import Router from 'next/router';
 
 import * as t from '../../reducers/type';
 import { backUrl } from '../../config/config';
@@ -73,16 +74,49 @@ const defaultValues = {
   },
 };
 
-const ItemForm = () => {
+export interface FormProps {
+  title: string;
+  subTitle: string;
+  type: 'add' | 'details';
+  itemId?: number;
+  resultNumber: number | '';
+  Submit: () => string;
+  setState?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setState }: FormProps) => {
   const dispatch = useDispatch();
   const [isClothes, setIsClothes] = useState(false);
-  const { imagePath, uploadItemsDone, lastAddDataIndex } = useSelector((state: rootReducerType) => state.post);
+  const isDataChange = useRef(false);
+  const { imagePath, uploadItemsDone, lastAddDataIndex, singleItem } = useSelector((state: rootReducerType) => state.post);
   const methods = useForm<AddInitialValue>({
     mode: 'onSubmit',
     defaultValues: defaultValues,
   });
 
-  const { handleSubmit, control, watch, reset } = methods;
+  const {
+    handleSubmit,
+    control,
+    watch,
+    reset,
+    formState: { isSubmitSuccessful },
+  } = methods;
+
+  let beforeValues = {};
+  if (singleItem) {
+    const { Outer, Shirt, Top, Pant, Shoe, Muffler, ...singleData } = singleItem;
+    const categoriObject = [Outer, Shirt, Top, Pant, Shoe, Muffler].filter(v => v !== null)[0];
+    const { id, createdAt, updatedAt, ClothId, ...measure } = categoriObject!;
+    const { categoriItem, ...rest } = defaultValues;
+    const measureItem = { categoriItem: { ...categoriItem, ...measure } };
+    console.log(measureItem);
+    beforeValues = { ...singleData, ...measureItem };
+    console.log(beforeValues);
+    if (!isDataChange.current) {
+      isDataChange.current = true;
+      reset(beforeValues);
+    }
+  }
 
   useEffect(() => {
     dispatch({
@@ -90,9 +124,12 @@ const ItemForm = () => {
     });
   }, []);
 
+  // 어차피 singleItem 이 있다면 defaultValue -> beforeValues 로 변경된다.
   useEffect(() => {
-    reset({ defaultValues });
-  }, [uploadItemsDone]);
+    if (isSubmitSuccessful) {
+      reset({ defaultValues });
+    }
+  }, [isSubmitSuccessful]);
 
   useEffect(() => {
     if (imagePath.length === 0) {
@@ -116,18 +153,26 @@ const ItemForm = () => {
     []
   );
 
+  const backDetailsPage = useCallback(() => {
+    Router.push(`/closet/details/${itemId}`);
+    if (setState) {
+      setState(prev => !prev);
+    }
+  }, [itemId]);
+
   const onSubmit = (data: AddInitialValue) => {
     data.image = imagePath;
+    const Type = Submit();
     return dispatch({
-      type: t.UPLOAD_ITEMS_REQUEST,
-      data: data,
+      type: Type,
+      data: { items: data, clothId: itemId },
     });
   };
 
   return (
     <>
       {!uploadItemsDone && (
-        <PageMainLayout title='ADD CLOTHES' subTitle='현 가정 옷장에 보관되어있는 의류의 이름과 색상, 종류 등 각각의 특성들을 기입하여 저장할 수 있습니다. '>
+        <PageMainLayout title={title} subTitle={subTitle}>
           <TestContainer>
             <AddSection>
               <FormProvider {...methods}>
@@ -151,7 +196,7 @@ const ItemForm = () => {
                     })}
                     {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? <Measure control={control} nameArray={topMeasureName} subTitleArray={topMeasureSub} placeholder='cm' /> : null}
                     {['Pant'].includes(watch('categori')) ? <Measure control={control} nameArray={bottomMeasureName} subTitleArray={bottomMeasureSub} placeholder='cm' /> : null}
-                    {['Shoes'].includes(watch('categori')) ? <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} placeholder='mm' /> : null}
+                    {['Shoe'].includes(watch('categori')) ? <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} placeholder='mm' /> : null}
                     {['Muffler'].includes(watch('categori')) ? <Measure control={control} nameArray={mufflerMeasureName} subTitleArray={mufflerMeasureSub} placeholder='cm' /> : null}
                   </InputPartial>
                   <InputPartial title='ABOUT ITEM' subtitle='의류에 대한 설명을 기입하실 수 있습니다. 구입처나 소재, 보관방법 등 구체적인 사안을 저장하실 수 있습니다.'>
@@ -242,18 +287,30 @@ const ItemForm = () => {
                         );
                       })}
                   </PreviewSection>
-                  <Float>
-                    <SubmitButton>
-                      <AButton type='submit' color='black' dest='저장하기' disabled={!isClothes} />
-                    </SubmitButton>
-                  </Float>
+                  {type === 'add' && (
+                    <Float>
+                      <SubmitButton>
+                        <AButton type='submit' color='black' dest='저장하기' disabled={!isClothes} />
+                      </SubmitButton>
+                    </Float>
+                  )}
+                  {type === 'details' && (
+                    <Float>
+                      <SubmitButton>
+                        <AButton type='submit' color='black' dest='수정하기' disabled={!isClothes} />
+                      </SubmitButton>
+                      <SubmitButton>
+                        <AButton color='' dest='이전으로' onClick={backDetailsPage} disabled={isClothes} />
+                      </SubmitButton>
+                    </Float>
+                  )}
                 </AddForm>
               </FormProvider>
             </AddSection>
           </TestContainer>
         </PageMainLayout>
       )}
-      {uploadItemsDone && <SortingResultComponent sort='add' id={lastAddDataIndex} />}
+      {uploadItemsDone && <SortingResultComponent sort={type} id={resultNumber} />}
     </>
   );
 };

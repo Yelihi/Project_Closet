@@ -1,9 +1,14 @@
+export const addPageLayoutProps = {
+  title: 'ADD CLOTHES',
+  subTitle: '현 가정 옷장에 보관되어있는 의류의 이름과 색상, 종류 등 각각의 특성들을 기입하여 저장할 수 있습니다.',
+};
+
 export const categoriOption = [
   { value: 'Outer', label: 'Outer' },
   { value: 'Shirt', label: 'Shirt' },
   { value: 'Top', label: 'Top' },
   { value: 'Pant', label: 'Pant' },
-  { value: 'Shoes', label: 'Shoes' },
+  { value: 'Shoe', label: 'Shoe' },
   { value: 'Muffler', label: 'Muffler' },
 ];
 

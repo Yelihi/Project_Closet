@@ -162,7 +162,7 @@ const add = () => {
                     })}
                     {['Outer', 'Shirt', 'Top'].includes(watch('categori')) ? <Measure control={control} nameArray={topMeasureName} subTitleArray={topMeasureSub} placeholder='cm' /> : null}
                     {['Pant'].includes(watch('categori')) ? <Measure control={control} nameArray={bottomMeasureName} subTitleArray={bottomMeasureSub} placeholder='cm' /> : null}
-                    {['Shoes'].includes(watch('categori')) ? <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} placeholder='mm' /> : null}
+                    {['Shoe'].includes(watch('categori')) ? <Measure control={control} nameArray={shoesMeasureName} subTitleArray={shoesMeasureSub} placeholder='mm' /> : null}
                     {['Muffler'].includes(watch('categori')) ? <Measure control={control} nameArray={mufflerMeasureName} subTitleArray={mufflerMeasureSub} placeholder='cm' /> : null}
                   </InputPartial>
                   <InputPartial title='ABOUT ITEM' subtitle='의류에 대한 설명을 기입하실 수 있습니다. 구입처나 소재, 보관방법 등 구체적인 사안을 저장하실 수 있습니다.'>
@@ -184,8 +184,8 @@ const add = () => {
                     {imagePath.length > 0 &&
                       imagePath.map((v, i) => {
                         let cate = watch('categori');
-                        let isClothes = v.visionSearch.some(v => visionAI.includes(v.name));
-                        let isCategori = v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate]?.includes(item));
+                        let isClothes = v.visionSearch?.some(v => visionAI.includes(v.name));
+                        let isCategori = v.visionSearch?.map(v => v.name).some(item => categoriToVisionAI[cate]?.includes(item));
                         let confidence = categoriToVisionAI[cate]?.includes(v.visionSearch[0].name);
                         return (
                           <PreviewContainer key={v.filename} border={isClothes}>

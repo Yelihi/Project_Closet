@@ -36,6 +36,24 @@ export default (state = initialState, action: AnyAction) => {
         draft.uploadItemsDone = false;
         break;
       }
+      case t.PATCH_ITEM_REQUEST: {
+        draft.uploadItemsLoding = true;
+        draft.uploadItemsDone = false;
+        draft.uploadItemsError = false;
+        break;
+      }
+      case t.PATCH_ITEM_SUCCESS: {
+        draft.uploadItemsLoding = false;
+        draft.uploadItemsDone = true;
+        draft.uploadItemsError = false;
+        break;
+      }
+      case t.PATCH_ITEM_FAILURE: {
+        draft.uploadItemsLoding = false;
+        draft.uploadItemsDone = false;
+        draft.uploadItemsError = action.error;
+        break;
+      }
       case t.LOAD_ITEM_REQUEST: {
         draft.loadItemLoding = true;
         draft.loadItemDone = false;
