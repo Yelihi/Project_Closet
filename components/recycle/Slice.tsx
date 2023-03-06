@@ -20,7 +20,7 @@ type Props = {
   src: Image[] | null;
 };
 
-SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation, Pagination]);
 
 const Slice = ({ src }: Props) => {
   const swiperRef = useRef(null);
@@ -30,7 +30,7 @@ const Slice = ({ src }: Props) => {
     () => ({
       ref: swiperRef,
       navigation: true,
-      module: [Navigation],
+      module: [Navigation, Pagination],
       onSwiper: setSwiperInstance,
     }),
     []
@@ -57,9 +57,6 @@ const Slice = ({ src }: Props) => {
               </CSwiperSlide>
             );
           })}
-        <CSwiperSlide>Slide1</CSwiperSlide>
-        <CSwiperSlide>Slide2</CSwiperSlide>
-        <CSwiperSlide>Slide3</CSwiperSlide>
       </CSwiper>
       <SubSection>
         {src &&

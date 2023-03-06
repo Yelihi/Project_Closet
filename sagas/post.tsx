@@ -5,6 +5,7 @@ import * as t from '../reducers/type';
 
 // reducers
 import { UserInfo } from '../reducers/types/user';
+import { AddInitialValue } from '../components/recycle/ItemForm';
 
 interface Success {
   data: Object;
@@ -83,6 +84,33 @@ function* loadItem(action: AnyAction) {
   }
 }
 
+type patchItem = {
+  items: AddInitialValue;
+  clothId: number;
+};
+
+function patchItemAPI(data: patchItem) {
+  return axios.patch(`/post/clothes/${data.clothId}`, data);
+}
+
+function* patchItem(action: AnyAction) {
+  try {
+    console.log('saga patch');
+    console.log(action.data);
+    const result: AxiosResponse<Success> = yield call(patchItemAPI, action.data);
+    yield put({
+      type: t.PATCH_ITEM_SUCCESS,
+      data: result.data,
+    });
+  } catch (err: any) {
+    console.log(err);
+    yield put({
+      type: t.PATCH_ITEM_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchImageUpload() {
   yield takeLatest(t.UPLOAD_IMAGES_REQUEST, uploadImage);
 }
@@ -95,6 +123,10 @@ function* watchItemLoad() {
   yield takeLatest(t.LOAD_ITEM_REQUEST, loadItem);
 }
 
+function* watchItemPatch() {
+  yield takeLatest(t.PATCH_ITEM_REQUEST, patchItem);
+}
+
 export default function* postSaga() {
-  yield all([fork(watchImageUpload), fork(watchItemsUpload), fork(watchItemLoad)]);
+  yield all([fork(watchImageUpload), fork(watchItemsUpload), fork(watchItemLoad), fork(watchItemPatch)]);
 }

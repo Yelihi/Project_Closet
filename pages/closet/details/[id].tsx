@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import * as t from '../../../reducers/type';
 import { useRouter } from 'next/router';
@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerType } from '../../../reducers/types';
 import { User, SingleItem } from '../../../reducers/types/post';
+import { AddInitialValue } from '../../../components/recycle/ItemForm';
 
 import PageLayout from '../../../components/recycle/PageLayout';
 import PageMainLayout from '../../../components/recycle/main/PageMainLayout';
@@ -23,14 +24,24 @@ import Slice from '../../../components/recycle/Slice';
 import AButton from '../../../components/recycle/element/button/AButton';
 import TapChildren from '../../../components/details/TapChidren';
 import Item from 'antd/es/list/Item';
+import ItemForm from '../../../components/recycle/ItemForm';
 
 import { media } from '../../../styles/media';
+import { addPageLayoutProps } from '../../../components/details/ElementData';
 
 const Details = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { singleItem } = useSelector((state: rootReducerType) => state.post);
   const { id } = router.query;
+  const [isModifyMode, setIsModifyMode] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  const { title, subTitle } = addPageLayoutProps;
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   let measureObject = null;
   let measureValue: [string, number][] = [['name', 1]];
@@ -46,93 +57,107 @@ const Details = () => {
     });
   }
 
-  console.log(measureValue);
+  const transferTypes = useCallback(() => {
+    return t.PATCH_ITEM_REQUEST;
+  }, []);
+
+  const startModify = useCallback(() => {
+    setIsModifyMode(true);
+  }, []);
 
   if (!singleItem) {
     return <div>빈페이지</div>;
   }
 
+  if (!hydrated) {
+    return null;
+  }
+
   return (
     <PageLayout>
-      <PageMainLayout istitle={false}>
-        <HandleContainer>
-          <CustomBread separator='>'>
-            <Breadcrumb.Item>
-              <Link href='/closet/overview'>Home</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <Link href='/closet/store'>Store</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Details</Breadcrumb.Item>
-          </CustomBread>
-          <ButtonContainer>
-            <AButton color='black' disabled={false} dest='수정' />
+      {!isModifyMode ? (
+        <PageMainLayout istitle={false}>
+          <HandleContainer>
+            <CustomBread separator='>'>
+              <Breadcrumb.Item>
+                <Link href='/closet/overview'>Home</Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>
+                <Link href='/closet/store'>Store</Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>Details</Breadcrumb.Item>
+            </CustomBread>
+            <ButtonContainer>
+              <AButton color='black' disabled={false} onClick={startModify} dest='수정' />
+              <AButton color='' disabled={false} dest='삭제' />
+            </ButtonContainer>
+          </HandleContainer>
+
+          <SliceContainer>
+            <SliceBox>
+              <Slice src={singleItem && singleItem.Images} />
+            </SliceBox>
+            <DataContainer>
+              <Categori>{singleItem && singleItem.categori}</Categori>
+              <ProductName>{singleItem && singleItem.productName}</ProductName>
+              <RateBox>
+                <CRate disabled defaultValue={4.5} />
+                <span>4.5</span>
+              </RateBox>
+              <Descriptions>{singleItem && singleItem.description}</Descriptions>
+              <TapContainer>
+                <ConfigProvider theme={{ token: { colorPrimary: '#46647a' } }}>
+                  <Tabs
+                    defaultActiveKey='1'
+                    items={[
+                      {
+                        label: 'About Item',
+                        key: '1',
+                        children: (
+                          <>
+                            <TapChildren name='Color' unit='색상'>
+                              <ColorCircle data={singleItem && singleItem.color}></ColorCircle>
+                            </TapChildren>
+                            <TapChildren name='Price' unit='₩'>
+                              <span>{singleItem && singleItem.price.toLocaleString('ko-KR')}</span>
+                            </TapChildren>
+
+                            <TapChildren name='Purchase Day' unit='월'>
+                              <span>{singleItem && `${singleItem.purchaseDay.substring(0, 7)}`}</span>
+                            </TapChildren>
+                          </>
+                        ),
+                      },
+                      {
+                        label: 'Measure Value',
+                        key: '2',
+                        children: (
+                          <>
+                            {measureValue &&
+                              measureValue.map(v => {
+                                return (
+                                  <TapChildren name={v[0].toUpperCase()} unit='cm'>
+                                    <span>{v[1]}</span>
+                                  </TapChildren>
+                                );
+                              })}
+                          </>
+                        ),
+                      },
+                    ]}
+                  />
+                </ConfigProvider>
+              </TapContainer>
+            </DataContainer>
+          </SliceContainer>
+          <ButtonBottomContainer>
+            <AButton color='black' disabled={false} onClick={startModify} dest='수정' />
             <AButton color='' disabled={false} dest='삭제' />
-          </ButtonContainer>
-        </HandleContainer>
-
-        <SliceContainer>
-          <SliceBox>
-            <Slice src={singleItem && singleItem.Images} />
-          </SliceBox>
-          <DataContainer>
-            <Categori>{singleItem && singleItem.categori}</Categori>
-            <ProductName>{singleItem && singleItem.productName}</ProductName>
-            <RateBox>
-              <CRate disabled defaultValue={4.5} />
-              <span>4.5</span>
-            </RateBox>
-            <Descriptions>{singleItem && singleItem.description}</Descriptions>
-            <TapContainer>
-              <ConfigProvider theme={{ token: { colorPrimary: '#46647a' } }}>
-                <Tabs
-                  defaultActiveKey='1'
-                  items={[
-                    {
-                      label: 'About Item',
-                      key: '1',
-                      children: (
-                        <>
-                          <TapChildren name='Color' unit='색상'>
-                            <ColorCircle data={singleItem && singleItem.color}></ColorCircle>
-                          </TapChildren>
-                          <TapChildren name='Price' unit='₩'>
-                            <span>{singleItem && singleItem.price.toLocaleString('ko-KR')}</span>
-                          </TapChildren>
-
-                          <TapChildren name='Purchase Day' unit='월'>
-                            <span>{singleItem && `${singleItem.purchaseDay.substring(0, 7)}`}</span>
-                          </TapChildren>
-                        </>
-                      ),
-                    },
-                    {
-                      label: 'Measure Value',
-                      key: '2',
-                      children: (
-                        <>
-                          {measureValue &&
-                            measureValue.map(v => {
-                              return (
-                                <TapChildren name={v[0].toUpperCase()} unit='cm'>
-                                  <span>{v[1]}</span>
-                                </TapChildren>
-                              );
-                            })}
-                        </>
-                      ),
-                    },
-                  ]}
-                />
-              </ConfigProvider>
-            </TapContainer>
-          </DataContainer>
-        </SliceContainer>
-        <ButtonBottomContainer>
-          <AButton color='black' disabled={false} dest='수정' />
-          <AButton color='' disabled={false} dest='삭제' />
-        </ButtonBottomContainer>
-      </PageMainLayout>
+          </ButtonBottomContainer>
+        </PageMainLayout>
+      ) : (
+        <ItemForm title={title} subTitle={subTitle} type='details' itemId={Number(id)} resultNumber={Number(id)} Submit={transferTypes} setState={setIsModifyMode} />
+      )}
     </PageLayout>
   );
 };
