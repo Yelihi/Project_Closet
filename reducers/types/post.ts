@@ -4,7 +4,7 @@ export interface VisionSearch {
 }
 
 export interface ImagePathObject {
-  filename: string;
+  src: string;
   visionSearch: VisionSearch[];
 }
 

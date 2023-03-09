@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FieldValues, useFormContext } from 'react-hook-form';
 
 import { TControl, TControlArray } from '../element/type';
-import { AddInitialValue } from '../../../pages/closet/add';
+import { AddInitialValue } from '../ItemForm';
 
 import InputBackground from './InputBackgroud';
 import ANumberInput from '../element/ANumberInput';

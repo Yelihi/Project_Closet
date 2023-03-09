@@ -65,6 +65,7 @@ export default (state = initialState, action: AnyAction) => {
         draft.loadItemDone = true;
         draft.loadItemError = false;
         draft.singleItem = action.data;
+        draft.imagePath = action.data.Images;
         break;
       }
       case t.LOAD_ITEM_FAILURE: {
