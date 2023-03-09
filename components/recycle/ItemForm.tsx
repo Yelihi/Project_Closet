@@ -59,7 +59,7 @@ const defaultValues = {
   image: [],
   price: 0,
   color: '',
-  categori: '',
+  categori: '카테고리를 선택해주세요',
   purchaseDay: '',
   categoriItem: {
     shoulder: 0,
@@ -109,20 +109,12 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
     const { id, createdAt, updatedAt, ClothId, ...measure } = categoriObject!;
     const { categoriItem, ...rest } = defaultValues;
     const measureItem = { categoriItem: { ...categoriItem, ...measure } };
-    console.log(measureItem);
     beforeValues = { ...singleData, ...measureItem };
-    console.log(beforeValues);
     if (!isDataChange.current) {
       isDataChange.current = true;
       reset(beforeValues);
     }
   }
-
-  useEffect(() => {
-    dispatch({
-      type: t.RESET_UPLOAD_PAGE,
-    });
-  }, []);
 
   // 어차피 singleItem 이 있다면 defaultValue -> beforeValues 로 변경된다.
   useEffect(() => {
@@ -163,6 +155,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
   const onSubmit = (data: AddInitialValue) => {
     data.image = imagePath;
     const Type = Submit();
+    console.log(data);
     return dispatch({
       type: Type,
       data: { items: data, clothId: itemId },
@@ -222,9 +215,9 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                         let isCategori = v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate]?.includes(item));
                         let confidence = categoriToVisionAI[cate]?.includes(v.visionSearch[0].name);
                         return (
-                          <PreviewContainer key={v.filename} border={isClothes}>
+                          <PreviewContainer key={v.src} border={isClothes}>
                             {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
-                            <PreviewImage src={`${backUrl}/${v.filename}`} alt={v.filename} width={250} height={250} />
+                            <PreviewImage src={`${backUrl}/${v.src}`} alt={v.src} width={250} height={250} />
                             <PreviewTextContainer>
                               <PreviewText>
                                 {isClothes ? (
