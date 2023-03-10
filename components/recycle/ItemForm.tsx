@@ -88,7 +88,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
   const dispatch = useDispatch();
   const [isClothes, setIsClothes] = useState(false);
   const isDataChange = useRef(false);
-  const { imagePath, uploadItemsDone, lastAddDataIndex, singleItem } = useSelector((state: rootReducerType) => state.post);
+  const { imagePath, uploadItemsDone, uploadItemsError, lastAddDataIndex, singleItem } = useSelector((state: rootReducerType) => state.post);
   const methods = useForm<AddInitialValue>({
     mode: 'onSubmit',
     defaultValues: defaultValues,
@@ -110,9 +110,16 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
     const { categoriItem, ...rest } = defaultValues;
     const measureItem = { categoriItem: { ...categoriItem, ...measure } };
     beforeValues = { ...singleData, ...measureItem };
+    // 무한 렌더링을 막기 위함이다.
     if (!isDataChange.current) {
       isDataChange.current = true;
       reset(beforeValues);
+    }
+  } else {
+    // 역시나 무한 랜더링을 막기 위함이다.
+    if (isDataChange.current) {
+      isDataChange.current = false;
+      reset(defaultValues);
     }
   }
 
@@ -146,17 +153,16 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
   );
 
   const backDetailsPage = useCallback(() => {
-    Router.push(`/closet/details/${itemId}`);
     if (setState) {
       setState(prev => !prev);
     }
-  }, [itemId]);
+  }, []);
 
   const onSubmit = (data: AddInitialValue) => {
     data.image = imagePath;
     const Type = Submit();
     console.log(data);
-    return dispatch({
+    dispatch({
       type: Type,
       data: { items: data, clothId: itemId },
     });
@@ -164,7 +170,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
 
   return (
     <>
-      {!uploadItemsDone && (
+      {!uploadItemsDone ? (
         <PageMainLayout title={title} subTitle={subTitle}>
           <TestContainer>
             <AddSection>
@@ -293,7 +299,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                         <AButton type='submit' color='black' dest='수정하기' disabled={!isClothes} />
                       </SubmitButton>
                       <SubmitButton>
-                        <AButton color='' dest='이전으로' onClick={backDetailsPage} disabled={isClothes} />
+                        <AButton color='' dest='이전으로' onClick={backDetailsPage} disabled={false} />
                       </SubmitButton>
                     </Float>
                   )}
@@ -302,8 +308,9 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
             </AddSection>
           </TestContainer>
         </PageMainLayout>
-      )}
-      {uploadItemsDone && <SortingResultComponent sort={type} id={resultNumber} />}
+      ) : null}
+      {uploadItemsDone ? <SortingResultComponent sort={type} id={resultNumber} setConvertState={setState} /> : null}
+      {uploadItemsError ? <SortingResultComponent sort={`${type}Failure`} id={resultNumber} setConvertState={setState} /> : null}
     </>
   );
 };

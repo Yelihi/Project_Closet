@@ -15,6 +15,9 @@ export const initialState: PostInitialState = {
   imageUploadLoding: false,
   imageUploadDone: false,
   imageUploadError: false,
+  deleteItemLoding: false,
+  deleteItemDone: false,
+  deleteItemError: false,
   lastAddDataIndex: '',
   user: null,
   imagePath: [],
@@ -34,6 +37,24 @@ export default (state = initialState, action: AnyAction) => {
       }
       case t.RESET_UPLOAD_PAGE: {
         draft.uploadItemsDone = false;
+        break;
+      }
+      case t.DELETE_ITEM_REQUEST: {
+        draft.deleteItemLoding = true;
+        draft.deleteItemDone = false;
+        draft.deleteItemError = false;
+        break;
+      }
+      case t.DELETE_ITEM_SUCCESS: {
+        draft.deleteItemLoding = false;
+        draft.deleteItemDone = true;
+        draft.deleteItemError = false;
+        break;
+      }
+      case t.DELETE_ITEM_FAILURE: {
+        draft.deleteItemLoding = false;
+        draft.deleteItemDone = false;
+        draft.deleteItemError = action.error;
         break;
       }
       case t.PATCH_ITEM_REQUEST: {
@@ -106,7 +127,6 @@ export default (state = initialState, action: AnyAction) => {
         draft.user = action.data;
         draft.lastAddDataIndex = action.data.id;
         draft.imagePath = [];
-        alert('저장되었습니다.');
         break;
       }
       case t.UPLOAD_ITEMS_FAILURE: {

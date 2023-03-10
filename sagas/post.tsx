@@ -84,12 +84,12 @@ function* loadItem(action: AnyAction) {
   }
 }
 
-type patchItem = {
+type patchProps = {
   items: AddInitialValue;
   clothId: number;
 };
 
-function patchItemAPI(data: patchItem) {
+function patchItemAPI(data: patchProps) {
   return axios.patch(`/post/clothes/${data.clothId}`, data);
 }
 
@@ -111,6 +111,30 @@ function* patchItem(action: AnyAction) {
   }
 }
 
+type deleteProps = Pick<patchProps, 'clothId'>;
+
+function deleteItemAPI(data: deleteProps) {
+  return axios.delete(`/post/clothes/${data.clothId}`);
+}
+
+function* deleteItem(action: AnyAction) {
+  try {
+    console.log('saga delete');
+    console.log(action.data);
+    const result: AxiosResponse<Success> = yield call(deleteItemAPI, action.data);
+    yield put({
+      type: t.DELETE_ITEM_SUCCESS,
+      data: result.data,
+    });
+  } catch (err: any) {
+    console.log(err);
+    yield put({
+      type: t.DELETE_ITEM_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchImageUpload() {
   yield takeLatest(t.UPLOAD_IMAGES_REQUEST, uploadImage);
 }
@@ -127,6 +151,10 @@ function* watchItemPatch() {
   yield takeLatest(t.PATCH_ITEM_REQUEST, patchItem);
 }
 
+function* watchItemDelete() {
+  yield takeLatest(t.DELETE_ITEM_REQUEST, deleteItem);
+}
+
 export default function* postSaga() {
-  yield all([fork(watchImageUpload), fork(watchItemsUpload), fork(watchItemLoad), fork(watchItemPatch)]);
+  yield all([fork(watchImageUpload), fork(watchItemsUpload), fork(watchItemLoad), fork(watchItemPatch), fork(watchItemDelete)]);
 }
