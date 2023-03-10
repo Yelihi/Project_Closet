@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import * as t from '../../reducers/type';
 
 import axios from 'axios';
@@ -19,7 +19,6 @@ import ItemForm from '../../components/recycle/ItemForm';
 import { addPageLayoutProps } from '../../components/add/ElementData';
 
 const add = () => {
-  const [hydrated, setHydrated] = useState(false);
   const { lastAddDataIndex } = useSelector((state: rootReducerType) => state.post);
 
   const transferTypes = useCallback(() => {

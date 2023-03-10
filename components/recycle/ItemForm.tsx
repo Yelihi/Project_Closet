@@ -146,17 +146,16 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
   );
 
   const backDetailsPage = useCallback(() => {
-    Router.push(`/closet/details/${itemId}`);
     if (setState) {
       setState(prev => !prev);
     }
-  }, [itemId]);
+  }, []);
 
   const onSubmit = (data: AddInitialValue) => {
     data.image = imagePath;
     const Type = Submit();
     console.log(data);
-    return dispatch({
+    dispatch({
       type: Type,
       data: { items: data, clothId: itemId },
     });
@@ -293,7 +292,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                         <AButton type='submit' color='black' dest='수정하기' disabled={!isClothes} />
                       </SubmitButton>
                       <SubmitButton>
-                        <AButton color='' dest='이전으로' onClick={backDetailsPage} disabled={isClothes} />
+                        <AButton color='' dest='이전으로' onClick={backDetailsPage} disabled={false} />
                       </SubmitButton>
                     </Float>
                   )}
@@ -303,7 +302,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
           </TestContainer>
         </PageMainLayout>
       )}
-      {uploadItemsDone && <SortingResultComponent sort={type} id={resultNumber} />}
+      {uploadItemsDone && <SortingResultComponent sort={type} id={resultNumber} setConvertState={setState} />}
     </>
   );
 };

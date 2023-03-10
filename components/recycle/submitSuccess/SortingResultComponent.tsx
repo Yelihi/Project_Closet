@@ -9,9 +9,10 @@ import { useDispatch } from 'react-redux';
 type Props = {
   sort: ResultDataKey;
   id: number | '';
+  setConvertState?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const SortingResultComponent = ({ sort, id }: Props) => {
+const SortingResultComponent = ({ sort, id, setConvertState }: Props) => {
   const dispatch = useDispatch();
   const data = Data[sort];
   const { title, subTitle, buttonNamePrimary, buttonName, status, primaryPage, otherPage } = data;
@@ -19,6 +20,9 @@ const SortingResultComponent = ({ sort, id }: Props) => {
   const movePage = useCallback(
     (page: string, id: '' | number) => () => {
       Router.push(`/closet/${page}/${id}`);
+      if (setConvertState) {
+        setConvertState(prev => !prev);
+      }
       if (page === 'add') {
         dispatch({
           type: t.RESET_UPLOAD_PAGE,
