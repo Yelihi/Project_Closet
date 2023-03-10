@@ -89,6 +89,9 @@ export interface PostInitialState {
   imageUploadLoding: boolean;
   imageUploadDone: boolean;
   imageUploadError: boolean;
+  deleteItemLoding: boolean;
+  deleteItemDone: boolean;
+  deleteItemError: boolean;
   lastAddDataIndex: number | '';
   user: User | null;
   imagePath: ImagePathObject[];

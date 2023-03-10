@@ -19,14 +19,19 @@ const SortingResultComponent = ({ sort, id, setConvertState }: Props) => {
 
   const movePage = useCallback(
     (page: string, id: '' | number) => () => {
-      Router.push(`/closet/${page}/${id}`);
-      if (setConvertState) {
-        setConvertState(prev => !prev);
-      }
       if (page === 'add') {
         dispatch({
           type: t.RESET_UPLOAD_PAGE,
         });
+      }
+      if (page === 'details') {
+        Router.push(`/closet/${page}/${id}`);
+      } else {
+        Router.push(`/closet/${page}`);
+      }
+
+      if (setConvertState) {
+        setConvertState(prev => !prev);
       }
     },
     []

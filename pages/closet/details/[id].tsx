@@ -28,11 +28,13 @@ import ItemForm from '../../../components/recycle/ItemForm';
 
 import { media } from '../../../styles/media';
 import { addPageLayoutProps } from '../../../components/details/ElementData';
+import useConfirm from '../../../hooks/useComfirm';
+import SortingResultComponent from '../../../components/recycle/submitSuccess/SortingResultComponent';
 
 const Details = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { singleItem } = useSelector((state: rootReducerType) => state.post);
+  const { singleItem, deleteItemDone, deleteItemError } = useSelector((state: rootReducerType) => state.post);
   const { id } = router.query;
   const [isModifyMode, setIsModifyMode] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -42,6 +44,27 @@ const Details = () => {
   useEffect(() => {
     setHydrated(true);
   }, []);
+
+  const transferTypes = useCallback(() => {
+    return t.PATCH_ITEM_REQUEST;
+  }, []);
+
+  const startModify = useCallback(() => {
+    setIsModifyMode(true);
+  }, []);
+
+  const deleteItem = () => {
+    dispatch({
+      type: t.DELETE_ITEM_REQUEST,
+      data: { clothId: id },
+    });
+  };
+
+  const cencelDelete = () => {
+    console.log('취소하였습니다.');
+  };
+
+  const deleteConfirm = useConfirm('정말 의류를 삭제하시겠습니까?', deleteItem, cencelDelete);
 
   let measureObject = null;
   let measureValue: [string, number][] = [['name', 1]];
@@ -57,25 +80,15 @@ const Details = () => {
     });
   }
 
-  const transferTypes = useCallback(() => {
-    return t.PATCH_ITEM_REQUEST;
-  }, []);
-
-  const startModify = useCallback(() => {
-    setIsModifyMode(true);
-  }, []);
-
-  if (!singleItem) {
-    return <div>빈페이지</div>;
-  }
-
   if (!hydrated) {
     return null;
   }
 
   return (
     <PageLayout>
-      {!isModifyMode ? (
+      {deleteItemDone ? <SortingResultComponent sort='deleteItem' id={Number(id)} /> : null}
+      {deleteItemError ? <SortingResultComponent sort='deleteItemFailure' id={Number(id)} /> : null}
+      {!deleteItemDone && !deleteItemError && !isModifyMode ? (
         <PageMainLayout istitle={false}>
           <HandleContainer>
             <CustomBread separator='>'>
@@ -89,7 +102,7 @@ const Details = () => {
             </CustomBread>
             <ButtonContainer>
               <AButton color='black' disabled={false} onClick={startModify} dest='수정' />
-              <AButton color='' disabled={false} dest='삭제' />
+              <AButton color='' disabled={false} dest='삭제' onClick={deleteConfirm} />
             </ButtonContainer>
           </HandleContainer>
 
@@ -152,12 +165,13 @@ const Details = () => {
           </SliceContainer>
           <ButtonBottomContainer>
             <AButton color='black' disabled={false} onClick={startModify} dest='수정' />
-            <AButton color='' disabled={false} dest='삭제' />
+            <AButton color='' disabled={false} dest='삭제' onClick={deleteConfirm} />
           </ButtonBottomContainer>
         </PageMainLayout>
-      ) : (
+      ) : null}
+      {!deleteItemDone && !deleteItemError && isModifyMode ? (
         <ItemForm title={title} subTitle={subTitle} type='details' itemId={Number(id)} resultNumber={Number(id)} Submit={transferTypes} setState={setIsModifyMode} />
-      )}
+      ) : null}
     </PageLayout>
   );
 };
