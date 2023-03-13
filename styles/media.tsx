@@ -3,5 +3,6 @@ export const media = {
   custom: customMediaQuery,
   desktop: customMediaQuery(1024),
   tablet: customMediaQuery(786),
+  middlePhone: customMediaQuery(400),
   phone: customMediaQuery(320),
 };
