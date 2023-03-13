@@ -31,7 +31,7 @@ const ProcessingDataCard = ({ Icon, DataTitle, LastData, CurrentData, Categori }
       </DataBox>
       <PercentBox>
         <PercentBorder>
-          {percent >= 0 ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />}
+          {percent >= 0 ? <AiOutlineArrowUp className='Arrow' /> : <AiOutlineArrowDown className='Arrow' />}
           {`${Math.abs(percent)}%`}
         </PercentBorder>
       </PercentBox>
@@ -128,6 +128,12 @@ const PercentBox = styled.div`
   width: 100%;
   height: 100%;
   padding: 5px;
+
+  .Arrow {
+    width: 14px;
+    height: 14px;
+    margin-bottom: 2px;
+  }
 
   ${media.phone} {
     display: flex;
