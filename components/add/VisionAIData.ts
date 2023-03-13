@@ -9,6 +9,6 @@ export const categoriToVisionAI: CategoriObject = {
   Top: ['Top'],
   Pant: ['Pants', 'Jeans'],
   Shirt: ['Shirt'],
-  Shoes: ['Shoe'],
+  Shoe: ['Shoe'],
   Muffler: ['Scarf'],
 };
