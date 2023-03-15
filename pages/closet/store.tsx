@@ -2,7 +2,9 @@ import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Link from 'next/link';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
+import { useDispatch } from 'react-redux';
+import * as t from '../../reducers/type';
 
 import { Breadcrumb } from 'antd';
 
@@ -13,13 +15,26 @@ import { CgRowFirst } from 'react-icons/cg';
 import PageLayout from '../../components/recycle/PageLayout';
 import PageMainLayout from '../../components/recycle/main/PageMainLayout';
 import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
+import ATable from '../../components/recycle/ATable';
 
 import { media } from '../../styles/media';
+import { StoreHeader, TestItems } from '../../components/store/TableData';
 
 const store = () => {
+  const dispatch = useDispatch();
   const moveToAddPage = useCallback(() => {
     Router.push('/closet/add');
   }, []);
+
+  const deleteItemAtTable = useCallback(
+    (id: number) => () => {
+      dispatch({
+        type: t.DELETE_ITEM_REQUEST,
+        data: { clothId: id },
+      });
+    },
+    []
+  );
 
   return (
     <PageLayout>
@@ -59,7 +74,9 @@ const store = () => {
             <div>ADD PRODUCT</div>
           </AddButton>
         </AddSection>
-        <section></section>
+        <section>
+          <ATable headData={StoreHeader} itemsData={TestItems} isDelete={true} onSubmit={deleteItemAtTable} />
+        </section>
         store
       </PageMainLayout>
     </PageLayout>
