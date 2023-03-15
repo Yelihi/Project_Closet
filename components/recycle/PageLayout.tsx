@@ -45,10 +45,11 @@ const Container = styled.section`
   width: 100%;
   height: auto;
   gap: 50px;
-  padding: 24px;
+  padding: 24px 0;
   ${media.tablet} {
     width: calc(100vw - 115px);
     gap: 10px;
+    padding: 24px;
   }
 
   ${media.desktop} {

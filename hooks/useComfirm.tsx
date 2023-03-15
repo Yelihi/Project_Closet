@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 type Props = {
   description: string;
-  onSubmit: () => void;
+  onSubmit: (id?: number) => () => void;
   onCencel: () => void;
 };
 
