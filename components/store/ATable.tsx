@@ -3,7 +3,7 @@ import Router from 'next/router';
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Empty } from 'antd';
-import { StoreHeaderType, StoreItemsType, ItemsArray } from '../store/TableData';
+import { StoreHeaderType, StoreItemsType, ItemsArray } from './TableData';
 
 import { backUrl } from '../../config/config';
 

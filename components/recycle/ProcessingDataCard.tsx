@@ -16,7 +16,7 @@ type Props = {
 };
 
 const ProcessingDataCard = ({ Icon, DataTitle, LastData = 0, CurrentData = 0, Categori }: Props) => {
-  let percent = ((CurrentData - LastData) / LastData) * 100;
+  let percent = Math.floor(((CurrentData - LastData) / LastData) * 100);
 
   return (
     <CardBox>

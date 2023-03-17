@@ -14,7 +14,7 @@ import type { SagaStore } from '../../store/configureStore';
 
 import wrapper from '../../store/configureStore';
 
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Pagination, PaginationProps } from 'antd';
 
 import { AiOutlineDatabase, AiOutlinePlus } from 'react-icons/ai';
 import { GiPayMoney } from 'react-icons/gi';
@@ -23,7 +23,7 @@ import { CgRowFirst } from 'react-icons/cg';
 import PageLayout from '../../components/recycle/PageLayout';
 import PageMainLayout from '../../components/recycle/main/PageMainLayout';
 import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
-import ATable from '../../components/recycle/ATable';
+import ATable from '../../components/store/ATable';
 
 import { media } from '../../styles/media';
 import { StoreHeader, TestItems } from '../../components/store/TableData';
@@ -35,6 +35,7 @@ const store = () => {
   const { me } = useSelector((state: rootReducerType) => state.user);
   const { userItems, indexArray } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
+  const [current, setCurrent] = useState(1);
 
   useEffect(() => {
     setHydrated(true);
@@ -69,6 +70,11 @@ const store = () => {
   }
 
   console.log('indexArray', indexArray);
+  console.log('current', current);
+
+  const pageChange: PaginationProps['onChange'] = page => {
+    setCurrent(page);
+  };
 
   const moveToAddPage = useCallback(() => {
     Router.push('/closet/add');
@@ -126,9 +132,12 @@ const store = () => {
             <div>ADD PRODUCT</div>
           </AddButton>
         </AddSection>
-        <section>
+        <ItemsStoreSection>
           <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} />
-        </section>
+          <div>
+            <Pagination current={current} onChange={pageChange} total={userItems?.total} defaultPageSize={9} />
+          </div>
+        </ItemsStoreSection>
         store
       </PageMainLayout>
     </PageLayout>
@@ -275,5 +284,20 @@ const AddButton = styled.div`
       display: block;
       font-size: clamp(12px, 1.8vw, 14px);
     }
+  }
+`;
+
+const ItemsStoreSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  gap: 10px;
+
+  > div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
   }
 `;
