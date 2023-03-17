@@ -9,6 +9,9 @@ export const initialState: PostInitialState = {
   loadItemLoding: false,
   loadItemDone: false,
   loadItemError: false,
+  loadItemsLoding: false,
+  loadItemsDone: false,
+  loadItemsError: false,
   uploadItemsLoding: false,
   uploadItemsDone: false,
   uploadItemsError: false,
@@ -22,6 +25,8 @@ export const initialState: PostInitialState = {
   user: null,
   imagePath: [],
   singleItem: null,
+  indexArray: [],
+  userItems: null,
 };
 
 export default (state = initialState, action: AnyAction) => {
@@ -90,6 +95,26 @@ export default (state = initialState, action: AnyAction) => {
         break;
       }
       case t.LOAD_ITEM_FAILURE: {
+        draft.loadItemLoding = false;
+        draft.loadItemDone = false;
+        draft.loadItemError = action.error;
+        break;
+      }
+      case t.LOAD_ITEMS_REQUEST: {
+        draft.loadItemsLoding = true;
+        draft.loadItemsDone = false;
+        draft.loadItemsError = false;
+        break;
+      }
+      case t.LOAD_ITEMS_SUCCESS: {
+        draft.loadItemsLoding = false;
+        draft.loadItemsDone = true;
+        draft.loadItemsError = false;
+        draft.indexArray = action.data.idArray;
+        draft.userItems = action.data;
+        break;
+      }
+      case t.LOAD_ITEMS_FAILURE: {
         draft.loadItemLoding = false;
         draft.loadItemDone = false;
         draft.loadItemError = action.error;

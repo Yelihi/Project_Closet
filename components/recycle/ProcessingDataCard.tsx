@@ -10,12 +10,12 @@ import { media } from '../../styles/media';
 type Props = {
   Icon: React.ReactElement;
   DataTitle: string;
-  LastData: number;
-  CurrentData: number;
+  LastData?: number;
+  CurrentData?: number;
   Categori?: string;
 };
 
-const ProcessingDataCard = ({ Icon, DataTitle, LastData, CurrentData, Categori }: Props) => {
+const ProcessingDataCard = ({ Icon, DataTitle, LastData = 0, CurrentData = 0, Categori }: Props) => {
   let percent = ((CurrentData - LastData) / LastData) * 100;
 
   return (

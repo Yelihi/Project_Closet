@@ -81,3 +81,32 @@ export const TestItems = [
     etc: 1,
   },
 ];
+
+export interface ImagesPros {
+  id: number;
+  ClothId: number;
+  src: string;
+}
+
+export interface ItemsArray {
+  Images: ImagesPros[];
+  UserId: number;
+  categori: string;
+  color: string;
+  createdAt: string;
+  description: string;
+  id: number;
+  price: number;
+  productName: string;
+  purchaseDay: string;
+  updatedAt: string;
+}
+
+export interface UserItemsData {
+  categori: string;
+  categoriNum: number;
+  idArray: number[];
+  items: ItemsArray[];
+  price: number;
+  total: number;
+}

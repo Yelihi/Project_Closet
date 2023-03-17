@@ -1,3 +1,14 @@
+export interface User {
+  id: number;
+  email: string;
+  nickname: string;
+  src: string;
+  snsId: string;
+  provider: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface UserInitialState {
   loadToMyInfoDone: boolean;
   loadToMyInfoError: string | null;
@@ -10,7 +21,7 @@ export interface UserInitialState {
   signInLoading: boolean;
   signInDone: boolean;
   signInError: string | null;
-  me: {} | null;
+  me: User | null;
 }
 
 export interface UserInfo {

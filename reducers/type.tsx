@@ -42,6 +42,10 @@ export const LOAD_ITEM_REQUEST = 'LOAD_ITEM_REQUEST' as const;
 export const LOAD_ITEM_SUCCESS = 'LOAD_ITEM_SUCCESS' as const;
 export const LOAD_ITEM_FAILURE = 'LOAD_ITEM_FAILURE' as const;
 
+export const LOAD_ITEMS_REQUEST = 'LOAD_ITEMS_REQUEST' as const;
+export const LOAD_ITEMS_SUCCESS = 'LOAD_ITEMS_SUCCESS' as const;
+export const LOAD_ITEMS_FAILURE = 'LOAD_ITEMS_FAILURE' as const;
+
 export const PATCH_ITEM_REQUEST = 'PATCH_ITEM_REQUEST' as const;
 export const PATCH_ITEM_SUCCESS = 'PATCH_ITEM_SUCCESS' as const;
 export const PATCH_ITEM_FAILURE = 'PATCH_ITEM_FAILURE' as const;
