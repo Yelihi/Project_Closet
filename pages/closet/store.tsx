@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useSWR from 'swr';
 
 import Link from 'next/link';
 import Router from 'next/router';
@@ -7,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import * as t from '../../reducers/type';
 
 import axios from 'axios';
+import { fetcher, backUrl } from '../../config/config';
 import { END } from 'redux-saga';
 
 import { GetServerSidePropsContext } from 'next';
@@ -37,6 +39,13 @@ const store = () => {
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
 
+  let pageIndex = (current - 1) * 9 - 1;
+  let lastId = pageIndex >= 0 ? indexArray[pageIndex] : 0;
+
+  const { data, error, isLoading } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
+
+  console.log('data', data, isLoading);
+
   useEffect(() => {
     setHydrated(true);
   }, []);
@@ -50,26 +59,15 @@ const store = () => {
     }
   }, []);
 
-  let currentDate = new Date().getFullYear() + '-' + new Date().getMonth().toString().padStart(2, '0');
   let modifiedItems = [];
-  let lastCategori = 0;
-  let lastData = 0;
-  let lastTotalPrice = 0;
 
-  if (userItems) {
-    for (let cloth of userItems?.items) {
+  if (data) {
+    for (let cloth of data) {
       modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
-      if (cloth.purchaseDay.substring(0, 7) !== currentDate) {
-        lastData += 1;
-        lastTotalPrice += cloth.price;
-      }
-      if (cloth.purchaseDay.substring(0, 7) !== currentDate && cloth.categori === userItems.categori) {
-        lastCategori += 1;
-      }
     }
   }
 
-  console.log('indexArray', indexArray);
+  console.log('indexArray', userItems);
   console.log('current', current);
 
   const pageChange: PaginationProps['onChange'] = page => {
@@ -118,9 +116,9 @@ const store = () => {
           </dl>
         </TitleSection>
         <CardSection>
-          <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={lastData} CurrentData={userItems?.total} />
-          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Consumption' LastData={lastTotalPrice} CurrentData={userItems?.price} />
-          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastCategori} CurrentData={userItems?.categoriNum} Categori='Outer' />
+          <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={userItems?.lastTotal} CurrentData={userItems?.total} />
+          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Consumption' LastData={userItems?.lastPrice} CurrentData={userItems?.price} />
+          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={userItems?.lastCategoriNum} CurrentData={userItems?.categoriNum} Categori='Outer' />
         </CardSection>
         <AddSection>
           <DictionaryBox>
@@ -133,7 +131,7 @@ const store = () => {
           </AddButton>
         </AddSection>
         <ItemsStoreSection>
-          <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} />
+          <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} />
           <div>
             <Pagination current={current} onChange={pageChange} total={userItems?.total} defaultPageSize={9} />
           </div>

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Router from 'next/router';
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import { Empty } from 'antd';
+import { Empty, Spin } from 'antd';
 import { StoreHeaderType, StoreItemsType, ItemsArray } from './TableData';
 
 import { backUrl } from '../../config/config';
@@ -15,9 +15,10 @@ type TableProps = {
   itemsData: ItemsArray[] | undefined;
   isDelete?: boolean;
   onSubmit?: (id: number) => () => void;
+  isLoading?: boolean; // true 일때 로딩중
 };
 
-const ATable = ({ headData, itemsData = [], isDelete, onSubmit }: TableProps) => {
+const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: TableProps) => {
   const headerKey = headData.map(v => v.value);
   const moveToDetailsPage = useCallback(
     (id: number) => () => {
@@ -39,8 +40,13 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit }: TableProps) =>
           })}
         </tr>
       </Thead>
+      {isLoading && (
+        <Spin tip='로딩중입니다'>
+          <tbody></tbody>
+        </Spin>
+      )}
       <tbody>
-        {itemsData.length > 1 ? (
+        {itemsData.length >= 1 ? (
           itemsData.map((data, index) => {
             return (
               <Tr key={index}>

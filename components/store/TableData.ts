@@ -105,8 +105,11 @@ export interface ItemsArray {
 export interface UserItemsData {
   categori: string;
   categoriNum: number;
+  lastCategoriNum: number;
   idArray: number[];
   items: ItemsArray[];
   price: number;
+  lastPrice: number;
   total: number;
+  lastTotal: number;
 }

@@ -110,6 +110,7 @@ const Title = styled.div`
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Medium};
   color: ${({ theme }) => theme.colors.middleGrey};
+  width: 110px;
   margin-bottom: 10px;
 `;
 
