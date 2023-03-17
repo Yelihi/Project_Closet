@@ -84,6 +84,32 @@ function* loadItem(action: AnyAction) {
   }
 }
 
+type LoadItems = {
+  id: number;
+};
+
+function loadItemsAPI(data: LoadItems) {
+  return axios.get(`/posts/clothes/${data.id}`);
+}
+
+function* loadItems(action: AnyAction) {
+  try {
+    console.log('saga items load');
+    console.log(action.data);
+    const result: AxiosResponse<Success> = yield call(loadItemsAPI, action.data);
+    yield put({
+      type: t.LOAD_ITEMS_SUCCESS,
+      data: result.data,
+    });
+  } catch (err: any) {
+    console.log(err);
+    yield put({
+      type: t.LOAD_ITEMS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 type patchProps = {
   items: AddInitialValue;
   clothId: number;
@@ -147,6 +173,10 @@ function* watchItemLoad() {
   yield takeLatest(t.LOAD_ITEM_REQUEST, loadItem);
 }
 
+function* watchItemsLoad() {
+  yield takeLatest(t.LOAD_ITEMS_REQUEST, loadItems);
+}
+
 function* watchItemPatch() {
   yield takeLatest(t.PATCH_ITEM_REQUEST, patchItem);
 }
@@ -156,5 +186,5 @@ function* watchItemDelete() {
 }
 
 export default function* postSaga() {
-  yield all([fork(watchImageUpload), fork(watchItemsUpload), fork(watchItemLoad), fork(watchItemPatch), fork(watchItemDelete)]);
+  yield all([fork(watchImageUpload), fork(watchItemsUpload), fork(watchItemLoad), fork(watchItemPatch), fork(watchItemDelete), fork(watchItemsLoad)]);
 }

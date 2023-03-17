@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Link from 'next/link';
@@ -6,7 +6,15 @@ import Router from 'next/router';
 import { useDispatch } from 'react-redux';
 import * as t from '../../reducers/type';
 
-import { Breadcrumb } from 'antd';
+import axios from 'axios';
+import { END } from 'redux-saga';
+
+import { GetServerSidePropsContext } from 'next';
+import type { SagaStore } from '../../store/configureStore';
+
+import wrapper from '../../store/configureStore';
+
+import { Breadcrumb, Pagination, PaginationProps } from 'antd';
 
 import { AiOutlineDatabase, AiOutlinePlus } from 'react-icons/ai';
 import { GiPayMoney } from 'react-icons/gi';
@@ -15,13 +23,59 @@ import { CgRowFirst } from 'react-icons/cg';
 import PageLayout from '../../components/recycle/PageLayout';
 import PageMainLayout from '../../components/recycle/main/PageMainLayout';
 import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
-import ATable from '../../components/recycle/ATable';
+import ATable from '../../components/store/ATable';
 
 import { media } from '../../styles/media';
 import { StoreHeader, TestItems } from '../../components/store/TableData';
+import { useSelector } from 'react-redux';
+import { rootReducerType } from '../../reducers/types';
 
 const store = () => {
   const dispatch = useDispatch();
+  const { me } = useSelector((state: rootReducerType) => state.user);
+  const { userItems, indexArray } = useSelector((state: rootReducerType) => state.post);
+  const [hydrated, setHydrated] = useState(false);
+  const [current, setCurrent] = useState(1);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (me) {
+      dispatch({
+        type: t.LOAD_ITEMS_REQUEST,
+        data: { id: me.id },
+      });
+    }
+  }, []);
+
+  let currentDate = new Date().getFullYear() + '-' + new Date().getMonth().toString().padStart(2, '0');
+  let modifiedItems = [];
+  let lastCategori = 0;
+  let lastData = 0;
+  let lastTotalPrice = 0;
+
+  if (userItems) {
+    for (let cloth of userItems?.items) {
+      modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
+      if (cloth.purchaseDay.substring(0, 7) !== currentDate) {
+        lastData += 1;
+        lastTotalPrice += cloth.price;
+      }
+      if (cloth.purchaseDay.substring(0, 7) !== currentDate && cloth.categori === userItems.categori) {
+        lastCategori += 1;
+      }
+    }
+  }
+
+  console.log('indexArray', indexArray);
+  console.log('current', current);
+
+  const pageChange: PaginationProps['onChange'] = page => {
+    setCurrent(page);
+  };
+
   const moveToAddPage = useCallback(() => {
     Router.push('/closet/add');
   }, []);
@@ -35,6 +89,10 @@ const store = () => {
     },
     []
   );
+
+  if (!hydrated) {
+    return null;
+  }
 
   return (
     <PageLayout>
@@ -60,9 +118,9 @@ const store = () => {
           </dl>
         </TitleSection>
         <CardSection>
-          <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={40} CurrentData={50} />
-          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Consumption' LastData={1200000} CurrentData={1800000} />
-          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={12} CurrentData={15} Categori='Outer' />
+          <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={lastData} CurrentData={userItems?.total} />
+          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Consumption' LastData={lastTotalPrice} CurrentData={userItems?.price} />
+          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastCategori} CurrentData={userItems?.categoriNum} Categori='Outer' />
         </CardSection>
         <AddSection>
           <DictionaryBox>
@@ -74,14 +132,35 @@ const store = () => {
             <div>ADD PRODUCT</div>
           </AddButton>
         </AddSection>
-        <section>
-          <ATable headData={StoreHeader} itemsData={TestItems} isDelete={true} onSubmit={deleteItemAtTable} />
-        </section>
+        <ItemsStoreSection>
+          <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} />
+          <div>
+            <Pagination current={current} onChange={pageChange} total={userItems?.total} defaultPageSize={9} />
+          </div>
+        </ItemsStoreSection>
         store
       </PageMainLayout>
     </PageLayout>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(store => async (context: GetServerSidePropsContext) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  store.dispatch({
+    // store에서 dispatch 하는 api
+    type: t.LOAD_TO_MY_INFO_REQUEST,
+  });
+
+  store.dispatch(END);
+  await (store as SagaStore).sagaTask?.toPromise();
+  return {
+    props: {},
+  };
+});
 
 export default store;
 
@@ -205,5 +284,20 @@ const AddButton = styled.div`
       display: block;
       font-size: clamp(12px, 1.8vw, 14px);
     }
+  }
+`;
+
+const ItemsStoreSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  gap: 10px;
+
+  > div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
   }
 `;

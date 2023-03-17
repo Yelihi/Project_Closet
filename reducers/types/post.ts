@@ -1,3 +1,5 @@
+import { UserItemsData } from '../../components/store/TableData';
+
 export interface VisionSearch {
   name: string;
   confidence: number;
@@ -83,6 +85,9 @@ export interface PostInitialState {
   loadItemLoding: boolean;
   loadItemDone: boolean;
   loadItemError: boolean;
+  loadItemsLoding: boolean;
+  loadItemsDone: boolean;
+  loadItemsError: boolean;
   uploadItemsLoding: boolean;
   uploadItemsDone: boolean;
   uploadItemsError: boolean;
@@ -96,4 +101,6 @@ export interface PostInitialState {
   user: User | null;
   imagePath: ImagePathObject[];
   singleItem: (User & SingleItem) | null;
+  indexArray: number[];
+  userItems: UserItemsData | null;
 }

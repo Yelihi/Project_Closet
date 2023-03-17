@@ -2,7 +2,8 @@ import Image from 'next/image';
 import Router from 'next/router';
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import { StoreHeaderType, StoreItemsType } from '../store/TableData';
+import { Empty } from 'antd';
+import { StoreHeaderType, StoreItemsType, ItemsArray } from './TableData';
 
 import { backUrl } from '../../config/config';
 
@@ -11,7 +12,7 @@ import { BiDetail } from 'react-icons/bi';
 
 type TableProps = {
   headData: StoreHeaderType[];
-  itemsData: StoreItemsType[];
+  itemsData: ItemsArray[] | undefined;
   isDelete?: boolean;
   onSubmit?: (id: number) => () => void;
 };
@@ -39,37 +40,41 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit }: TableProps) =>
         </tr>
       </Thead>
       <tbody>
-        {itemsData.map((data, index) => {
-          return (
-            <Tr key={index}>
-              {headerKey.map(headKey => {
-                return (
-                  <Td key={headKey + index}>
-                    {headKey === 'productName' && data.images ? (
-                      <ImageBox>
-                        <CImage src={`${backUrl}/${data.images}`} alt={headKey} width={100} height={100} />
-                        {data[headKey]}
-                      </ImageBox>
-                    ) : headKey === 'price' ? (
-                      data[headKey].toLocaleString('ko-KR')
-                    ) : headKey === 'etc' && isDelete && onSubmit ? (
-                      <EtcBox>
-                        <ETC onClick={moveToDetailsPage(data.id)}>
-                          <BiDetail className='icon' /> 상세보기
-                        </ETC>
-                        <ETC onClick={() => (window.confirm('삭제하시겠습니까?') ? onSubmit(data.id)() : () => console.log('취소했씁니다'))}>
-                          <FaTrashRestoreAlt className='icon' /> 삭제하기
-                        </ETC>
-                      </EtcBox>
-                    ) : (
-                      data[headKey]
-                    )}
-                  </Td>
-                );
-              })}
-            </Tr>
-          );
-        })}
+        {itemsData.length > 1 ? (
+          itemsData.map((data, index) => {
+            return (
+              <Tr key={index}>
+                {headerKey.map(headKey => {
+                  return (
+                    <Td key={headKey + index}>
+                      {headKey === 'productName' && data.Images ? (
+                        <ImageBox>
+                          <CImage src={`${backUrl}/${data.Images[0].src}`} alt={headKey} width={100} height={100} />
+                          {data[headKey]}
+                        </ImageBox>
+                      ) : headKey === 'price' ? (
+                        data[headKey].toLocaleString('ko-KR')
+                      ) : headKey === 'etc' && isDelete && onSubmit ? (
+                        <EtcBox>
+                          <ETC onClick={moveToDetailsPage(data.id)}>
+                            <BiDetail className='icon' /> 상세보기
+                          </ETC>
+                          <ETC onClick={() => (window.confirm('삭제하시겠습니까?') ? onSubmit(data.id)() : () => console.log('취소했씁니다'))}>
+                            <FaTrashRestoreAlt className='icon' /> 삭제하기
+                          </ETC>
+                        </EtcBox>
+                      ) : (
+                        headKey !== 'etc' && data[headKey]
+                      )}
+                    </Td>
+                  );
+                })}
+              </Tr>
+            );
+          })
+        ) : (
+          <Empty />
+        )}
       </tbody>
     </Table>
   );
