@@ -40,11 +40,6 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
           })}
         </tr>
       </Thead>
-      {isLoading && (
-        <Spin tip='로딩중입니다'>
-          <tbody></tbody>
-        </Spin>
-      )}
       <tbody>
         {itemsData.length >= 1 ? (
           itemsData.map((data, index) => {

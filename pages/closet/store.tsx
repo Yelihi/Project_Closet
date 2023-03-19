@@ -28,23 +28,21 @@ import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
 import ATable from '../../components/store/ATable';
 
 import { media } from '../../styles/media';
-import { StoreHeader, TestItems } from '../../components/store/TableData';
+import { StoreHeader } from '../../components/store/TableData';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
 
 const store = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state: rootReducerType) => state.user);
-  const { userItems, indexArray } = useSelector((state: rootReducerType) => state.post);
+  const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
 
   let pageIndex = (current - 1) * 9 - 1;
   let lastId = pageIndex >= 0 ? indexArray[pageIndex] : 0;
 
-  const { data, error, isLoading } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
-
-  console.log('data', data, isLoading);
+  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
 
   useEffect(() => {
     setHydrated(true);
@@ -67,7 +65,7 @@ const store = () => {
     }
   }
 
-  console.log('indexArray', userItems);
+  console.log('indexArray', indexArray);
   console.log('current', current);
 
   const pageChange: PaginationProps['onChange'] = page => {
