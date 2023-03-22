@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 
 import Link from 'next/link';
 import Router from 'next/router';
@@ -34,6 +34,7 @@ import { rootReducerType } from '../../reducers/types';
 
 const store = () => {
   const dispatch = useDispatch();
+  const { mutate } = useSWRConfig();
   const { me } = useSelector((state: rootReducerType) => state.user);
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
@@ -41,8 +42,12 @@ const store = () => {
 
   let pageIndex = (current - 1) * 9 - 1;
   let lastId = pageIndex >= 0 ? indexArray[pageIndex] : 0;
+  let maxCategoriName = 'Outer';
+  let maxCategori = 0;
+  let lastMaxCategori = 0;
 
-  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
+  const { data, error, isLoading } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
+  console.log('data', data);
 
   useEffect(() => {
     setHydrated(true);
@@ -65,8 +70,11 @@ const store = () => {
     }
   }
 
-  console.log('indexArray', indexArray);
-  console.log('current', current);
+  if (userItems) {
+    maxCategoriName = Object.entries(userItems.categori).sort((a, b) => b[1] - a[1])[0][0];
+    maxCategori = Object.entries(userItems.categori).sort((a, b) => b[1] - a[1])[0][1];
+    lastMaxCategori = Object.entries(userItems.lastCategori).sort((a, b) => b[1] - a[1])[0][1];
+  }
 
   const pageChange: PaginationProps['onChange'] = page => {
     setCurrent(page);
@@ -82,6 +90,7 @@ const store = () => {
         type: t.DELETE_ITEM_REQUEST,
         data: { clothId: id },
       });
+      mutate(`${backUrl}/posts/clothes/store?lastId=${lastId}`);
     },
     []
   );
@@ -116,7 +125,7 @@ const store = () => {
         <CardSection>
           <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={userItems?.lastTotal} CurrentData={userItems?.total} />
           <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Consumption' LastData={userItems?.lastPrice} CurrentData={userItems?.price} />
-          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={userItems?.lastCategoriNum} CurrentData={userItems?.categoriNum} Categori='Outer' />
+          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastMaxCategori} CurrentData={maxCategori} Categori={maxCategoriName} />
         </CardSection>
         <AddSection>
           <DictionaryBox>

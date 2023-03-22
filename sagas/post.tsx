@@ -138,6 +138,15 @@ function* patchItem(action: AnyAction) {
 }
 
 type deleteProps = Pick<patchProps, 'clothId'>;
+type deleteData = {
+  price: number;
+  categori: string;
+  purchaseDay: string;
+};
+type Delete = {
+  clothId: number;
+  clothData: deleteData;
+};
 
 function deleteItemAPI(data: deleteProps) {
   return axios.delete(`/post/clothes/${data.clothId}`);
@@ -146,8 +155,8 @@ function deleteItemAPI(data: deleteProps) {
 function* deleteItem(action: AnyAction) {
   try {
     console.log('saga delete');
-    console.log(action.data);
-    const result: AxiosResponse<Success> = yield call(deleteItemAPI, action.data);
+    const result: AxiosResponse<Delete> = yield call(deleteItemAPI, action.data);
+    console.log(result.data);
     yield put({
       type: t.DELETE_ITEM_SUCCESS,
       data: result.data,

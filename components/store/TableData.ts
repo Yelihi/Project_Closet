@@ -102,10 +102,20 @@ export interface ItemsArray {
   updatedAt: string;
 }
 
+export interface categoriObject {
+  [key: string]: number;
+  // Outer: number;
+  // Shirt: number;
+  // Top: number;
+  // Pant: number;
+  // Shoe: number;
+  // Muffler: number;
+}
+
 export interface UserItemsData {
-  categori: string;
-  categoriNum: number;
-  lastCategoriNum: number;
+  categori: categoriObject;
+  lastCagegori: categoriObject;
+  standardDate: Date;
   idArray: number[];
   items: ItemsArray[];
   price: number;
