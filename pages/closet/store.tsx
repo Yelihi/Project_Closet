@@ -34,7 +34,6 @@ import { rootReducerType } from '../../reducers/types';
 
 const store = () => {
   const dispatch = useDispatch();
-  const { mutate } = useSWRConfig();
   const { me } = useSelector((state: rootReducerType) => state.user);
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
@@ -46,7 +45,7 @@ const store = () => {
   let maxCategori = 0;
   let lastMaxCategori = 0;
 
-  const { data, error, isLoading } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
   console.log('data', data);
 
   useEffect(() => {
@@ -90,9 +89,15 @@ const store = () => {
         type: t.DELETE_ITEM_REQUEST,
         data: { clothId: id },
       });
-      mutate(`${backUrl}/posts/clothes/store?lastId=${lastId}`);
+      if (data) {
+        let newData = [];
+        for (let item of data) {
+          if (item.id !== id) newData.push(item);
+        }
+        mutate([...newData], false);
+      }
     },
-    []
+    [data]
   );
 
   if (!hydrated) {
