@@ -103,22 +103,22 @@ const Th = styled.th<{ index: string }>`
   ${props =>
     props.index === 'Purchase Day'
       ? css`
-          width: 150px;
+          width: 10%;
         `
       : props.index === 'Item Categori'
       ? css`
-          width: 150px;
+          width: 10%;
         `
       : props.index === 'Cost'
       ? css`
-          width: 120px;
+          width: 15%;
         `
       : props.index === 'etc'
       ? css`
-          width: 230px;
+          width: 25%;
         `
       : css`
-          width: fit-content;
+          width: 30%;
         `}
 `;
 
@@ -148,6 +148,8 @@ const ImageBox = styled.div`
 `;
 
 const CImage = styled(Image)`
+  width: 30%;
+  height: auto;
   border-radius: 5px;
 `;
 

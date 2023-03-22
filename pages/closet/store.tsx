@@ -26,6 +26,7 @@ import PageLayout from '../../components/recycle/PageLayout';
 import PageMainLayout from '../../components/recycle/main/PageMainLayout';
 import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
 import ATable from '../../components/store/ATable';
+import CardBoard from '../../components/store/CardBoard';
 
 import { media } from '../../styles/media';
 import { StoreHeader } from '../../components/store/TableData';
@@ -34,11 +35,11 @@ import { rootReducerType } from '../../reducers/types';
 
 const store = () => {
   const dispatch = useDispatch();
-  const { mutate } = useSWRConfig();
   const { me } = useSelector((state: rootReducerType) => state.user);
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
+  const [gridDisplay, setGridDisplay] = useState(true);
 
   let pageIndex = (current - 1) * 9 - 1;
   let lastId = pageIndex >= 0 ? indexArray[pageIndex] : 0;
@@ -46,7 +47,7 @@ const store = () => {
   let maxCategori = 0;
   let lastMaxCategori = 0;
 
-  const { data, error, isLoading } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
   console.log('data', data);
 
   useEffect(() => {
@@ -90,9 +91,15 @@ const store = () => {
         type: t.DELETE_ITEM_REQUEST,
         data: { clothId: id },
       });
-      mutate(`${backUrl}/posts/clothes/store?lastId=${lastId}`);
+      if (data) {
+        let newData = [];
+        for (let item of data) {
+          if (item.id !== id) newData.push(item);
+        }
+        mutate([...newData], false);
+      }
     },
-    []
+    [data]
   );
 
   if (!hydrated) {
@@ -138,7 +145,8 @@ const store = () => {
           </AddButton>
         </AddSection>
         <ItemsStoreSection>
-          <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} />
+          {!gridDisplay ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
+          {gridDisplay ? <CardBoard itemData={modifiedItems} /> : null}
           <div>
             <Pagination current={current} onChange={pageChange} total={userItems?.total} defaultPageSize={9} />
           </div>
