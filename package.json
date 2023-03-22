@@ -39,7 +39,8 @@
     "styled-components": "^5.3.6",
     "styled-normalize": "^8.0.7",
     "styled-reset": "^4.4.2",
-    "swiper": "^9.1.0"
+    "swiper": "^9.1.0",
+    "swr": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "18.11.9",

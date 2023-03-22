@@ -1,8 +1,10 @@
 import { AnyAction } from 'redux';
 import produce from 'immer';
 import * as t from './type';
+import { useSWRConfig } from 'swr';
 
 import type { PostInitialState } from './types/post';
+import { backUrl } from '../config/config';
 
 export const initialState: PostInitialState = {
   showDrawer: false,
@@ -54,6 +56,22 @@ export default (state = initialState, action: AnyAction) => {
         draft.deleteItemLoding = false;
         draft.deleteItemDone = true;
         draft.deleteItemError = false;
+        if (draft.userItems) {
+          if (action.data.clothData.purchaseDay === draft.userItems.standardDate) {
+            draft.userItems.total -= 1;
+            draft.indexArray = draft.indexArray.filter(id => id !== Number(action.data.clothId));
+            draft.userItems.price -= action.data.clothData.price;
+            draft.userItems.categori[action.data.clothData.categori] && draft.userItems.categori[action.data.clothData.categori]--;
+          } else {
+            draft.indexArray = draft.indexArray.filter(id => id !== Number(action.data.clothId));
+            draft.userItems.total -= 1;
+            draft.userItems.lastTotal -= 1;
+            draft.userItems.price -= action.data.clothData.price;
+            draft.userItems.lastPrice -= action.data.clothData.price;
+            draft.userItems.categori[action.data.clothData.categori] && draft.userItems.categori[action.data.clothData.categori]--;
+            draft.userItems.lastCategori[action.data.clothData.categori] && draft.userItems.lastCategori[action.data.clothData.categori]--;
+          }
+        }
         break;
       }
       case t.DELETE_ITEM_FAILURE: {

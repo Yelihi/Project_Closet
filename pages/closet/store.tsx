@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useSWR, { useSWRConfig } from 'swr';
 
 import Link from 'next/link';
 import Router from 'next/router';
@@ -7,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import * as t from '../../reducers/type';
 
 import axios from 'axios';
+import { fetcher, backUrl } from '../../config/config';
 import { END } from 'redux-saga';
 
 import { GetServerSidePropsContext } from 'next';
@@ -26,16 +28,26 @@ import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
 import ATable from '../../components/store/ATable';
 
 import { media } from '../../styles/media';
-import { StoreHeader, TestItems } from '../../components/store/TableData';
+import { StoreHeader } from '../../components/store/TableData';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
 
 const store = () => {
   const dispatch = useDispatch();
+  const { mutate } = useSWRConfig();
   const { me } = useSelector((state: rootReducerType) => state.user);
-  const { userItems, indexArray } = useSelector((state: rootReducerType) => state.post);
+  const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
+
+  let pageIndex = (current - 1) * 9 - 1;
+  let lastId = pageIndex >= 0 ? indexArray[pageIndex] : 0;
+  let maxCategoriName = 'Outer';
+  let maxCategori = 0;
+  let lastMaxCategori = 0;
+
+  const { data, error, isLoading } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
+  console.log('data', data);
 
   useEffect(() => {
     setHydrated(true);
@@ -50,27 +62,19 @@ const store = () => {
     }
   }, []);
 
-  let currentDate = new Date().getFullYear() + '-' + new Date().getMonth().toString().padStart(2, '0');
   let modifiedItems = [];
-  let lastCategori = 0;
-  let lastData = 0;
-  let lastTotalPrice = 0;
 
-  if (userItems) {
-    for (let cloth of userItems?.items) {
+  if (data) {
+    for (let cloth of data) {
       modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
-      if (cloth.purchaseDay.substring(0, 7) !== currentDate) {
-        lastData += 1;
-        lastTotalPrice += cloth.price;
-      }
-      if (cloth.purchaseDay.substring(0, 7) !== currentDate && cloth.categori === userItems.categori) {
-        lastCategori += 1;
-      }
     }
   }
 
-  console.log('indexArray', indexArray);
-  console.log('current', current);
+  if (userItems) {
+    maxCategoriName = Object.entries(userItems.categori).sort((a, b) => b[1] - a[1])[0][0];
+    maxCategori = Object.entries(userItems.categori).sort((a, b) => b[1] - a[1])[0][1];
+    lastMaxCategori = Object.entries(userItems.lastCategori).sort((a, b) => b[1] - a[1])[0][1];
+  }
 
   const pageChange: PaginationProps['onChange'] = page => {
     setCurrent(page);
@@ -86,6 +90,7 @@ const store = () => {
         type: t.DELETE_ITEM_REQUEST,
         data: { clothId: id },
       });
+      mutate(`${backUrl}/posts/clothes/store?lastId=${lastId}`);
     },
     []
   );
@@ -118,9 +123,9 @@ const store = () => {
           </dl>
         </TitleSection>
         <CardSection>
-          <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={lastData} CurrentData={userItems?.total} />
-          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Consumption' LastData={lastTotalPrice} CurrentData={userItems?.price} />
-          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastCategori} CurrentData={userItems?.categoriNum} Categori='Outer' />
+          <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={userItems?.lastTotal} CurrentData={userItems?.total} />
+          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Consumption' LastData={userItems?.lastPrice} CurrentData={userItems?.price} />
+          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastMaxCategori} CurrentData={maxCategori} Categori={maxCategoriName} />
         </CardSection>
         <AddSection>
           <DictionaryBox>
@@ -133,7 +138,7 @@ const store = () => {
           </AddButton>
         </AddSection>
         <ItemsStoreSection>
-          <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} />
+          <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} />
           <div>
             <Pagination current={current} onChange={pageChange} total={userItems?.total} defaultPageSize={9} />
           </div>

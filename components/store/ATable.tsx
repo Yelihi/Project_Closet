@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Router from 'next/router';
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import { Empty } from 'antd';
+import { Empty, Spin } from 'antd';
 import { StoreHeaderType, StoreItemsType, ItemsArray } from './TableData';
 
 import { backUrl } from '../../config/config';
@@ -15,9 +15,10 @@ type TableProps = {
   itemsData: ItemsArray[] | undefined;
   isDelete?: boolean;
   onSubmit?: (id: number) => () => void;
+  isLoading?: boolean; // true 일때 로딩중
 };
 
-const ATable = ({ headData, itemsData = [], isDelete, onSubmit }: TableProps) => {
+const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: TableProps) => {
   const headerKey = headData.map(v => v.value);
   const moveToDetailsPage = useCallback(
     (id: number) => () => {
@@ -40,14 +41,14 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit }: TableProps) =>
         </tr>
       </Thead>
       <tbody>
-        {itemsData.length > 1 ? (
+        {itemsData.length >= 1 ? (
           itemsData.map((data, index) => {
             return (
               <Tr key={index}>
                 {headerKey.map(headKey => {
                   return (
                     <Td key={headKey + index}>
-                      {headKey === 'productName' && data.Images ? (
+                      {headKey === 'productName' && data.Images.length > 0 ? (
                         <ImageBox>
                           <CImage src={`${backUrl}/${data.Images[0].src}`} alt={headKey} width={100} height={100} />
                           {data[headKey]}
