@@ -45,7 +45,7 @@ const CardBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 180px;
+  width: 260px;
   height: auto;
   padding: 20px;
   gap: 0;
@@ -56,6 +56,7 @@ const CardBox = styled.div`
   ${media.phone} {
     gap: 10px;
     width: 100%;
+    height: auto;
   }
 `;
 
@@ -110,7 +111,7 @@ const Title = styled.div`
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Medium};
   color: ${({ theme }) => theme.colors.middleGrey};
-  width: 110px;
+  width: 100%;
   margin-bottom: 10px;
 `;
 

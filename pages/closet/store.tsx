@@ -26,6 +26,7 @@ import PageLayout from '../../components/recycle/PageLayout';
 import PageMainLayout from '../../components/recycle/main/PageMainLayout';
 import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
 import ATable from '../../components/store/ATable';
+import CardBoard from '../../components/store/CardBoard';
 
 import { media } from '../../styles/media';
 import { StoreHeader } from '../../components/store/TableData';
@@ -38,6 +39,7 @@ const store = () => {
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
+  const [gridDisplay, setGridDisplay] = useState(true);
 
   let pageIndex = (current - 1) * 9 - 1;
   let lastId = pageIndex >= 0 ? indexArray[pageIndex] : 0;
@@ -143,7 +145,8 @@ const store = () => {
           </AddButton>
         </AddSection>
         <ItemsStoreSection>
-          <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} />
+          {!gridDisplay ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
+          {gridDisplay ? <CardBoard itemData={modifiedItems} /> : null}
           <div>
             <Pagination current={current} onChange={pageChange} total={userItems?.total} defaultPageSize={9} />
           </div>
