@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
+import Router from 'next/router';
 
 import { FaTrashRestoreAlt } from 'react-icons/fa';
 import { BiDetail } from 'react-icons/bi';
@@ -9,9 +10,17 @@ import { backUrl } from '../../config/config';
 
 interface CardProps {
   src: string;
+  id: number;
+  onSubmit?: (id: number) => () => void;
 }
 
-const ItemCard = ({ src }: CardProps) => {
+const ItemCard = ({ src, id, onSubmit }: CardProps) => {
+  const moveToDetailsPage = useCallback(
+    (id: number) => () => {
+      Router.push(`/closet/details/${id}`);
+    },
+    []
+  );
   return (
     <ThumbnailWrapper>
       <Thumbnail>
@@ -19,8 +28,10 @@ const ItemCard = ({ src }: CardProps) => {
           <CImage src={`${backUrl}/${src}`} alt={src} width={600} height={600} />
           <HoverTumnail>
             <IconBox>
-              <BiDetail className='icon' />
-              <FaTrashRestoreAlt className='icon' />
+              <BiDetail className='icon' onClick={moveToDetailsPage(id)} />
+              <span>상세보기</span>
+              {onSubmit ? <FaTrashRestoreAlt className='icon' onClick={() => (window.confirm('삭제하시겠습니까?') ? onSubmit(id)() : () => console.log('취소했씁니다'))} /> : null}
+              {onSubmit ? <span>삭제하기</span> : null}
             </IconBox>
           </HoverTumnail>
         </Centered>
@@ -95,10 +106,17 @@ const IconBox = styled.div`
   opacity: 0;
 
   .icon {
-    width: 15%;
+    width: 9%;
     height: auto;
     color: ${({ theme }) => theme.colors.white};
     opacity: 0;
+    cursor: pointer;
+  }
+
+  > span {
+    color: ${({ theme }) => theme.colors.white};
+    font-size: clamp(10px, 1.5vw, 15px);
+    margin-right: 5px;
   }
 
   &:hover {
