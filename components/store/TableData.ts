@@ -1,6 +1,39 @@
+import type { MenuProps } from 'antd';
+
 type ArrayLiteral<T extends ReadonlyArray<any>> = T[number];
 type ObjectLiteral<T extends { [i: string]: any }> = T[keyof T];
 type Literal<T> = T extends ReadonlyArray<any> ? ArrayLiteral<T> : T extends { [i: string]: any } ? ObjectLiteral<T> : never;
+
+export const segmentItems: MenuProps['items'] = [
+  {
+    label: 'All',
+    key: '',
+  },
+  {
+    label: 'Outer',
+    key: 'Outer',
+  },
+  {
+    label: 'Shirt',
+    key: 'Shirt',
+  },
+  {
+    label: 'Top',
+    key: 'Top',
+  },
+  {
+    label: 'Pant',
+    key: 'Pant',
+  },
+  {
+    label: 'Shoe',
+    key: 'Shoe',
+  },
+  {
+    label: 'Muffler',
+    key: 'Muffler',
+  },
+];
 
 export const StoreHeader = [
   {
@@ -43,45 +76,6 @@ export type StoreItemsType = {
   etc: number;
 };
 
-export const TestItems = [
-  {
-    id: 1,
-    productName: '베이지 코트',
-    images: 'coat_test_1678686555749.jpeg',
-    categori: 'Outer',
-    price: 400000,
-    purchaseDay: '2022-05',
-    etc: 1,
-  },
-  {
-    id: 2,
-    productName: '그레이 머플러',
-    images: 'coat_test_1678686555749.jpeg',
-    categori: 'Muffler',
-    price: 100000,
-    purchaseDay: '2022-07',
-    etc: 1,
-  },
-  {
-    id: 3,
-    productName: '오랜지 블루종',
-    images: 'coat_test_1678686555749.jpeg',
-    categori: 'Outer',
-    price: 200000,
-    purchaseDay: '2022-08',
-    etc: 1,
-  },
-  {
-    id: 4,
-    productName: '체크무늬 캔버스',
-    images: 'coat_test_1678686555749.jpeg',
-    categori: 'Shoe',
-    price: 120000,
-    purchaseDay: '2022-11',
-    etc: 1,
-  },
-];
-
 export interface ImagesPros {
   id: number;
   ClothId: number;
@@ -114,7 +108,7 @@ export interface categoriObject {
 
 export interface UserItemsData {
   categori: categoriObject;
-  lastCagegori: categoriObject;
+  lastCategori: categoriObject;
   standardDate: Date;
   idArray: number[];
   items: ItemsArray[];

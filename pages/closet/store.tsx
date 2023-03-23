@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import useSWR, { useSWRConfig } from 'swr';
 
@@ -16,11 +16,13 @@ import type { SagaStore } from '../../store/configureStore';
 
 import wrapper from '../../store/configureStore';
 
-import { Breadcrumb, Pagination, PaginationProps } from 'antd';
+import { Breadcrumb, Pagination, PaginationProps, Segmented, Dropdown, Button, MenuProps } from 'antd';
+import { AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
 
 import { AiOutlineDatabase, AiOutlinePlus } from 'react-icons/ai';
 import { GiPayMoney } from 'react-icons/gi';
 import { CgRowFirst } from 'react-icons/cg';
+import { IoFilterCircleOutline } from 'react-icons/io5';
 
 import PageLayout from '../../components/recycle/PageLayout';
 import PageMainLayout from '../../components/recycle/main/PageMainLayout';
@@ -29,7 +31,7 @@ import ATable from '../../components/store/ATable';
 import CardBoard from '../../components/store/CardBoard';
 
 import { media } from '../../styles/media';
-import { StoreHeader } from '../../components/store/TableData';
+import { StoreHeader, segmentItems } from '../../components/store/TableData';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
 
@@ -39,7 +41,9 @@ const store = () => {
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
-  const [gridDisplay, setGridDisplay] = useState(true);
+  const [segment, setSegment] = useState<string | number>('Table');
+  const [categoriName, setCategoriName] = useState('');
+  const [windowWidth, setWindowWidth] = useState('desktop');
 
   let pageIndex = (current - 1) * 9 - 1;
   let lastId = pageIndex >= 0 ? indexArray[pageIndex] : 0;
@@ -47,8 +51,7 @@ const store = () => {
   let maxCategori = 0;
   let lastMaxCategori = 0;
 
-  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}`, fetcher);
-  console.log('data', data);
+  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}`, fetcher);
 
   useEffect(() => {
     setHydrated(true);
@@ -61,6 +64,20 @@ const store = () => {
         data: { id: me.id },
       });
     }
+  }, []);
+
+  useEffect(() => {
+    function updateWindowWidth() {
+      if (window.innerWidth <= 786) {
+        setWindowWidth('phone');
+      } else {
+        setWindowWidth('desktop');
+      }
+    }
+    window.addEventListener('resize', updateWindowWidth);
+    return () => {
+      window.removeEventListener('resize', updateWindowWidth);
+    };
   }, []);
 
   let modifiedItems = [];
@@ -79,6 +96,10 @@ const store = () => {
 
   const pageChange: PaginationProps['onChange'] = page => {
     setCurrent(page);
+  };
+
+  const handleCategori: MenuProps['onClick'] = e => {
+    setCategoriName(e.key);
   };
 
   const moveToAddPage = useCallback(() => {
@@ -131,7 +152,7 @@ const store = () => {
         </TitleSection>
         <CardSection>
           <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={userItems?.lastTotal} CurrentData={userItems?.total} />
-          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Consumption' LastData={userItems?.lastPrice} CurrentData={userItems?.price} />
+          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Price' LastData={userItems?.lastPrice} CurrentData={userItems?.price} />
           <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastMaxCategori} CurrentData={maxCategori} Categori={maxCategoriName} />
         </CardSection>
         <AddSection>
@@ -144,9 +165,33 @@ const store = () => {
             <div>ADD PRODUCT</div>
           </AddButton>
         </AddSection>
+        <MenuSection>
+          <DropdownBox>
+            <Dropdown menu={{ items: segmentItems, onClick: handleCategori }}>
+              <CButton>
+                <IoFilterCircleOutline className='icon' />
+                Categori
+              </CButton>
+            </Dropdown>
+            <CategoriSpan>분류 : {categoriName}</CategoriSpan>
+          </DropdownBox>
+          <div>
+            {windowWidth === 'desktop' ? (
+              <Segmented
+                options={[
+                  { value: 'Table', icon: <BarsOutlined /> },
+                  { value: 'Kanban', icon: <AppstoreOutlined /> },
+                ]}
+                value={segment}
+                onChange={setSegment}
+              />
+            ) : null}
+          </div>
+        </MenuSection>
         <ItemsStoreSection>
-          {!gridDisplay ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
-          {gridDisplay ? <CardBoard itemData={modifiedItems} /> : null}
+          {windowWidth === 'desktop' && segment === 'Table' ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
+          {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
+          {windowWidth === 'phone' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
           <div>
             <Pagination current={current} onChange={pageChange} total={userItems?.total} defaultPageSize={9} />
           </div>
@@ -298,6 +343,43 @@ const AddButton = styled.div`
       font-size: clamp(12px, 1.8vw, 14px);
     }
   }
+`;
+
+const MenuSection = styled.section`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid ${({ theme }) => theme.colors.mainGrey};
+  border-radius: 20px;
+  margin-bottom: 20px;
+`;
+
+const DropdownBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+`;
+
+const CButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const CategoriSpan = styled.div`
+  font-family: ${({ theme }) => theme.font.Efont};
+  font-weight: ${({ theme }) => theme.fontWeight.Light};
 `;
 
 const ItemsStoreSection = styled.section`

@@ -7,15 +7,16 @@ import { ItemsArray } from './TableData';
 
 interface Props {
   itemData: ItemsArray[] | undefined;
+  onSubmit?: (id: number) => () => void;
 }
 
-const CardBoard = ({ itemData }: Props) => {
+const CardBoard = ({ itemData, onSubmit }: Props) => {
   return (
     <CardSection>
       {itemData?.map(item => {
         return (
-          <CardBox>
-            <ItemCard src={item.Images[0].src} />
+          <CardBox key={item.id}>
+            <ItemCard src={item.Images[0].src} id={item.id} onSubmit={onSubmit} />
           </CardBox>
         );
       })}
@@ -27,15 +28,16 @@ export default CardBoard;
 
 const CardSection = styled.section`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
   height: auto;
-  gap: 10px;
+  gap: 5%;
 `;
 
 const CardBox = styled.div`
   width: 30%;
   height: auto;
+  margin-bottom: 5%;
 `;
