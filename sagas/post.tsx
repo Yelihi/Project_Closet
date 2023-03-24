@@ -84,19 +84,15 @@ function* loadItem(action: AnyAction) {
   }
 }
 
-type LoadItems = {
-  id: number;
-};
-
-function loadItemsAPI(data: LoadItems) {
-  return axios.get(`/posts/clothes/${data.id}`);
+function loadItemsAPI() {
+  return axios.get(`/posts/clothes/`);
 }
 
 function* loadItems(action: AnyAction) {
   try {
     console.log('saga items load');
     console.log(action.data);
-    const result: AxiosResponse<Success> = yield call(loadItemsAPI, action.data);
+    const result: AxiosResponse<Success> = yield call(loadItemsAPI);
     yield put({
       type: t.LOAD_ITEMS_SUCCESS,
       data: result.data,

@@ -59,11 +59,11 @@ export default (state = initialState, action: AnyAction) => {
         if (draft.userItems) {
           if (action.data.clothData.purchaseDay === draft.userItems.standardDate) {
             draft.userItems.total -= 1;
-            draft.indexArray = draft.indexArray.filter(id => id !== Number(action.data.clothId));
+            draft.indexArray = draft.indexArray.filter(item => item.id !== Number(action.data.clothId));
             draft.userItems.price -= action.data.clothData.price;
             draft.userItems.categori[action.data.clothData.categori] && draft.userItems.categori[action.data.clothData.categori]--;
           } else {
-            draft.indexArray = draft.indexArray.filter(id => id !== Number(action.data.clothId));
+            draft.indexArray = draft.indexArray.filter(item => item.id !== Number(action.data.clothId));
             draft.userItems.total -= 1;
             draft.userItems.lastTotal -= 1;
             draft.userItems.price -= action.data.clothData.price;

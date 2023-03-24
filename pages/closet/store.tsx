@@ -37,7 +37,6 @@ import { rootReducerType } from '../../reducers/types';
 
 const store = () => {
   const dispatch = useDispatch();
-  const { me } = useSelector((state: rootReducerType) => state.user);
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
@@ -45,25 +44,15 @@ const store = () => {
   const [categoriName, setCategoriName] = useState('');
   const [windowWidth, setWindowWidth] = useState('desktop');
 
+  let itemsIdArray = indexArray;
+  if (categoriName) itemsIdArray = indexArray.filter(item => item.categori === categoriName);
   let pageIndex = (current - 1) * 9 - 1;
-  let lastId = pageIndex >= 0 ? indexArray[pageIndex] : 0;
-  let maxCategoriName = 'Outer';
-  let maxCategori = 0;
-  let lastMaxCategori = 0;
+  let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}`, fetcher);
 
   useEffect(() => {
     setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (me) {
-      dispatch({
-        type: t.LOAD_ITEMS_REQUEST,
-        data: { id: me.id },
-      });
-    }
   }, []);
 
   useEffect(() => {
@@ -81,13 +70,15 @@ const store = () => {
   }, []);
 
   let modifiedItems = [];
-
   if (data) {
     for (let cloth of data) {
       modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
     }
   }
 
+  let maxCategoriName = 'Outer';
+  let maxCategori = 0;
+  let lastMaxCategori = 0;
   if (userItems) {
     maxCategoriName = Object.entries(userItems.categori).sort((a, b) => b[1] - a[1])[0][0];
     maxCategori = Object.entries(userItems.categori).sort((a, b) => b[1] - a[1])[0][1];
@@ -193,7 +184,7 @@ const store = () => {
           {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
           {windowWidth === 'phone' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
           <div>
-            <Pagination current={current} onChange={pageChange} total={userItems?.total} defaultPageSize={9} />
+            <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} />
           </div>
         </ItemsStoreSection>
         store
@@ -211,6 +202,10 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   store.dispatch({
     // store에서 dispatch 하는 api
     type: t.LOAD_TO_MY_INFO_REQUEST,
+  });
+
+  store.dispatch({
+    type: t.LOAD_ITEMS_REQUEST,
   });
 
   store.dispatch(END);
