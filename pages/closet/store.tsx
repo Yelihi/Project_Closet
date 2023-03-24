@@ -86,8 +86,7 @@ const store = () => {
 
     const io = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
-        // if (entry.intersectionRatio <= 0) return;
-        // console.log('inner');
+        if (entry.intersectionRatio <= 0) return;
         if (entry.isIntersecting) {
           setSize(prev => prev + 1);
         }
