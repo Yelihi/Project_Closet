@@ -80,6 +80,11 @@ export interface SingleItem {
   Images: Image[] | null;
 }
 
+export interface IndexArray {
+  id: number;
+  categori: string;
+}
+
 export interface PostInitialState {
   showDrawer: boolean;
   loadItemLoding: boolean;
@@ -101,6 +106,6 @@ export interface PostInitialState {
   user: User | null;
   imagePath: ImagePathObject[];
   singleItem: (User & SingleItem) | null;
-  indexArray: number[];
+  indexArray: IndexArray[];
   userItems: UserItemsData | null;
 }
