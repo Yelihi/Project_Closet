@@ -50,7 +50,7 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
                     <Td key={headKey + index}>
                       {headKey === 'productName' && data.Images.length > 0 ? (
                         <ImageBox>
-                          <CImage src={`${backUrl}/${data.Images[0].src}`} alt={headKey} width={100} height={100} />
+                          <CImage src={`${backUrl}/${data.Images[0].src}`} alt={headKey} width={100} height={100} priority={true} />
                           {data[headKey]}
                         </ImageBox>
                       ) : headKey === 'price' ? (

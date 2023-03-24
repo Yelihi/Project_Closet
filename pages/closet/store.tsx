@@ -52,10 +52,10 @@ const store = () => {
   let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, fetcher);
-  const { paginationPosts, loadingMore, size, setSize, isReachedEnd } = usePagination<ItemsArray>(categoriName, windowWidth);
-  console.log('isReachedEnd', isReachedEnd);
+  const { paginationPosts, loadingMore, size, setSize, isReachedEnd, isItmesLoading } = usePagination<ItemsArray>(categoriName, windowWidth);
 
   console.log(paginationPosts);
+  console.log(isReachedEnd);
 
   useEffect(() => {
     setHydrated(true);
@@ -97,7 +97,7 @@ const store = () => {
     return () => {
       io.disconnect();
     };
-  }, [isReachedEnd, categoriName]);
+  }, [isReachedEnd, categoriName, windowWidth]);
 
   let modifiedItems = [];
   let accumulationItems = [];
@@ -219,7 +219,8 @@ const store = () => {
         <ItemsStoreSection>
           {windowWidth === 'desktop' && segment === 'Table' ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
           {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
-          {windowWidth === 'phone' ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} /> : null}
+          {windowWidth === 'phone' && !isItmesLoading ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={false} /> : null}
+          {windowWidth === 'phone' && isItmesLoading ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={true} /> : null}
           {windowWidth === 'desktop' ? (
             <div>
               <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} />
