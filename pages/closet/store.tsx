@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import useSWR, { useSWRConfig } from 'swr';
 
@@ -31,12 +31,14 @@ import ATable from '../../components/store/ATable';
 import CardBoard from '../../components/store/CardBoard';
 
 import { media } from '../../styles/media';
-import { StoreHeader, segmentItems } from '../../components/store/TableData';
+import { StoreHeader, segmentItems, ItemsArray } from '../../components/store/TableData';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
+import { usePagination } from '../../hooks/usePagination';
 
 const store = () => {
   const dispatch = useDispatch();
+  const observerTargetElement = useRef<HTMLDivElement>(null);
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
@@ -49,7 +51,11 @@ const store = () => {
   let pageIndex = (current - 1) * 9 - 1;
   let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
-  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}`, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, fetcher);
+  const { paginationPosts, loadingMore, size, setSize, isReachedEnd } = usePagination<ItemsArray>(categoriName, windowWidth);
+  console.log('isReachedEnd', isReachedEnd);
+
+  console.log(paginationPosts);
 
   useEffect(() => {
     setHydrated(true);
@@ -69,10 +75,40 @@ const store = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (windowWidth === 'desktop') return;
+    if (!observerTargetElement.current || isReachedEnd) return;
+
+    const option = {
+      root: null,
+      threshold: 0.3,
+    };
+
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.intersectionRatio <= 0) return;
+        if (entry.isIntersecting) {
+          setSize(prev => prev + 1);
+        }
+      });
+    }, option);
+
+    io.observe(observerTargetElement.current);
+    return () => {
+      io.disconnect();
+    };
+  }, [isReachedEnd, categoriName]);
+
   let modifiedItems = [];
-  if (data) {
+  let accumulationItems = [];
+  if (windowWidth === 'desktop' && data) {
     for (let cloth of data) {
       modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
+    }
+  }
+  if (windowWidth === 'phone' && paginationPosts) {
+    for (let cloth of paginationPosts) {
+      accumulationItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
     }
   }
 
@@ -91,6 +127,7 @@ const store = () => {
 
   const handleCategori: MenuProps['onClick'] = e => {
     setCategoriName(e.key);
+    setSize(1);
   };
 
   const moveToAddPage = useCallback(() => {
@@ -182,12 +219,15 @@ const store = () => {
         <ItemsStoreSection>
           {windowWidth === 'desktop' && segment === 'Table' ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
           {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
-          {windowWidth === 'phone' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
-          <div>
-            <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} />
-          </div>
+          {windowWidth === 'phone' ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} /> : null}
+          {windowWidth === 'desktop' ? (
+            <div>
+              <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} />
+            </div>
+          ) : null}
+          <Button onClick={() => setSize(size + 1)}>더 보기</Button>
         </ItemsStoreSection>
-        store
+        <div ref={observerTargetElement}>store</div>
       </PageMainLayout>
     </PageLayout>
   );
