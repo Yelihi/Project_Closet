@@ -14,11 +14,12 @@ export const usePagination = <T>(categoriName: string, windowWidth: string) => {
     return `${backUrl}/posts/clothes/store?lastId=${previousPageData.nextCursor}&categori=${categoriName}&deviceType=${windowWidth}`;
   };
 
-  const { data: items, error: postsError, size, setSize } = useSWRInfinite<SWRResult<T>, Error>(getKey, fetcher);
+  const { data: items, error: postsError, size, setSize, isLoading: isItmesLoading } = useSWRInfinite<SWRResult<T>, Error>(getKey, fetcher);
 
   const posts = items?.map(item => item.items);
   const paginationPosts = posts?.flat();
   const loadingMore = posts && typeof posts[size - 1] === 'undefined';
+  const isEmpty = posts?.[0]?.length === 0;
   const isReachedEnd = posts && posts[posts.length - 1]?.length < 9;
 
   return {
@@ -28,5 +29,6 @@ export const usePagination = <T>(categoriName: string, windowWidth: string) => {
     setSize,
     loadingMore,
     isReachedEnd,
+    isItmesLoading,
   };
 };

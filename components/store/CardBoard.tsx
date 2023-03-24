@@ -8,18 +8,32 @@ import { ItemsArray } from './TableData';
 interface Props {
   itemData: ItemsArray[] | undefined;
   onSubmit?: (id: number) => () => void;
+  isLoading?: boolean;
 }
 
-const CardBoard = ({ itemData, onSubmit }: Props) => {
+const loadingArray = Array(9)
+  .fill(0)
+  .map((v, i) => i);
+
+const CardBoard = ({ itemData, onSubmit, isLoading }: Props) => {
   return (
     <CardSection>
-      {itemData?.map(item => {
-        return (
-          <CardBox key={item.id}>
-            <ItemCard src={item.Images[0].src} id={item.id} onSubmit={onSubmit} />
-          </CardBox>
-        );
-      })}
+      {!isLoading &&
+        itemData?.map(item => {
+          return (
+            <CardBox key={item.id}>
+              <ItemCard src={item.Images[0].src} id={item.id} onSubmit={onSubmit} />
+            </CardBox>
+          );
+        })}
+      {isLoading &&
+        loadingArray.map(item => {
+          return (
+            <LoadingBox key={item}>
+              <Loading />
+            </LoadingBox>
+          );
+        })}
     </CardSection>
   );
 };
@@ -40,4 +54,14 @@ const CardBox = styled.div`
   width: 30%;
   height: auto;
   margin-bottom: 5%;
+`;
+
+const LoadingBox = styled(CardBox)`
+  background-color: ${({ theme }) => theme.colors.mainGrey};
+`;
+
+const Loading = styled.div`
+  width: 200px;
+  height: 200px;
+  background-color: ${({ theme }) => theme.colors.mainGrey};
 `;
