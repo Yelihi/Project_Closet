@@ -36,7 +36,11 @@ import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
 import { usePagination, SWRResult } from '../../hooks/usePagination';
 
-const store = () => {
+interface Props {
+  device: 'phone' | 'desktop';
+}
+
+const store = ({ device }: Props) => {
   const dispatch = useDispatch();
   const observerTargetElement = useRef<HTMLDivElement>(null);
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
@@ -44,7 +48,7 @@ const store = () => {
   const [current, setCurrent] = useState(1);
   const [segment, setSegment] = useState<string | number>('Table');
   const [categoriName, setCategoriName] = useState('');
-  const [windowWidth, setWindowWidth] = useState('desktop');
+  const [windowWidth, setWindowWidth] = useState(device);
 
   let itemsIdArray = indexArray;
   if (categoriName) itemsIdArray = indexArray.filter(item => item.categori === categoriName);
@@ -54,7 +58,8 @@ const store = () => {
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, fetcher);
   const { items, paginationPosts, loadingMore, size, setSize, isReachedEnd, isItmesLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
 
-  console.log('items', items);
+  console.log('device', windowWidth);
+  console.log('data', data);
 
   useEffect(() => {
     setHydrated(true);
@@ -249,6 +254,11 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
+  const userAgent = context.req ? context.req.headers['user-agent'] : navigator.userAgent;
+  let isMobile = false;
+  if (userAgent) {
+    isMobile = Boolean(userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile|WPDesktop/i));
+  }
   store.dispatch({
     // store에서 dispatch 하는 api
     type: t.LOAD_TO_MY_INFO_REQUEST,
@@ -261,7 +271,9 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   store.dispatch(END);
   await (store as SagaStore).sagaTask?.toPromise();
   return {
-    props: {},
+    props: {
+      device: isMobile ? 'phone' : 'desktop',
+    },
   };
 });
 
