@@ -34,7 +34,7 @@ import { media } from '../../styles/media';
 import { StoreHeader, segmentItems, ItemsArray } from '../../components/store/TableData';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
-import { usePagination } from '../../hooks/usePagination';
+import { usePagination, SWRResult } from '../../hooks/usePagination';
 
 const store = () => {
   const dispatch = useDispatch();
@@ -52,10 +52,9 @@ const store = () => {
   let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, fetcher);
-  const { paginationPosts, loadingMore, size, setSize, isReachedEnd, isItmesLoading } = usePagination<ItemsArray>(categoriName, windowWidth);
+  const { items, paginationPosts, loadingMore, size, setSize, isReachedEnd, isItmesLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
 
-  console.log(paginationPosts);
-  console.log(isReachedEnd);
+  console.log('items', items);
 
   useEffect(() => {
     setHydrated(true);
@@ -140,15 +139,25 @@ const store = () => {
         type: t.DELETE_ITEM_REQUEST,
         data: { clothId: id },
       });
-      if (data) {
+      if (data && windowWidth === 'desktop') {
         let newData = [];
         for (let item of data) {
           if (item.id !== id) newData.push(item);
         }
         mutate([...newData], false);
       }
+      if (paginationPosts && items) {
+        let newPostitems = [];
+        for (let set of items) {
+          let newItems = { ...set };
+          let newPostData = set.items.filter(item => item.id !== id);
+          newItems = { ...newItems, items: newPostData };
+          newPostitems.push(newItems);
+        }
+        infinitiMutate([...newPostitems], false);
+      }
     },
-    [data]
+    [data, paginationPosts, windowWidth]
   );
 
   if (!hydrated) {
