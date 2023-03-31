@@ -30,9 +30,7 @@ const Overview = () => {
         </NavRow>
         <Intersection></Intersection>
         <IntroRow>
-          <PageMainLayout title='인트로' subTitle='여러분의 의류를 저장해보세요'>
-            <IntroSection />
-          </PageMainLayout>
+          <IntroSection />
         </IntroRow>
         <DataRow>
           <PageMainLayout title='총 저장의류' subTitle='분류별 의류 갯수'>
