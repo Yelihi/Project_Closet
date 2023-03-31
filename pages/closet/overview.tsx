@@ -42,15 +42,14 @@ const Overview = () => {
           <TotalData data={data.categori} total={data.totalNumber} />
         </DataRow>
         <ResRow>
-          <PageMainLayout title='최근 등록 의류' subTitle='클릭시 상세페이지 이동합니다.'>
-            <RecentlyItem />
-          </PageMainLayout>
+          <RecentlyItem items={data.lastDatas} />
         </ResRow>
         <InfoRow>
-          <PageMainLayout title='나의 사이즈' subTitle='평균적인 나의 의류 사이즈'>
-            <MyInfo />
-          </PageMainLayout>
+          <MyInfo />
         </InfoRow>
+        <LastDataRow>
+          <MyInfo />
+        </LastDataRow>
       </Container>
     </AppLayout>
   );
@@ -102,7 +101,8 @@ const Container = styled.div`
       'nav nav'
       'inter inter'
       'intro data'
-      'recently myinfo';
+      'recently myinfo'
+      'recently lastData';
     gap: 1.5rem;
     height: 100%;
   }
@@ -188,4 +188,8 @@ const InfoRow = styled.div`
     align-items: center;
     height: auto;
   }
+`;
+
+const LastDataRow = styled(InfoRow)`
+  grid-area: lastData;
 `;
