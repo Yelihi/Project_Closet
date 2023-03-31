@@ -11,6 +11,8 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "@heroicons/react": "^2.0.13",
+    "@nivo/core": "^0.80.0",
+    "@nivo/pie": "^0.80.0",
     "@types/antd": "^1.0.0",
     "@types/next-redux-wrapper": "^3.0.0",
     "@types/react-color": "^3.0.6",
