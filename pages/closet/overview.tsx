@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import useSWR from 'swr';
 import { media } from '../../styles/media';
 
 import axios from 'axios';
@@ -20,8 +21,13 @@ import MyInfo from '../../components/main/MyInfo';
 import Nav from '../../components/Nav';
 
 import Intersection from '../../components/recycle/element/Intersection';
+import { fetcher, backUrl } from '../../config/config';
 
 const Overview = () => {
+  const { data, error, isLoading } = useSWR(`${backUrl}/posts/overview`, fetcher);
+  console.log('overview data', data);
+
+  if (isLoading) return null;
   return (
     <AppLayout>
       <Container>
@@ -33,9 +39,7 @@ const Overview = () => {
           <IntroSection />
         </IntroRow>
         <DataRow>
-          <PageMainLayout title='총 저장의류' subTitle='분류별 의류 갯수'>
-            <TotalData />
-          </PageMainLayout>
+          <TotalData data={data.categori} total={data.totalNumber} />
         </DataRow>
         <ResRow>
           <PageMainLayout title='최근 등록 의류' subTitle='클릭시 상세페이지 이동합니다.'>

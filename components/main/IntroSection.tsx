@@ -77,9 +77,9 @@ const Description = styled.div`
 
 const Title = styled.span`
   display: flex;
-  font-family: ${({ theme }) => theme.font.Efont};
+  /* font-family: ${({ theme }) => theme.font.Efont}; */
   font-weight: ${({ theme }) => theme.fontWeight.Bold};
-  font-size: clamp(20px, 2.2vw, 30px);
+  font-size: clamp(20px, 2vw, 30px);
   margin-bottom: 30px;
 `;
 
