@@ -17,7 +17,8 @@ import PageMainLayout from '../../components/recycle/main/PageMainLayout';
 import IntroSection from '../../components/main/IntroSection';
 import TotalData from '../../components/main/TotalData';
 import RecentlyItem from '../../components/main/RecentlyItem';
-import MyInfo from '../../components/main/MyInfo';
+import CurrentYearPrice from '../../components/main/CurrentYearPrice';
+import LastItem from '../../components/main/LastItem';
 import Nav from '../../components/Nav';
 
 import Intersection from '../../components/recycle/element/Intersection';
@@ -45,10 +46,10 @@ const Overview = () => {
           <RecentlyItem items={data.lastDatas} />
         </ResRow>
         <InfoRow>
-          <MyInfo />
+          <LastItem item={data.theOldestData} />
         </InfoRow>
         <LastDataRow>
-          <MyInfo />
+          <CurrentYearPrice totalPrice={data.totalPrice} currentPrice={data.currentYearPrice} />
         </LastDataRow>
       </Container>
     </AppLayout>
@@ -96,7 +97,7 @@ const Container = styled.div`
   ${media.tablet} {
     display: grid;
     grid-template-rows: 60px 1px 0.45fr 0.45fr;
-    grid-template-columns: 0.6fr 0.4fr;
+    grid-template-columns: 0.65fr 0.35fr;
     grid-template-areas:
       'nav nav'
       'inter inter'

@@ -7,6 +7,8 @@ import { ResponsivePie } from '@nivo/pie';
 import { data } from './data/TotalPieData';
 import { categoriObject } from '../../store/TableData';
 
+import { media } from '../../../styles/media';
+
 type Props = {
   item: categoriObject;
 };
@@ -26,7 +28,7 @@ const TotalPie = ({ item }: Props) => {
     <PieContainer>
       <ResponsivePie
         data={Data}
-        margin={{ top: 15, right: 15, bottom: 15, left: 15 }}
+        margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
         innerRadius={0.4}
         padAngle={2}
         cornerRadius={3}
@@ -131,6 +133,11 @@ const TotalPie = ({ item }: Props) => {
 export default TotalPie;
 
 const PieContainer = styled.div`
-  width: 200px;
-  height: 200px;
+  width: 70%;
+  height: 70%;
+
+  ${media.desktop} {
+    width: 180px;
+    height: 180px;
+  }
 `;
