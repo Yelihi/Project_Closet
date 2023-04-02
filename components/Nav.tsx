@@ -17,6 +17,7 @@ import { HiOutlineMenuAlt2, HiOutlineSearch } from 'react-icons/hi';
 const Nav = () => {
   const dispatch = useDispatch();
   const { isPhoneMenuClick } = useSelector((state: rootReducerType) => state.screenEvent);
+  const { me } = useSelector((state: rootReducerType) => state.user);
   const [phoneSearchClick, onClickPhoneSearch] = useToggle(false);
 
   const searchSubmit = () => {};
@@ -44,7 +45,7 @@ const Nav = () => {
         <InfoContainer>
           <HeadBox>
             <span>Closet Official</span>
-            <p>user name</p>
+            <p>{me?.nickname}</p>
           </HeadBox>
           <IconBox>
             <div></div>
