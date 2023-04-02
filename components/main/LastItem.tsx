@@ -7,6 +7,8 @@ import OverviewCL from '../recycle/element/overview/OverviewCL';
 import { ItemsArray } from '../store/TableData';
 import { backUrl } from '../../config/config';
 
+import { media } from '../../styles/media';
+
 type LastItemProps = {
   item: ItemsArray;
 };
@@ -27,11 +29,11 @@ const LastItem = ({ item }: LastItemProps) => {
             </Thumbnail>
           </ThumbnailWrapper>
         </ImageDiv>
-        <div>
-          <span></span>
-          <p></p>
-          <p></p>
-        </div>
+        <DetailDiv>
+          <ItemName>{`${item.productName}`}</ItemName>
+          <Purchase>{`구매 날짜 : ${item.purchaseDay.substring(0, 7)}`}</Purchase>
+          <Price>{`구매 가격 : ${item.price.toLocaleString('ko-KR')}`}</Price>
+        </DetailDiv>
       </LastItemSection>
     </OverviewCL>
   );
@@ -41,17 +43,46 @@ export default LastItem;
 
 const LastItemSection = styled.section`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: auto;
 `;
 
 const ImageDiv = styled.div`
-  width: 100px;
-  height: 100px;
-  margin-right: 15px;
+  width: 95px;
+  height: 95px;
 `;
+
+const DetailDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 50%;
+  height: auto;
+
+  ${media.tablet} {
+    align-items: flex-start;
+  }
+`;
+
+const ItemName = styled.span`
+  font-size: clamp(13px, 1, 1vw, 15px);
+  font-family: ${({ theme }) => theme.font.Efont};
+  font-weight: ${({ theme }) => theme.fontWeight.Medium};
+  margin-bottom: 15px;
+`;
+
+const Purchase = styled.p`
+  font-size: clamp(11px, 1vw, 13px);
+  font-family: ${({ theme }) => theme.font.Efont};
+  font-weight: ${({ theme }) => theme.fontWeight.Medium};
+  color: ${({ theme }) => theme.colors.lightGrey};
+  margin-bottom: 5px;
+`;
+
+const Price = styled(Purchase)``;
 
 const ThumbnailWrapper = styled.div`
   width: 100%;
