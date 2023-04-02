@@ -23,6 +23,7 @@ import Nav from '../../components/Nav';
 
 import Intersection from '../../components/recycle/element/Intersection';
 import { fetcher, backUrl } from '../../config/config';
+import EmptyData from '../../components/recycle/EmptyData';
 
 const Overview = () => {
   const { data, error, isLoading } = useSWR(`${backUrl}/posts/overview`, fetcher);

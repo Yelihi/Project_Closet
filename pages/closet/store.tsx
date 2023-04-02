@@ -35,6 +35,7 @@ import { StoreHeader, segmentItems, ItemsArray } from '../../components/store/Ta
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
 import { usePagination, SWRResult } from '../../hooks/usePagination';
+import EmptyData from '../../components/recycle/EmptyData';
 
 interface Props {
   device: 'phone' | 'desktop';
@@ -119,10 +120,10 @@ const store = ({ device }: Props) => {
   let maxCategoriName = 'Outer';
   let maxCategori = 0;
   let lastMaxCategori = 0;
-  if (userItems) {
-    maxCategoriName = Object.entries(userItems.categori).sort((a, b) => b[1] - a[1])[0][0];
-    maxCategori = Object.entries(userItems.categori).sort((a, b) => b[1] - a[1])[0][1];
-    lastMaxCategori = Object.entries(userItems.lastCategori).sort((a, b) => b[1] - a[1])[0][1];
+  if (userItems && Object.keys(userItems.categori).length !== 0 && Object.keys(userItems.lastCategori).length !== 0) {
+    maxCategoriName = Object.entries(userItems.categori)?.sort((a, b) => b[1] - a[1])[0][0];
+    maxCategori = Object.entries(userItems.categori)?.sort((a, b) => b[1] - a[1])[0][1];
+    lastMaxCategori = Object.entries(userItems.lastCategori)?.sort((a, b) => b[1] - a[1])[0][1];
   }
 
   const pageChange: PaginationProps['onChange'] = page => {
@@ -167,6 +168,24 @@ const store = ({ device }: Props) => {
 
   if (!hydrated) {
     return null;
+  }
+
+  if (!userItems) {
+    return (
+      <PageLayout>
+        <PageMainLayout istitle={false} hasEmpty={true}>
+          <HandleContainer>
+            <CustomBread separator='>'>
+              <Breadcrumb.Item>
+                <Link href='/closet/overview'>Home</Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>Store</Breadcrumb.Item>
+            </CustomBread>
+          </HandleContainer>
+          <EmptyData height={130} />
+        </PageMainLayout>
+      </PageLayout>
+    );
   }
 
   return (
@@ -240,8 +259,8 @@ const store = ({ device }: Props) => {
               <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} />
             </div>
           ) : null}
-          <Button onClick={() => setSize(size + 1)}>더 보기</Button>
         </ItemsStoreSection>
+        <Space></Space>
         <div ref={observerTargetElement}>store</div>
       </PageMainLayout>
     </PageLayout>
@@ -452,4 +471,10 @@ const ItemsStoreSection = styled.section`
     align-items: center;
     width: 100%;
   }
+`;
+
+const Space = styled.div`
+  width: 100%;
+  height: 50px;
+  background-color: white;
 `;

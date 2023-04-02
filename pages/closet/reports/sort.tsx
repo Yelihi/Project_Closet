@@ -2,11 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 import PageLayout from '../../../components/recycle/PageLayout';
+import KeepWorking from '../../../components/recycle/KeepWorking';
 
 export default function sort() {
   return (
     <PageLayout>
-      <TestContainer>sort</TestContainer>
+      <TestContainer>
+        <KeepWorking height={100} />
+      </TestContainer>
     </PageLayout>
   );
 }
@@ -16,6 +19,5 @@ const TestContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 2000px;
-  background-color: ${({ theme }) => theme.colors.middleGrey};
+  height: 600px;
 `;

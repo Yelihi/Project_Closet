@@ -7,6 +7,7 @@ import OverviewCL from '../recycle/element/overview/OverviewCL';
 import { categoriObject } from '../store/TableData';
 
 import Router from 'next/router';
+import EmptyData from '../recycle/EmptyData';
 
 type Props = {
   data: categoriObject;
@@ -17,6 +18,14 @@ const TotalData = ({ data, total }: Props) => {
   const moveToStore = useCallback(() => {
     Router.push('/closet/store');
   }, []);
+
+  if (Object.keys(data).length === 0) {
+    return (
+      <EmptyOverview Subject='total quantity' Address='Store' onMove={moveToStore} divided={false}>
+        <EmptyData height={80} />
+      </EmptyOverview>
+    );
+  }
 
   return (
     <OverviewCL Subject='total quantity' Address='Store' onMove={moveToStore} divided={false}>
@@ -33,6 +42,13 @@ const TotalData = ({ data, total }: Props) => {
 };
 
 export default TotalData;
+
+const EmptyOverview = styled(OverviewCL)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const TotalDiv = styled.div`
   display: flex;

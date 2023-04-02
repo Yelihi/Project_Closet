@@ -8,9 +8,10 @@ type myComponent = {
   title?: string;
   subTitle?: string;
   istitle?: boolean;
+  hasEmpty?: boolean;
 };
 
-const PageMainLayout = ({ children, title, subTitle, istitle = true }: myComponent) => {
+const PageMainLayout = ({ children, title, subTitle, istitle = true, hasEmpty }: myComponent) => {
   return (
     <MainContainer>
       {istitle && (
@@ -20,7 +21,7 @@ const PageMainLayout = ({ children, title, subTitle, istitle = true }: myCompone
         </ComponentHead>
       )}
       {istitle && <Intersection />}
-      <ChildrenContainer>{children}</ChildrenContainer>
+      <ChildrenContainer hasEmpty={hasEmpty}>{children}</ChildrenContainer>
     </MainContainer>
   );
 };
@@ -42,10 +43,10 @@ const MainContainer = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 
-const ChildrenContainer = styled.div`
+const ChildrenContainer = styled.div<{ hasEmpty: boolean | undefined }>`
   width: 100%;
-  height: auto;
-  margin-top: 30px;
+  height: ${props => (props.hasEmpty ? '500px' : 'auto')};
+  margin-top: ${props => (props.hasEmpty ? '0' : '30px')};
 `;
 
 const ComponentHead = styled.div`

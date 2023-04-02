@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import ItemCard from '../recycle/ItemCard';
 
 import { ItemsArray } from './TableData';
+import { EmptyDiv } from './ATable';
+import { Empty } from 'antd';
 
 interface Props {
   itemData: ItemsArray[] | undefined;
@@ -16,6 +18,14 @@ const loadingArray = Array(9)
   .map((v, i) => i);
 
 const CardBoard = ({ itemData, onSubmit, isLoading }: Props) => {
+  if (itemData?.length === 0) {
+    return (
+      <EmptyDiv>
+        <Empty />
+      </EmptyDiv>
+    );
+  }
+
   return (
     <CardSection>
       {!isLoading &&

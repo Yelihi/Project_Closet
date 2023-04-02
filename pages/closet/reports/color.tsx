@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import PageLayout from '../../../components/recycle/PageLayout';
-import EmptyData from '../../../components/recycle/EmptyData';
+import KeepWorking from '../../../components/recycle/KeepWorking';
 
 const color = () => {
   return (
     <PageLayout>
       <TestContainer>
-        <EmptyData height={70} />
+        <KeepWorking height={100} />
       </TestContainer>
     </PageLayout>
   );

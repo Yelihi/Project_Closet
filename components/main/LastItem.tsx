@@ -8,6 +8,7 @@ import { ItemsArray } from '../store/TableData';
 import { backUrl } from '../../config/config';
 
 import { media } from '../../styles/media';
+import EmptyData from '../recycle/EmptyData';
 
 type LastItemProps = {
   item: ItemsArray;
@@ -17,6 +18,15 @@ const LastItem = ({ item }: LastItemProps) => {
   const moveToDetail = useCallback(() => {
     Router.push(`/closet/details/${item.id}`);
   }, []);
+
+  if (!item) {
+    return (
+      <OverviewCL Subject='Last Item' Address='Detail' onMove={moveToDetail} divided={true}>
+        <EmptyData height={40} />
+      </OverviewCL>
+    );
+  }
+
   return (
     <OverviewCL Subject='Last Item' Address='Detail' onMove={moveToDetail} divided={true}>
       <LastItemSection>

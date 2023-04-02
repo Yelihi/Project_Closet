@@ -27,6 +27,29 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
     []
   );
 
+  if (itemsData.length == 0) {
+    return (
+      <>
+        <Table>
+          <Thead>
+            <tr>
+              {headData.map((header, idx) => {
+                return (
+                  <Th key={header.text} index={header.text}>
+                    {header.text}
+                  </Th>
+                );
+              })}
+            </tr>
+          </Thead>
+        </Table>
+        <EmptyDiv>
+          <Empty />
+        </EmptyDiv>
+      </>
+    );
+  }
+
   return (
     <Table>
       <Thead>
@@ -41,41 +64,37 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
         </tr>
       </Thead>
       <tbody>
-        {itemsData.length >= 1 ? (
-          itemsData.map((data, index) => {
-            return (
-              <Tr key={index}>
-                {headerKey.map(headKey => {
-                  return (
-                    <Td key={headKey + index}>
-                      {headKey === 'productName' && data.Images.length > 0 ? (
-                        <ImageBox>
-                          <CImage src={`${backUrl}/${data.Images[0].src}`} alt={headKey} width={100} height={100} priority={true} />
-                          {data[headKey]}
-                        </ImageBox>
-                      ) : headKey === 'price' ? (
-                        data[headKey].toLocaleString('ko-KR')
-                      ) : headKey === 'etc' && isDelete && onSubmit ? (
-                        <EtcBox>
-                          <ETC onClick={moveToDetailsPage(data.id)}>
-                            <BiDetail className='icon' /> 상세보기
-                          </ETC>
-                          <ETC onClick={() => (window.confirm('삭제하시겠습니까?') ? onSubmit(data.id)() : () => console.log('취소했씁니다'))}>
-                            <FaTrashRestoreAlt className='icon' /> 삭제하기
-                          </ETC>
-                        </EtcBox>
-                      ) : (
-                        headKey !== 'etc' && data[headKey]
-                      )}
-                    </Td>
-                  );
-                })}
-              </Tr>
-            );
-          })
-        ) : (
-          <Empty />
-        )}
+        {itemsData.map((data, index) => {
+          return (
+            <Tr key={index}>
+              {headerKey.map(headKey => {
+                return (
+                  <Td key={headKey + index}>
+                    {headKey === 'productName' && data.Images.length > 0 ? (
+                      <ImageBox>
+                        <CImage src={`${backUrl}/${data.Images[0].src}`} alt={headKey} width={100} height={100} priority={true} />
+                        {data[headKey]}
+                      </ImageBox>
+                    ) : headKey === 'price' ? (
+                      data[headKey].toLocaleString('ko-KR')
+                    ) : headKey === 'etc' && isDelete && onSubmit ? (
+                      <EtcBox>
+                        <ETC onClick={moveToDetailsPage(data.id)}>
+                          <BiDetail className='icon' /> 상세보기
+                        </ETC>
+                        <ETC onClick={() => (window.confirm('삭제하시겠습니까?') ? onSubmit(data.id)() : () => console.log('취소했씁니다'))}>
+                          <FaTrashRestoreAlt className='icon' /> 삭제하기
+                        </ETC>
+                      </EtcBox>
+                    ) : (
+                      headKey !== 'etc' && data[headKey]
+                    )}
+                  </Td>
+                );
+              })}
+            </Tr>
+          );
+        })}
       </tbody>
     </Table>
   );
@@ -185,4 +204,12 @@ const ETC = styled.div`
   &:hover {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   }
+`;
+
+export const EmptyDiv = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
 `;

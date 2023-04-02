@@ -9,23 +9,23 @@ type EmptyProps = {
   height: number;
 };
 
-const EmptyData = ({ height }: EmptyProps) => {
-  const moveToAddPage = useCallback(() => {
-    Router.push('/closet/add');
+const KeepWorking = ({ height }: EmptyProps) => {
+  const moveToOverview = useCallback(() => {
+    Router.push('/closet/overview');
   }, []);
   return (
     <EmptySection>
-      <Empty image='/images/closet.png' imageStyle={{ height: height }} description={<EmptySpan>저장된 의류가 없어요..!</EmptySpan>}>
-        {height > 40 && <AButton color='black' disabled={false} dest='저장 페이지로' onClick={moveToAddPage} />}
+      <Empty image='/images/hard-work.png' imageStyle={{ height: height }} description={<EmptySpan>Sorry! 작업중이에요</EmptySpan>}>
+        {height > 40 && <AButton color='black' disabled={false} dest='메인 페이지로' onClick={moveToOverview} />}
       </Empty>
-      <Copyright href='https://www.flaticon.com/free-icons/closet' title='closet icons'>
-        Closet icons created by Freepik - Flaticon
+      <Copyright href='https://www.flaticon.com/free-icons/hard-work' title='hard work icons'>
+        Hard work icons created by Freepik - Flaticon
       </Copyright>
     </EmptySection>
   );
 };
 
-export default EmptyData;
+export default KeepWorking;
 
 const EmptySection = styled.section`
   display: flex;

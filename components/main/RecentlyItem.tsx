@@ -6,6 +6,7 @@ import Image from 'next/image';
 import OverviewCL from '../recycle/element/overview/OverviewCL';
 import { ItemsArray } from '../store/TableData';
 import { backUrl } from '../../config/config';
+import EmptyData from '../recycle/EmptyData';
 
 type RecentlyProps = {
   items: ItemsArray[];
@@ -21,6 +22,15 @@ const RecentlyItem = ({ items }: RecentlyProps) => {
     },
     []
   );
+
+  if (items.length === 0) {
+    return (
+      <OverviewCL Subject='Recently Eroll' Address='Store' onMove={moveToStore} divided={false}>
+        <EmptyData height={80} />
+      </OverviewCL>
+    );
+  }
+
   return (
     <OverviewCL Subject='Recently Eroll' Address='Store' onMove={moveToStore} divided={false}>
       <ListSection>

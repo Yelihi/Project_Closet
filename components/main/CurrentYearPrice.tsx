@@ -4,6 +4,7 @@ import Router from 'next/router';
 
 import OverviewCL from '../recycle/element/overview/OverviewCL';
 import TotalPriceBar from './chart/TotalPriceBar';
+import EmptyData from '../recycle/EmptyData';
 
 type CurrentPriceProps = {
   totalPrice: number;
@@ -16,6 +17,15 @@ const CurrentYearPrice = ({ totalPrice, currentPrice }: CurrentPriceProps) => {
   const moveToStore = useCallback(() => {
     Router.push('/closet/store');
   }, []);
+
+  if (!totalPrice || !currentPrice) {
+    return (
+      <OverviewCL Subject='TotalPrice' Address='Store' onMove={moveToStore} divided={true}>
+        <EmptyData height={40} />
+      </OverviewCL>
+    );
+  }
+
   return (
     <OverviewCL Subject='TotalPrice' Address='Store' onMove={moveToStore} divided={true}>
       <TestContainer>
