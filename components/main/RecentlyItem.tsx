@@ -64,7 +64,7 @@ const ListSection = styled.section`
 `;
 
 const DescriptionSpan = styled.span`
-  font-size: 10px;
+  font-size: 12px;
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Medium};
   margin-top: 5px;

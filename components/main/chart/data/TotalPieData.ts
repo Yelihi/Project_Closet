@@ -1,3 +1,6 @@
+
+
+
 export const data = [
   {
     id: 'make',
@@ -9,7 +12,7 @@ export const data = [
     id: 'stylus',
     label: 'stylus',
     value: 581,
-    color: 'hsl(290, 70%, 50%)',
+    color: 'hsl(309, 70%, 50%)',
   },
   {
     id: 'rust',
