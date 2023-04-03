@@ -45,7 +45,7 @@ const MainContainer = styled.div`
 
 const ChildrenContainer = styled.div<{ hasEmpty: boolean | undefined }>`
   width: 100%;
-  height: ${props => (props.hasEmpty ? '500px' : 'auto')};
+  height: ${props => (props.hasEmpty ? '700px' : 'auto')};
   margin-top: ${props => (props.hasEmpty ? '0' : '30px')};
 `;
 

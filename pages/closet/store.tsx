@@ -66,8 +66,8 @@ const store = ({ device }: Props) => {
   console.log('deleteItemDone', deleteItemDone);
   if (deleteItemDone && repeat.current) {
     console.log('store 실행되었음');
-    mutate();
-    infinitiMutate();
+    mutate(data, { revalidate: true });
+    infinitiMutate(items, { revalidate: true });
     repeat.current = false;
   }
   // console.log('device', windowWidth);
@@ -123,6 +123,7 @@ const store = ({ device }: Props) => {
       modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
     }
   }
+
   if (windowWidth === 'phone' && paginationPosts) {
     for (let cloth of paginationPosts) {
       accumulationItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
@@ -155,6 +156,10 @@ const store = ({ device }: Props) => {
     (id: number) => () => {
       repeat.current = true;
       console.log('삭제 실행되었음');
+      dispatch({
+        type: t.DELETE_ITEM_REQUEST,
+        data: { clothId: id },
+      });
       if (Array.isArray(data)) {
         let newData = [];
         for (let item of data) {
@@ -174,10 +179,6 @@ const store = ({ device }: Props) => {
         console.log('내부 mutate 시작됨2');
         infinitiMutate([...newPostitems], { revalidate: false });
       }
-      dispatch({
-        type: t.DELETE_ITEM_REQUEST,
-        data: { clothId: id },
-      });
     },
     [data, items, paginationPosts, windowWidth]
   );
@@ -186,7 +187,12 @@ const store = ({ device }: Props) => {
     return null;
   }
 
-  if (!userItems || userItems?.items.length === 0 || (windowWidth === 'desktop' && categoriName === '' && !Array.isArray(data))) {
+  if (
+    !userItems ||
+    userItems?.items.length === 0 ||
+    (windowWidth === 'desktop' && categoriName === '' && !Array.isArray(data)) ||
+    (windowWidth === 'phone' && categoriName === '' && !paginationPosts)
+  ) {
     return (
       <PageLayout>
         <PageMainLayout istitle={false} hasEmpty={true}>

@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { SWRConfig } from 'swr';
 import type { rootReducerType } from '../reducers/types';
 
 import type { AppProps } from 'next/app';
@@ -16,7 +17,9 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle isPhoneMenuClick={isPhoneMenuClick} />
-      <Component {...pageProps} />
+      <SWRConfig>
+        <Component {...pageProps} />
+      </SWRConfig>
     </ThemeProvider>
   );
 };

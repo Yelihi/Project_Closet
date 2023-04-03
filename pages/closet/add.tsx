@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import * as t from '../../reducers/type';
+import { SWRConfig } from 'swr';
 
 import axios from 'axios';
 import { END } from 'redux-saga';

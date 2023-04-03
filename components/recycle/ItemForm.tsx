@@ -97,20 +97,15 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
     mode: 'onSubmit',
     defaultValues: defaultValues,
   });
-  const { trigger: desktop } = useSWRMutation(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=desktop`, mutateFetcher);
-  const { trigger: phone } = useSWRMutation(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=phone`, mutateFetcher);
   console.log('repeat', repeat.current);
   console.log('uploadItemsDone', uploadItemsDone);
 
   if (uploadItemsDone && repeat.current) {
     console.log('실행되었음!');
-    mutate(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=desktop`);
-    mutate(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=phone`);
-    // desktop();
-    // phone();
+    mutate(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=desktop`, '', { revalidate: true });
+    mutate(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=phone`, '', { revalidate: true });
     repeat.current = false;
   }
-
   const {
     handleSubmit,
     control,

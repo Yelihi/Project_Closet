@@ -17,7 +17,9 @@ export const usePagination = <T>(categoriName: string, windowWidth: string) => {
   const { data: items, error: postsError, size, setSize, isLoading: isItmesLoading, mutate: infinitiMutate } = useSWRInfinite<SWRResult<T>, Error>(getKey, mutateFetcher);
 
   const posts = items?.map(item => item.items);
-  const paginationPosts = posts?.flat();
+  // 데이터가 없을 때 posts 가 [undefiend] 가 되기 때문에, 배열 안 undefined 를 없에기 위한 방법
+  const filterUndefined = posts?.filter(item => item !== undefined);
+  const paginationPosts = posts === undefined ? undefined : filterUndefined?.flat();
   const loadingMore = posts && typeof posts[size - 1] === 'undefined';
   const isEmpty = posts?.[0]?.length === 0;
   const isReachedEnd = posts && posts[posts.length - 1]?.length < 9;

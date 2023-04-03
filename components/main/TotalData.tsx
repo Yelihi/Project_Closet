@@ -21,9 +21,9 @@ const TotalData = ({ data, total }: Props) => {
 
   if (Object.keys(data).length === 0) {
     return (
-      <EmptyOverview Subject='total quantity' Address='Store' onMove={moveToStore} divided={false}>
+      <OverviewCL Subject='total quantity' Address='Store' onMove={moveToStore} divided={false}>
         <EmptyData height={80} />
-      </EmptyOverview>
+      </OverviewCL>
     );
   }
 
@@ -43,12 +43,6 @@ const TotalData = ({ data, total }: Props) => {
 
 export default TotalData;
 
-const EmptyOverview = styled(OverviewCL)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 
 const TotalDiv = styled.div`
   display: flex;
