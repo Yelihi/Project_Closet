@@ -1,5 +1,5 @@
 import useSWRInfinite from 'swr/infinite';
-import { backUrl, fetcher } from '../config/config';
+import { backUrl, fetcher, mutateFetcher } from '../config/config';
 
 export interface SWRResult<T> {
   items: T[];
@@ -14,7 +14,7 @@ export const usePagination = <T>(categoriName: string, windowWidth: string) => {
     return `${backUrl}/posts/clothes/store?lastId=${previousPageData.nextCursor}&categori=${categoriName}&deviceType=${windowWidth}`;
   };
 
-  const { data: items, error: postsError, size, setSize, isLoading: isItmesLoading, mutate: infinitiMutate } = useSWRInfinite<SWRResult<T>, Error>(getKey, fetcher);
+  const { data: items, error: postsError, size, setSize, isLoading: isItmesLoading, mutate: infinitiMutate } = useSWRInfinite<SWRResult<T>, Error>(getKey, mutateFetcher);
 
   const posts = items?.map(item => item.items);
   const paginationPosts = posts?.flat();

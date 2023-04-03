@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
+import { useSWRConfig } from 'swr';
+import useSWRMutation from 'swr/mutation';
 import { FieldValues, useForm, FormProvider, FieldPath } from 'react-hook-form';
 import { WarningTwoTone, CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +10,7 @@ import Image from 'next/image';
 import Router from 'next/router';
 
 import * as t from '../../reducers/type';
-import { backUrl } from '../../config/config';
+import { backUrl, mutateFetcher } from '../../config/config';
 
 import { visionAI, categoriToVisionAI } from '../add/VisionAIData';
 import { clothData, categori, descriptionData } from '../add/ElementData';
@@ -86,13 +88,28 @@ export interface FormProps {
 
 const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setState }: FormProps) => {
   const dispatch = useDispatch();
+  const { mutate } = useSWRConfig();
   const [isClothes, setIsClothes] = useState(false);
   const isDataChange = useRef(false);
+  const repeat = useRef<boolean>(false);
   const { imagePath, uploadItemsDone, uploadItemsError, lastAddDataIndex, singleItem } = useSelector((state: rootReducerType) => state.post);
   const methods = useForm<AddInitialValue>({
     mode: 'onSubmit',
     defaultValues: defaultValues,
   });
+  const { trigger: desktop } = useSWRMutation(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=desktop`, mutateFetcher);
+  const { trigger: phone } = useSWRMutation(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=phone`, mutateFetcher);
+  console.log('repeat', repeat.current);
+  console.log('uploadItemsDone', uploadItemsDone);
+
+  if (uploadItemsDone && repeat.current) {
+    console.log('실행되었음!');
+    mutate(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=desktop`);
+    mutate(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=phone`);
+    // desktop();
+    // phone();
+    repeat.current = false;
+  }
 
   const {
     handleSubmit,
@@ -162,6 +179,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
     data.image = imagePath;
     const Type = Submit();
     console.log(data);
+    repeat.current = true;
     dispatch({
       type: Type,
       data: { items: data, clothId: itemId },
