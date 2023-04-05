@@ -14,12 +14,7 @@ import { SagaStore } from '../store/configureStore';
 import * as t from '../reducers/type';
 
 import wrapper from '../store/configureStore';
-import AppLayout from '../components/AppLayout';
 import AuthLayout from '../components/AuthLayout';
-
-import { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
-import GlobalStyle from '../styles/GlobalStyle';
 
 const UserLogin = () => {
   const [gotoAccount, setGotoAccount] = useState<boolean>(false);

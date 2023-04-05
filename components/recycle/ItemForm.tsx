@@ -100,12 +100,6 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
   console.log('repeat', repeat.current);
   console.log('uploadItemsDone', uploadItemsDone);
 
-  if (uploadItemsDone && repeat.current) {
-    console.log('실행되었음!');
-    mutate(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=desktop`, '', { revalidate: true });
-    mutate(`${backUrl}/posts/clothes/store?lastId=0&categori=&deviceType=phone`, '', { revalidate: true });
-    repeat.current = false;
-  }
   const {
     handleSubmit,
     control,
