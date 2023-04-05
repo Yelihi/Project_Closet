@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import useSWR, { useSWRConfig } from 'swr';
-import useSWRMutation from 'swr/mutation';
+import useSWR from 'swr';
 
 import Link from 'next/link';
 import Router from 'next/router';
@@ -44,9 +43,7 @@ interface Props {
 
 const store = ({ device }: Props) => {
   const dispatch = useDispatch();
-  const { mutate: globalMutate } = useSWRConfig();
   const observerTargetElement = useRef<HTMLDivElement>(null);
-  const repeat = useRef<boolean>(false);
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
@@ -60,19 +57,7 @@ const store = ({ device }: Props) => {
   let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, mutateFetcher);
-  const { items, paginationPosts, loadingMore, size, setSize, isReachedEnd, isItmesLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
-
-  console.log('repeat', repeat.current);
-  console.log('deleteItemDone', deleteItemDone);
-  if (deleteItemDone && repeat.current) {
-    console.log('store 실행되었음');
-    mutate(data, { revalidate: true });
-    infinitiMutate(items, { revalidate: true });
-    repeat.current = false;
-  }
-  // console.log('device', windowWidth);
-  // console.log('data', data);
-  console.log('items', items);
+  const { items, paginationPosts, loadingMore, setSize, isReachedEnd, isItmesLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
 
   useEffect(() => {
     setHydrated(true);
@@ -123,7 +108,6 @@ const store = ({ device }: Props) => {
       modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
     }
   }
-
   if (windowWidth === 'phone' && paginationPosts) {
     for (let cloth of paginationPosts) {
       accumulationItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
@@ -154,8 +138,6 @@ const store = ({ device }: Props) => {
 
   const deleteItemAtTable = useCallback(
     (id: number) => () => {
-      repeat.current = true;
-      console.log('삭제 실행되었음');
       dispatch({
         type: t.DELETE_ITEM_REQUEST,
         data: { clothId: id },
@@ -165,7 +147,6 @@ const store = ({ device }: Props) => {
         for (let item of data) {
           if (item.id !== id) newData.push(item);
         }
-        console.log('내부 mutate 시작됨1');
         mutate([...newData], { revalidate: false });
       }
       if (Array.isArray(items)) {
@@ -176,7 +157,6 @@ const store = ({ device }: Props) => {
           newItems = { ...newItems, items: newPostData };
           newPostitems.push(newItems);
         }
-        console.log('내부 mutate 시작됨2');
         infinitiMutate([...newPostitems], { revalidate: false });
       }
     },
@@ -186,11 +166,11 @@ const store = ({ device }: Props) => {
   if (!hydrated) {
     return null;
   }
-  console.log('pagination', paginationPosts);
+
   if (
     !userItems ||
     userItems?.items.length === 0 ||
-    (windowWidth === 'desktop' && categoriName === '' && !Array.isArray(data)) ||
+    (windowWidth === 'desktop' && categoriName === '' && Object.keys(data[0]).length === 0) ||
     (windowWidth === 'phone' && categoriName === '' && paginationPosts?.length === 0)
   ) {
     return (
