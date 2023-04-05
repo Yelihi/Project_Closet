@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
-import { useSWRConfig } from 'swr';
-import useSWRMutation from 'swr/mutation';
 import { FieldValues, useForm, FormProvider, FieldPath } from 'react-hook-form';
 import { WarningTwoTone, CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -88,17 +86,13 @@ export interface FormProps {
 
 const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setState }: FormProps) => {
   const dispatch = useDispatch();
-  const { mutate } = useSWRConfig();
   const [isClothes, setIsClothes] = useState(false);
   const isDataChange = useRef(false);
-  const repeat = useRef<boolean>(false);
   const { imagePath, uploadItemsDone, uploadItemsError, lastAddDataIndex, singleItem } = useSelector((state: rootReducerType) => state.post);
   const methods = useForm<AddInitialValue>({
     mode: 'onSubmit',
     defaultValues: defaultValues,
   });
-  console.log('repeat', repeat.current);
-  console.log('uploadItemsDone', uploadItemsDone);
 
   const {
     handleSubmit,
@@ -168,7 +162,6 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
     data.image = imagePath;
     const Type = Submit();
     console.log(data);
-    repeat.current = true;
     dispatch({
       type: Type,
       data: { items: data, clothId: itemId },
