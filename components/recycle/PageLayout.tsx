@@ -23,15 +23,13 @@ const PageLayout = ({ children }: Props): JSX.Element => {
   }, []);
 
   return (
-    <AppLayout>
-      <Container>
-        <NavRow>
-          <Nav />
-        </NavRow>
-        <Intersection></Intersection>
-        {children}
-      </Container>
-    </AppLayout>
+    <Container>
+      <NavRow>
+        <Nav />
+      </NavRow>
+      <Intersection></Intersection>
+      {children}
+    </Container>
   );
 };
 

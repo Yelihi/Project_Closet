@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import axios from 'axios';
 import { END } from 'redux-saga';
 import styled from 'styled-components';
@@ -14,6 +14,12 @@ import { SagaStore } from '../store/configureStore';
 import * as t from '../reducers/type';
 
 import wrapper from '../store/configureStore';
+import AppLayout from '../components/AppLayout';
+import AuthLayout from '../components/AuthLayout';
+
+import { ThemeProvider } from 'styled-components';
+import theme from '../styles/theme';
+import GlobalStyle from '../styles/GlobalStyle';
 
 const UserLogin = () => {
   const [gotoAccount, setGotoAccount] = useState<boolean>(false);
@@ -32,6 +38,10 @@ const UserLogin = () => {
       </Section>
     </Container>
   );
+};
+
+UserLogin.getLayout = function getLayout(page: ReactElement) {
+  return <AuthLayout>{page}</AuthLayout>;
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async (context: GetServerSidePropsContext) => {

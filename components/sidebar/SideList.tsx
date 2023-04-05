@@ -31,17 +31,15 @@ const SideList = () => {
         {sidebarList.map((prop, i) => {
           return i === 2 ? (
             <>
-              <Link href={prop.path} key={i}>
-                <ListBox direction={true} onClick={onClickDrop}>
+              <ListBox direction={true} onClick={onClickDrop}>
+                <div>
                   <div>
-                    <div>
-                      {prop.icon}
-                      <li>{prop.name}</li>
-                    </div>
-                    {desktop && <MdOutlineKeyboardArrowDown className='logo' />}
+                    {prop.icon}
+                    <li>{prop.name}</li>
                   </div>
-                </ListBox>
-              </Link>
+                  {desktop && <MdOutlineKeyboardArrowDown className='logo' />}
+                </div>
+              </ListBox>
               {dropList.map((prop, j) => {
                 return (
                   <Link href={prop.path} key={j}>
@@ -171,7 +169,7 @@ const DropListBox = styled.div<{ clickDrop: boolean }>`
   }
 
   > li {
-    display: none;
+    /* display: none; */
     opacity: 0;
     transition: all 0.2s ease-out;
   }

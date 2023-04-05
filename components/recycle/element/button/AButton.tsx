@@ -29,6 +29,7 @@ const ButtonContainer = styled(BaseButton)<{ color: string; disabled: boolean }>
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   transition: box-shadow 0.5s ease-out;
   font-family: ${({ theme }) => theme.font.Efont};
+  font-size: 12px;
 
   &:hover {
     ${props =>

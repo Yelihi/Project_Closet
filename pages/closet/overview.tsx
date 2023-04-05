@@ -31,29 +31,27 @@ const Overview = () => {
 
   if (isLoading) return null;
   return (
-    <AppLayout>
-      <Container>
-        <NavRow>
-          <Nav />
-        </NavRow>
-        <Intersection></Intersection>
-        <IntroRow>
-          <IntroSection />
-        </IntroRow>
-        <DataRow>
-          <TotalData data={data.categori} total={data.totalNumber} />
-        </DataRow>
-        <ResRow>
-          <RecentlyItem items={data.lastDatas} />
-        </ResRow>
-        <InfoRow>
-          <LastItem item={data.theOldestData} />
-        </InfoRow>
-        <LastDataRow>
-          <CurrentYearPrice totalPrice={data.totalPrice} currentPrice={data.currentYearPrice} />
-        </LastDataRow>
-      </Container>
-    </AppLayout>
+    <Container>
+      <NavRow>
+        <Nav />
+      </NavRow>
+      <Intersection></Intersection>
+      <IntroRow>
+        <IntroSection />
+      </IntroRow>
+      <DataRow>
+        <TotalData data={data.categori} total={data.totalNumber} />
+      </DataRow>
+      <ResRow>
+        <RecentlyItem items={data.lastDatas} />
+      </ResRow>
+      <InfoRow>
+        <LastItem item={data.theOldestData} />
+      </InfoRow>
+      <LastDataRow>
+        <CurrentYearPrice totalPrice={data.totalPrice} currentPrice={data.currentYearPrice} />
+      </LastDataRow>
+    </Container>
   );
 };
 

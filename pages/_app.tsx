@@ -10,17 +10,28 @@ import GlobalStyle from '../styles/GlobalStyle';
 import theme from '../styles/theme';
 
 import wrapper from '../store/configureStore';
+import AppLayout from '../components/AppLayout';
+import { ReactElement, ReactNode, FunctionComponent } from 'react';
 
-const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
+type NewtPageAddLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsAddLayout = AppProps & {
+  Component: NewtPageAddLayout;
+};
+
+const MyApp = ({ Component, pageProps }: AppPropsAddLayout) => {
   const { isPhoneMenuClick } = useSelector((state: rootReducerType) => state.screenEvent);
+  const getLayout = Component.getLayout || (page => <AppLayout>{page}</AppLayout>);
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle isPhoneMenuClick={isPhoneMenuClick} />
-      <SWRConfig>
-        <Component {...pageProps} />
-      </SWRConfig>
-    </ThemeProvider>
+    <SWRConfig>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle isPhoneMenuClick={isPhoneMenuClick} />
+        {getLayout(<Component {...pageProps} />)}
+      </ThemeProvider>
+    </SWRConfig>
   );
 };
 
