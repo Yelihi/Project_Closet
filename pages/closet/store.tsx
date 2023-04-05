@@ -72,7 +72,7 @@ const store = ({ device }: Props) => {
   }
   // console.log('device', windowWidth);
   // console.log('data', data);
-  // console.log('items', items);
+  console.log('items', items);
 
   useEffect(() => {
     setHydrated(true);
@@ -118,7 +118,7 @@ const store = ({ device }: Props) => {
 
   let modifiedItems = [];
   let accumulationItems = [];
-  if (windowWidth === 'desktop' && data) {
+  if (windowWidth === 'desktop' && Array.isArray(data)) {
     for (let cloth of data) {
       modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
     }
@@ -186,12 +186,12 @@ const store = ({ device }: Props) => {
   if (!hydrated) {
     return null;
   }
-
+  console.log('pagination', paginationPosts);
   if (
     !userItems ||
     userItems?.items.length === 0 ||
     (windowWidth === 'desktop' && categoriName === '' && !Array.isArray(data)) ||
-    (windowWidth === 'phone' && categoriName === '' && !paginationPosts)
+    (windowWidth === 'phone' && categoriName === '' && paginationPosts?.length === 0)
   ) {
     return (
       <PageLayout>
