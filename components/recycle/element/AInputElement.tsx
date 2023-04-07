@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { CirclePicker } from 'react-color';
 import { FieldValues, useController } from 'react-hook-form';
-import { InputNumber, Select, Input, DatePicker } from 'antd';
+import { InputNumber, Select, Input, DatePicker, Rate } from 'antd';
 
 import { TControl } from './type';
 import { media } from '../../../styles/media';
@@ -42,6 +42,7 @@ function AInputElement<T extends FieldValues>(props: TPorps<T>) {
       {name == 'productName' ? <Input value={value} id={name} onChange={onChange} {...props} style={{ height: '30px', width: '100%' }} autoComplete='off' allowClear /> : null}
       {name == 'color' ? <CirclePicker color={value} colors={colors} onChange={(color, event) => onChange(color.hex)} {...props} circleSize={25} width='100%' /> : null}
       {name == 'price' ? <InputNumber value={value} id={name} min={1} onChange={onChange} style={{ height: '30px', width: '100%' }} placeholder={placeholder} /> : null}
+      {name == 'preference' ? <Rate value={value} onChange={onChange} /> : null}
       {name == 'purchaseDay' ? (
         <DatePicker defaultValue={dayjs(value || currentDate, dateFormat)} onChange={(date, dateString) => onChange(dateString)} picker='month' style={{ width: '100%', height: '30px' }} />
       ) : null}

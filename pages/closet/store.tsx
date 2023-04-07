@@ -180,7 +180,7 @@ const store = ({ device }: Props) => {
             </CustomBread>
           </HandleContainer>
           <SpinDiv>
-            <Spin style={{ fontSize: '30px' }} />
+            <Spin style={{ fontSize: '100px' }} />
           </SpinDiv>
         </PageMainLayout>
       </PageLayout>
