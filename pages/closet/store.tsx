@@ -16,7 +16,7 @@ import type { SagaStore } from '../../store/configureStore';
 
 import wrapper from '../../store/configureStore';
 
-import { Breadcrumb, Pagination, PaginationProps, Segmented, Dropdown, Button, MenuProps } from 'antd';
+import { Breadcrumb, Pagination, PaginationProps, Segmented, Dropdown, Button, MenuProps, Spin } from 'antd';
 import { AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
 
 import { AiOutlineDatabase, AiOutlinePlus } from 'react-icons/ai';
@@ -57,7 +57,7 @@ const store = ({ device }: Props) => {
   let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, mutateFetcher);
-  const { items, paginationPosts, loadingMore, setSize, isReachedEnd, isItmesLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
+  const { items, paginationPosts, setSize, isReachedEnd, isItmesLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
 
   useEffect(() => {
     setHydrated(true);
@@ -165,6 +165,26 @@ const store = ({ device }: Props) => {
 
   if (!hydrated) {
     return null;
+  }
+
+  if (isLoading || isItmesLoading) {
+    return (
+      <PageLayout>
+        <PageMainLayout istitle={false} hasEmpty={true}>
+          <HandleContainer>
+            <CustomBread separator='>'>
+              <Breadcrumb.Item>
+                <Link href='/closet/overview'>Home</Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>Store</Breadcrumb.Item>
+            </CustomBread>
+          </HandleContainer>
+          <SpinDiv>
+            <Spin style={{ fontSize: '100px' }} />
+          </SpinDiv>
+        </PageMainLayout>
+      </PageLayout>
+    );
   }
 
   if (
@@ -479,4 +499,14 @@ const Space = styled.div`
   width: 100%;
   height: 50px;
   background-color: white;
+`;
+
+const SpinDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
 `;

@@ -85,6 +85,12 @@ export const clothData = [
     errorMessage: '색상을 선택해주세요',
   },
   {
+    name: 'preference',
+    subTitle: '현 의류의 선호도를 별점으로 매겨주세요(1~5점)',
+    placeholder: 'preference',
+    errorMessage: '별점을 매겨주세요',
+  },
+  {
     name: 'purchaseDay',
     subTitle: '월 단위로 언제 구매를 하셨는지 날짜를 기입해주세요',
     placeholder: 'purchase month',

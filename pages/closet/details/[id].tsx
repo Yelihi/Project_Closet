@@ -114,8 +114,8 @@ const Details = () => {
               <Categori>{singleItem && singleItem.categori}</Categori>
               <ProductName>{singleItem && singleItem.productName}</ProductName>
               <RateBox>
-                <CRate disabled defaultValue={4.5} />
-                <span>4.5</span>
+                <CRate disabled defaultValue={singleItem ? singleItem.preference : 1} />
+                <span>{singleItem ? singleItem.preference : 1}</span>
               </RateBox>
               <Descriptions>{singleItem && singleItem.description}</Descriptions>
               <TapContainer>

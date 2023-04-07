@@ -18,6 +18,7 @@ export interface User {
   color: string;
   categori: string;
   purchaseDay: string;
+  preference: number;
   createdAt: string;
   updatedAt: string;
   UserId: number;
