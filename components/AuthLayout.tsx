@@ -24,4 +24,5 @@ export default AuthLayout;
 const AppLay = styled(Layout)`
   /* min-height: 200%; */
   width: 100%;
+  height: 100%;
 `;

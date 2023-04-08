@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 
 import todoImage from '../public/images/todo2.jpg';
+import authImage from '../public/images/authRightImage.jpg';
 
 import Login from '../components/auth/Login';
 import Signup from '../components/auth/Signup';
@@ -28,7 +29,7 @@ const UserLogin = () => {
       <Section>
         {gotoAccount ? <Signup toggleGotoAccount={toggleGotoAccount} /> : <Login toggleGotoAccount={toggleGotoAccount} />}
         <ImageBox>
-          <Image alt='todo' src={todoImage} width={500} height={500} placeholder='blur' />
+          <Image alt='todo' src={authImage} width={500} height={500} placeholder='blur' />
         </ImageBox>
       </Section>
     </Container>
@@ -71,8 +72,8 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
   background-color: whitesmoke;
+  height: 100vh;
 `;
 
 const Section = styled.section`

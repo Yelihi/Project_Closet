@@ -63,7 +63,7 @@ const Signup = (props: SIprops) => {
   return (
     <SignupBox>
       <LeftTopBrand>
-        <span>@Yelihi</span>
+        <span>Closet</span>
       </LeftTopBrand>
       <SignupSection>
         <SignupForm>
@@ -109,7 +109,7 @@ const LeftTopBrand = styled.div`
 
   > span {
     text-align: start;
-    font-family: ${({ theme }) => theme.font.Efont};
+    font-family: ${({ theme }) => theme.font.Logo};
     font-size: 13px;
   }
 `;

@@ -38,7 +38,7 @@ const Login = (props: SIprops) => {
     <>
       <LoginBox>
         <LeftTopBrand>
-          <span>@Yelihi</span>
+          <span>Closet</span>
         </LeftTopBrand>
         <LoginSection>
           <LoginForm>
@@ -77,7 +77,7 @@ const LeftTopBrand = styled.div`
 
   > span {
     text-align: start;
-    font-family: ${({ theme }) => theme.font.Efont};
+    font-family: ${({ theme }) => theme.font.Logo};
     font-size: 13px;
   }
 `;
