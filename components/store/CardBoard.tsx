@@ -11,13 +11,14 @@ interface Props {
   itemData: ItemsArray[] | undefined;
   onSubmit?: (id: number) => () => void;
   isLoading?: boolean;
+  isItemsLoading?: boolean;
 }
 
 const loadingArray = Array(9)
   .fill(0)
   .map((v, i) => i);
 
-const CardBoard = ({ itemData, onSubmit, isLoading }: Props) => {
+const CardBoard = ({ itemData, onSubmit, isLoading, isItemsLoading }: Props) => {
   if (itemData?.length === 0) {
     return (
       <EmptyDiv>
@@ -36,7 +37,7 @@ const CardBoard = ({ itemData, onSubmit, isLoading }: Props) => {
             </CardBox>
           );
         })}
-      {isLoading &&
+      {(isLoading || isItemsLoading) &&
         loadingArray.map(item => {
           return (
             <LoadingBox key={item}>

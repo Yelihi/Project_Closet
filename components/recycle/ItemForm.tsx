@@ -22,6 +22,7 @@ import InputBackground from './add/InputBackgroud';
 import AInputElement from './element/AInputElement';
 import AButton from './element/button/AButton';
 import Measure from './add/Measure';
+import SkeletonImage from '../add/SkeletonImage';
 
 import DropImageInput from './element/DropImageInput';
 
@@ -89,7 +90,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
   const dispatch = useDispatch();
   const [isClothes, setIsClothes] = useState(false);
   const isDataChange = useRef(false);
-  const { imagePath, uploadItemsDone, uploadItemsError, lastAddDataIndex, singleItem } = useSelector((state: rootReducerType) => state.post);
+  const { imagePath, uploadItemsDone, uploadItemsError, imageUploadLoding, lastAddDataIndex, singleItem } = useSelector((state: rootReducerType) => state.post);
   const methods = useForm<AddInitialValue>({
     mode: 'onSubmit',
     defaultValues: defaultValues,
@@ -222,68 +223,41 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                         let isCategori = v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate]?.includes(item));
                         let confidence = categoriToVisionAI[cate]?.includes(v.visionSearch[0].name);
                         return (
-                          <PreviewContainer key={v.src} border={isClothes}>
-                            {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
-                            <PreviewImage src={`${backUrl}/${v.src}`} alt={v.src} width={250} height={250} />
-                            <PreviewTextContainer>
-                              <PreviewText>
-                                {isClothes ? (
+                          <SkeletonImage isLoading={imageUploadLoding} imageLength={imagePath.length}>
+                            <PreviewContainer key={v.src} border={isClothes}>
+                              {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
+                              <PreviewImage src={`${backUrl}/${v.src}`} alt={v.src} width={250} height={250} />
+                              <PreviewTextContainer>
+                                <PreviewText>
                                   <TextBox>
                                     <span>의류 사진여부 판단</span>
                                     <Text>
-                                      <CheckCircleTwoTone twoToneColor='#52c41a' />
-                                      적절한 사진입니다.
+                                      <CheckCircleTwoTone twoToneColor={isClothes ? '#52c41a' : '#E7373C'} />
+                                      {isClothes ? '적절한 사진입니다.' : '의류 사진을 넣어주세요'}
                                     </Text>
                                   </TextBox>
-                                ) : (
-                                  <TextBox>
-                                    <span>의류 사진여부 판단</span>
-                                    <Text>
-                                      <CloseCircleTwoTone twoToneColor='#E7373C' />
-                                      의류 사진을 넣어주세요
-                                    </Text>
-                                  </TextBox>
-                                )}
-                                {isCategori ? (
                                   <TextBox>
                                     <span>카테고리 적합성</span>
                                     <Text>
-                                      <CheckCircleTwoTone twoToneColor='#52c41a' />
-                                      카테고리에 적합한 의류입니다
+                                      <CheckCircleTwoTone twoToneColor={isCategori ? '#52c41a' : '#F4A100'} />
+                                      {isCategori ? '카테고리에 적합한 의류입니다' : '저장하실 순 있지만 적합의류는 아닙니다.'}
                                     </Text>
                                   </TextBox>
-                                ) : (
-                                  <TextBox>
-                                    <span>카테고리 적합성</span>
-                                    <Text>
-                                      <WarningTwoTone twoToneColor='#F4A100' />
-                                      저장하실 순 있지만 적합의류는 아닙니다.
-                                    </Text>
-                                  </TextBox>
-                                )}
-                                {confidence ? (
                                   <TextBox>
                                     <span>사진 내 카테고리 이미지 차지 비율</span>
                                     <Text>
-                                      <CheckCircleTwoTone twoToneColor='#52c41a' />
-                                      의류 비중이 적합합니다.
+                                      <CheckCircleTwoTone twoToneColor={confidence ? '#52c41a' : '#F4A100'} />
+                                      {confidence ? '의류 비중이 적합합니다.' : '좀 더 적합의류의 비중이 높은 사진을 올려주세요'}
                                     </Text>
                                   </TextBox>
-                                ) : (
-                                  <TextBox>
-                                    <span>사진 내 카테고리 이미지 차지 비율</span>
-                                    <Text>
-                                      <WarningTwoTone twoToneColor='#F4A100' />좀 더 적합의류의 비중이 높은 사진을 올려주세요
-                                    </Text>
-                                  </TextBox>
-                                )}
-                              </PreviewText>
+                                </PreviewText>
 
-                              <ButtonBox>
-                                <AButton color='' disabled={false} dest='제거' onClick={onRemoveImage(i)} />
-                              </ButtonBox>
-                            </PreviewTextContainer>
-                          </PreviewContainer>
+                                <ButtonBox>
+                                  <AButton color='' disabled={false} dest='제거' onClick={onRemoveImage(i)} />
+                                </ButtonBox>
+                              </PreviewTextContainer>
+                            </PreviewContainer>
+                          </SkeletonImage>
                         );
                       })}
                   </PreviewSection>

@@ -57,7 +57,7 @@ const store = ({ device }: Props) => {
   let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, mutateFetcher);
-  const { items, paginationPosts, setSize, isReachedEnd, isItmesLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
+  const { items, paginationPosts, setSize, isReachedEnd, isItemsLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
 
   useEffect(() => {
     setHydrated(true);
@@ -167,7 +167,7 @@ const store = ({ device }: Props) => {
     return null;
   }
 
-  if (isLoading || isItmesLoading) {
+  if (isLoading || isItemsLoading) {
     return (
       <PageLayout>
         <PageMainLayout istitle={false} hasEmpty={true}>
@@ -274,8 +274,8 @@ const store = ({ device }: Props) => {
         <ItemsStoreSection>
           {windowWidth === 'desktop' && segment === 'Table' ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
           {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
-          {windowWidth === 'phone' && !isItmesLoading ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={false} /> : null}
-          {windowWidth === 'phone' && isItmesLoading ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={true} /> : null}
+          {windowWidth === 'phone' && !isItemsLoading ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={false} isItemsLoading={false} /> : null}
+          {windowWidth === 'phone' && isItemsLoading ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={true} isItemsLoading={true} /> : null}
           {windowWidth === 'desktop' ? (
             <div>
               <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} />
