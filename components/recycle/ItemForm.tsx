@@ -29,6 +29,7 @@ import SortingResultComponent from './submitSuccess/SortingResultComponent';
 
 import type { ImagePathObject } from '../../reducers/types/post';
 import type { rootReducerType } from '../../reducers/types';
+import { media } from '../../styles/media';
 
 export interface Measures {
   shoulder?: number;
@@ -358,7 +359,7 @@ const PreviewContainer = styled.div<{ border: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 530px;
+  width: 100%;
   height: auto;
   padding: 10px;
   border: 1px solid ${({ theme, border }) => (border ? theme.colors.success : theme.colors.red)};
@@ -369,11 +370,15 @@ const PreviewContainer = styled.div<{ border: boolean }>`
   &:hover {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   }
+
+  ${media.desktop} {
+    width: 49.5%;
+  }
 `;
 
 const PreviewImage = styled(Image)`
-  width: 250px;
-  height: 250px;
+  width: 55%;
+  height: auto;
   object-fit: cover;
 `;
 
@@ -383,9 +388,12 @@ const PreviewTextContainer = styled.div`
   justify-content: space-between;
   align-items: c;
   height: 100%;
+  margin-right: 3%;
 `;
 
 const PreviewText = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-top: 10px;
 `;
 

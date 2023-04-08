@@ -30,7 +30,7 @@ const IntroSection = () => {
         </ButtonContainer>
       </Container>
       <ImageBox>
-        <video src='/images/introvideo.mp4' autoPlay loop muted />
+        <video src='/images/authvideo.mp4' autoPlay loop muted />
         <ShadowDiv></ShadowDiv>
       </ImageBox>
     </MainContainer>
