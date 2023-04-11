@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import * as t from '../../reducers/type';
-import { SWRConfig } from 'swr';
+import dynamic from 'next/dynamic';
 
 import axios from 'axios';
 import { END } from 'redux-saga';
@@ -11,11 +11,10 @@ import type { SagaStore } from '../../store/configureStore';
 import wrapper from '../../store/configureStore';
 
 import PageLayout from '../../components/recycle/PageLayout';
+import ItemForm from '../../components/recycle/ItemForm';
 
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../reducers/types';
-
-import ItemForm from '../../components/recycle/ItemForm';
 
 import { addPageLayoutProps } from '../../components/add/ElementData';
 

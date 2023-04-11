@@ -12,7 +12,7 @@ const BaseButton: BaseButtonComponent = React.forwardRef(<T extends React.Elemen
   const Element = As || 'button';
   return (
     <Element ref={ref} {...props}>
-      {props.src && <Image src={props.src} alt={props.dest} />}
+      {props.src && <Image src={props.src} alt={props.dest} priority={true} />}
       {props.dest}
     </Element>
   );

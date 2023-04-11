@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import * as t from '../../../reducers/type';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
 import axios from 'axios';
 import { END } from 'redux-saga';
@@ -15,15 +16,12 @@ import { Breadcrumb, ConfigProvider, Rate, Tabs } from 'antd';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerType } from '../../../reducers/types';
-import { User, SingleItem } from '../../../reducers/types/post';
-import { AddInitialValue } from '../../../components/recycle/ItemForm';
 
 import PageLayout from '../../../components/recycle/PageLayout';
 import PageMainLayout from '../../../components/recycle/main/PageMainLayout';
 import Slice from '../../../components/recycle/Slice';
 import AButton from '../../../components/recycle/element/button/AButton';
 import TapChildren from '../../../components/details/TapChidren';
-import Item from 'antd/es/list/Item';
 import ItemForm from '../../../components/recycle/ItemForm';
 
 import { media } from '../../../styles/media';

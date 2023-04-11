@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
 
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch } from 'react-redux';
