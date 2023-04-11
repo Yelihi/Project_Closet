@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
 
 import PageLayout from '../../../components/recycle/PageLayout';
 import KeepWorking from '../../../components/recycle/KeepWorking';

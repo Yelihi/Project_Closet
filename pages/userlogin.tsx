@@ -3,8 +3,8 @@ import axios from 'axios';
 import { END } from 'redux-saga';
 import styled from 'styled-components';
 import Image from 'next/image';
+import Head from 'next/head';
 
-import todoImage from '../public/images/todo2.jpg';
 import authImage from '../public/images/authRightImage.jpg';
 
 import Login from '../components/auth/Login';
@@ -26,10 +26,14 @@ const UserLogin = () => {
 
   return (
     <Container>
+      <Head>
+        <title>Closet</title>
+        <meta name='description' content='Closet apllication' />
+      </Head>
       <Section>
         {gotoAccount ? <Signup toggleGotoAccount={toggleGotoAccount} /> : <Login toggleGotoAccount={toggleGotoAccount} />}
         <ImageBox>
-          <Image alt='todo' src={authImage} width={500} height={500} placeholder='blur' />
+          <Image alt='todo' src={authImage} width={500} height={500} priority={true} />
         </ImageBox>
       </Section>
     </Container>

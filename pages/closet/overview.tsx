@@ -1,4 +1,5 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { media } from '../../styles/media';
@@ -12,8 +13,7 @@ import type { SagaStore } from '../../store/configureStore';
 import wrapper from '../../store/configureStore';
 
 import * as t from '../../reducers/type';
-import AppLayout from '../../components/AppLayout';
-import PageMainLayout from '../../components/recycle/main/PageMainLayout';
+
 import IntroSection from '../../components/main/IntroSection';
 import TotalData from '../../components/main/TotalData';
 import RecentlyItem from '../../components/main/RecentlyItem';
@@ -22,8 +22,7 @@ import LastItem from '../../components/main/LastItem';
 import Nav from '../../components/Nav';
 
 import Intersection from '../../components/recycle/element/Intersection';
-import { fetcher, backUrl, mutateFetcher } from '../../config/config';
-import EmptyData from '../../components/recycle/EmptyData';
+import { backUrl, mutateFetcher } from '../../config/config';
 
 const Overview = () => {
   const { data, error, isLoading } = useSWR(`${backUrl}/posts/overview`, mutateFetcher);
