@@ -1,8 +1,8 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { media } from '../../styles/media';
+import addHead from '../../util/addHead';
 
 import axios from 'axios';
 import { END } from 'redux-saga';
@@ -81,7 +81,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   };
 });
 
-export default React.memo(Overview);
+export default React.memo(addHead(Overview, 'closet', '이 페이지는 전체 데이터를 요약해주는 메인 페이지입니다'));
 
 const Container = styled.div`
   display: flex;

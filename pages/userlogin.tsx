@@ -27,8 +27,8 @@ const UserLogin = () => {
   return (
     <Container>
       <Head>
-        <title>Closet</title>
-        <meta name='description' content='Closet apllication' />
+        <title>closet</title>
+        <meta name='description' content='이 페이지는 로그인 페이지입니다' />
       </Head>
       <Section>
         {gotoAccount ? <Signup toggleGotoAccount={toggleGotoAccount} /> : <Login toggleGotoAccount={toggleGotoAccount} />}

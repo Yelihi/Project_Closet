@@ -30,7 +30,7 @@ const SideList = () => {
       <ul>
         {sidebarList.map((prop, i) => {
           return i === 2 ? (
-            <>
+            <Column>
               <ListBox direction={true} onClick={onClickDrop}>
                 <div>
                   <div>
@@ -40,17 +40,19 @@ const SideList = () => {
                   {desktop && <MdOutlineKeyboardArrowDown className='logo' />}
                 </div>
               </ListBox>
-              {dropList.map((prop, j) => {
-                return (
-                  <Link href={prop.path} key={j}>
-                    <DropListBox clickDrop={clickDrop}>
-                      <div>{prop.icon}</div>
-                      <li>{prop.name}</li>
-                    </DropListBox>
-                  </Link>
-                );
-              })}
-            </>
+              <DropListContainer clickDrop={clickDrop}>
+                {dropList.map((prop, j) => {
+                  return (
+                    <Link href={prop.path} key={j}>
+                      <DropListBox>
+                        <div>{prop.icon}</div>
+                        <li>{prop.name}</li>
+                      </DropListBox>
+                    </Link>
+                  );
+                })}
+              </DropListContainer>
+            </Column>
           ) : i == 5 ? (
             <Link href={prop.path} key={i}>
               <ListBox direction={false} onClick={logout}>
@@ -86,6 +88,13 @@ const ListContainer = styled.div`
   a {
     color: ${({ theme }) => theme.colors.white};
   }
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ListBox = styled.div<{ direction: boolean }>`
@@ -152,56 +161,46 @@ const ListBox = styled.div<{ direction: boolean }>`
   }
 `;
 
-const DropListBox = styled.div<{ clickDrop: boolean }>`
+const DropListContainer = styled.div<{ clickDrop: boolean }>`
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  height: 0;
-  padding: 0 30px;
-  background-color: rgba(0, 0, 0, 0.5);
-  overflow: hidden;
-  transition: all 0.5s ease-out;
-
-  > div {
-    opacity: 0;
-    transition: all 0.2s ease-out;
-  }
-
-  > li {
-    /* display: none; */
-    opacity: 0;
-    transition: all 0.2s ease-out;
-  }
+  height: auto;
+  transform: scaleY(0);
+  transition: transform 0.25s ease-out;
 
   ${props =>
     props.clickDrop
       ? css`
-          height: 48px;
-          padding-top: 9px;
-          padding-bottom: 9px;
-
-          > div {
-            opacity: 1;
-          }
-
-          > li {
-            opacity: 1;
-          }
+          transform: scaleY(1);
         `
       : css`
-          height: 0px;
-          padding-top: 0;
-          padding-bottom: 0;
-
-          > div {
-            opacity: 0;
-          }
-
-          > li {
-            opacity: 0;
-          }
+          transform: scaleY(0);
         `}
+`;
+
+const DropListBox = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  padding: 0 30px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: all 0.25s ease-out;
+
+  > div {
+    opacity: 0.99;
+  }
+
+  > li {
+    opacity: 0;
+  }
 
   .logo {
     width: 30px;
@@ -215,15 +214,12 @@ const DropListBox = styled.div<{ clickDrop: boolean }>`
   }
 
   ${media.desktop} {
-    > div {
-      opacity: 0;
-      transition: all 0.2s ease-out;
-    }
+    padding-top: 9px;
+    padding-bottom: 9px;
 
     > li {
       display: block;
-      opacity: 0;
-      transition: all 0.2s ease-out;
+      opacity: 0.999;
     }
 
     .logo {
@@ -231,34 +227,5 @@ const DropListBox = styled.div<{ clickDrop: boolean }>`
       height: 20px;
       margin-right: 6px;
     }
-
-    ${props =>
-      props.clickDrop
-        ? css`
-            height: 38px;
-            padding-top: 9px;
-            padding-bottom: 9px;
-
-            > div {
-              opacity: 1;
-            }
-
-            > li {
-              opacity: 1;
-            }
-          `
-        : css`
-            height: 0px;
-            padding-top: 0;
-            padding-bottom: 0;
-
-            > div {
-              opacity: 0;
-            }
-
-            > li {
-              opacity: 0;
-            }
-          `}
   }
 `;

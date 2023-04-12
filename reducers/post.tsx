@@ -1,10 +1,8 @@
 import { AnyAction } from 'redux';
 import produce from 'immer';
 import * as t from './type';
-import { useSWRConfig } from 'swr';
 
 import type { PostInitialState } from './types/post';
-import { backUrl } from '../config/config';
 
 export const initialState: PostInitialState = {
   showDrawer: false,

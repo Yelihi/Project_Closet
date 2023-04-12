@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import dynamic from 'next/dynamic';
+import addHead from '../../util/addHead';
 
 import PageLayout from '../../components/recycle/PageLayout';
 import KeepWorking from '../../components/recycle/KeepWorking';
@@ -15,7 +15,7 @@ const Administration = () => {
   );
 };
 
-export default Administration;
+export default addHead(Administration, 'closet', '이 페이지는 유저의 정보를 수정하는 페이지입니다');
 
 const TestContainer = styled.div`
   display: flex;

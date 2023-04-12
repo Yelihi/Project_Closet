@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import addHead from '../../../util/addHead';
 
 import PageLayout from '../../../components/recycle/PageLayout';
 import KeepWorking from '../../../components/recycle/KeepWorking';
@@ -14,12 +15,12 @@ const color = () => {
   );
 };
 
-export default color;
+export default addHead(color, 'closet', '이 페이지는 의류 색상 차트를 보여줍니다');
 
 const TestContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 600px;
+  height: 800px;
 `;

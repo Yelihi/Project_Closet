@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import dynamic from 'next/dynamic';
+import addHead from '../../../util/addHead';
 
 import PageLayout from '../../../components/recycle/PageLayout';
 import KeepWorking from '../../../components/recycle/KeepWorking';
 
-export default function sort() {
+function sort() {
   return (
     <PageLayout>
       <TestContainer>
@@ -15,10 +15,12 @@ export default function sort() {
   );
 }
 
+export default addHead(sort, 'closet', '이 페이지는 분류별 차트 페이지입니다');
+
 const TestContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 600px;
+  height: 800px;
 `;

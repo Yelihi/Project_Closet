@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import * as t from '../../reducers/type';
-import dynamic from 'next/dynamic';
+import addHead from '../../util/addHead';
 
 import axios from 'axios';
 import { END } from 'redux-saga';
@@ -63,4 +63,4 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   };
 });
 
-export default React.memo(add);
+export default React.memo(addHead(add, 'closet', '이 페이지는 의류를 저장하는 페이지입니다'));

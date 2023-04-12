@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as t from '../../../reducers/type';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import addHead from '../../../util/addHead';
 
 import axios from 'axios';
 import { END } from 'redux-saga';
@@ -22,12 +23,13 @@ import PageMainLayout from '../../../components/recycle/main/PageMainLayout';
 import Slice from '../../../components/recycle/Slice';
 import AButton from '../../../components/recycle/element/button/AButton';
 import TapChildren from '../../../components/details/TapChidren';
-import ItemForm from '../../../components/recycle/ItemForm';
 
 import { media } from '../../../styles/media';
 import { addPageLayoutProps } from '../../../components/details/ElementData';
 import useConfirm from '../../../hooks/useComfirm';
-import SortingResultComponent from '../../../components/recycle/submitSuccess/SortingResultComponent';
+
+const ItemForm = dynamic(() => import('../../../components/recycle/ItemForm'));
+const SortingResultComponent = dynamic(() => import('../../../components/recycle/submitSuccess/SortingResultComponent'));
 
 const Details = () => {
   const router = useRouter();
@@ -197,7 +199,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   };
 });
 
-export default Details;
+export default addHead(Details, 'closet', '이 페이지는 의류 상세페이지이며, 수정이나 삭제를 할 수 있습니다');
 
 const HandleContainer = styled.div`
   display: flex;

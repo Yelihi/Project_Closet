@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
+import addHead from '../../util/addHead';
 
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch } from 'react-redux';
@@ -38,11 +38,11 @@ import { rootReducerType } from '../../reducers/types';
 import { usePagination, SWRResult } from '../../hooks/usePagination';
 import EmptyData from '../../components/recycle/EmptyData';
 
-interface Props {
+interface StoreProps {
   device: 'phone' | 'desktop';
 }
 
-const store = ({ device }: Props) => {
+const store = ({ device }: StoreProps) => {
   const dispatch = useDispatch();
   const observerTargetElement = useRef<HTMLDivElement>(null);
   const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
@@ -319,7 +319,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   };
 });
 
-export default store;
+export default addHead(store, 'closet', '이 페이지는 저장한 의류 전체를 보여주는 페이지입니다.');
 
 const HandleContainer = styled.section`
   display: flex;
