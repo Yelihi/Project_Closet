@@ -7,6 +7,8 @@ import { ItemsArray } from './TableData';
 import { EmptyDiv } from './ATable';
 import { Empty } from 'antd';
 
+import { media } from '../../styles/media';
+
 interface Props {
   itemData: ItemsArray[] | undefined;
   onSubmit?: (id: number) => () => void;
@@ -19,6 +21,20 @@ const loadingArray = Array(9)
   .map((v, i) => i);
 
 const CardBoard = ({ itemData, onSubmit, isLoading, isItemsLoading }: Props) => {
+  if (isLoading || isItemsLoading) {
+    return (
+      <CardSection>
+        {loadingArray.map(item => {
+          return (
+            <LoadingBox key={item}>
+              <Loading />
+            </LoadingBox>
+          );
+        })}
+      </CardSection>
+    );
+  }
+
   if (itemData?.length === 0) {
     return (
       <EmptyDiv>
@@ -29,22 +45,13 @@ const CardBoard = ({ itemData, onSubmit, isLoading, isItemsLoading }: Props) => 
 
   return (
     <CardSection>
-      {!isLoading &&
-        itemData?.map(item => {
-          return (
-            <CardBox key={item.id}>
-              <ItemCard src={item.Images[0].src} id={item.id} onSubmit={onSubmit} />
-            </CardBox>
-          );
-        })}
-      {(isLoading || isItemsLoading) &&
-        loadingArray.map(item => {
-          return (
-            <LoadingBox key={item}>
-              <Loading />
-            </LoadingBox>
-          );
-        })}
+      {itemData?.map(item => {
+        return (
+          <CardBox key={item.id}>
+            <ItemCard src={item.Images[0].src} id={item.id} onSubmit={onSubmit} />
+          </CardBox>
+        );
+      })}
     </CardSection>
   );
 };
@@ -57,7 +64,7 @@ const CardSection = styled.section`
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  height: auto;
+  height: 100%;
   gap: 5%;
 `;
 
@@ -68,11 +75,17 @@ const CardBox = styled.div`
 `;
 
 const LoadingBox = styled(CardBox)`
+  height: 20vh;
   background-color: ${({ theme }) => theme.colors.mainGrey};
+
+  ${media.tablet} {
+    height: 30vh;
+  }
 `;
 
 const Loading = styled.div`
-  width: 200px;
-  height: 200px;
-  background-color: ${({ theme }) => theme.colors.mainGrey};
+  width: 100%;
+  height: 100%;
+  background-color: ${({ theme }) => theme.colors.hoverGrey};
+  border-radius: 10px;
 `;

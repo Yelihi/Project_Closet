@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Intersection from '../element/Intersection';
 
@@ -9,9 +9,10 @@ type myComponent = {
   subTitle?: string;
   istitle?: boolean;
   hasEmpty?: boolean;
+  skeleton?: boolean;
 };
 
-const PageMainLayout = ({ children, title, subTitle, istitle = true, hasEmpty }: myComponent) => {
+const PageMainLayout = ({ children, title, subTitle, istitle = true, hasEmpty, skeleton = false }: myComponent) => {
   return (
     <MainContainer>
       {istitle && (
@@ -21,7 +22,9 @@ const PageMainLayout = ({ children, title, subTitle, istitle = true, hasEmpty }:
         </ComponentHead>
       )}
       {istitle && <Intersection />}
-      <ChildrenContainer hasEmpty={hasEmpty}>{children}</ChildrenContainer>
+      <ChildrenContainer hasEmpty={hasEmpty} skeleton={skeleton}>
+        {children}
+      </ChildrenContainer>
     </MainContainer>
   );
 };
@@ -43,10 +46,28 @@ const MainContainer = styled.div`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 `;
 
-const ChildrenContainer = styled.div<{ hasEmpty: boolean | undefined }>`
+const ChildrenContainer = styled.div<{ hasEmpty: boolean | undefined; skeleton: boolean }>`
   width: 100%;
   height: ${props => (props.hasEmpty ? '700px' : 'auto')};
   margin-top: ${props => (props.hasEmpty ? '0' : '30px')};
+
+  ${props =>
+    props.skeleton &&
+    css`
+      animation: boxFade 2s 1s infinite linear alternate;
+
+      @keyframes boxFade {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+    `}
 `;
 
 const ComponentHead = styled.div`

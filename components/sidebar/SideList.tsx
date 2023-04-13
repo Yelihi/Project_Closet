@@ -162,22 +162,27 @@ const ListBox = styled.div<{ direction: boolean }>`
 `;
 
 const DropListContainer = styled.div<{ clickDrop: boolean }>`
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  height: auto;
-  transform: scaleY(0);
-  transition: transform 0.25s ease-out;
+  height: 0;
+  transition: height 0.25s ease-out;
+
+  > a {
+    width: 100%;
+  }
 
   ${props =>
     props.clickDrop
       ? css`
-          transform: scaleY(1);
+          display: flex;
+          height: 100%;
         `
       : css`
-          transform: scaleY(0);
+          display: none;
+          height: 0;
         `}
 `;
 

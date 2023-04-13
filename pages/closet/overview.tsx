@@ -67,15 +67,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
 
   store.dispatch(END);
   await (store as SagaStore).sagaTask?.toPromise();
-  // if (!store.getState().user.me) {
-  //   // getState() 는 store의 트리를 가져와준다.
-  //   return {
-  //     redirect: {
-  //       destination: '/userlogin',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
+
   return {
     props: {},
   };
@@ -90,8 +82,8 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: auto;
-  gap: 50px;
-  padding: 24px;
+  gap: 30px;
+  padding: 0;
   ${media.tablet} {
     display: grid;
     grid-template-rows: 60px 1px 0.45fr 0.45fr;
@@ -104,6 +96,7 @@ const Container = styled.div`
       'recently lastData';
     gap: 1.5rem;
     height: 100%;
+    padding: 24px;
   }
 `;
 
@@ -117,7 +110,7 @@ export const NavRow = styled.div`
   width: 100%;
   height: auto;
   background-color: ${({ theme }) => theme.colors.white};
-  z-index: 2;
+  z-index: 30;
 
   ${media.tablet} {
     display: flex;

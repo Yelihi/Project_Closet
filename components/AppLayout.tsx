@@ -1,20 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { media } from '../styles/media';
-import { LaptopOutlined, NotificationOutlined, ContainerOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, Button } from 'antd';
+import { Layout } from 'antd';
 
-import Link from 'next/link';
-
-import Nav from './Nav';
 import Footer from './Footer';
 import { useDispatch } from 'react-redux';
-
-import { SHOW_UPLOAD_DRAWER } from '../reducers/type';
-import { logoutRequestAction } from '../reducers/user';
-import Item from 'antd/es/list/Item';
-import UploadClothes from './Upload';
 
 import SideList from './sidebar/SideList';
 import SideProfile from './sidebar/SideProfile';

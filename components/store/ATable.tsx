@@ -18,6 +18,10 @@ type TableProps = {
   isLoading?: boolean; // true 일때 로딩중
 };
 
+const SkeletonArray = Array(9)
+  .fill(0)
+  .map((_, idx) => idx);
+
 const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: TableProps) => {
   const headerKey = headData.map(v => v.value);
   const moveToDetailsPage = useCallback(
@@ -26,6 +30,55 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
     },
     []
   );
+
+  if (isLoading) {
+    return (
+      <>
+        <Table>
+          <Thead>
+            <tr>
+              {headData.map((header, idx) => {
+                return (
+                  <Th key={header.text} index={header.text}>
+                    <SKDiv></SKDiv>
+                  </Th>
+                );
+              })}
+            </tr>
+          </Thead>
+          <tbody>
+            {SkeletonArray.map((data, index) => {
+              return (
+                <Tr key={index}>
+                  {headerKey.map(headKey => {
+                    return (
+                      <Td key={headKey + index}>
+                        {headKey === 'productName' ? (
+                          <SKImageBox>
+                            <div></div>
+                            <span></span>
+                          </SKImageBox>
+                        ) : headKey === 'price' ? (
+                          <SKDiv></SKDiv>
+                        ) : headKey === 'etc' ? (
+                          <EtcBox>
+                            <SKETC></SKETC>
+                            <SKETC></SKETC>
+                          </EtcBox>
+                        ) : (
+                          <SKDiv></SKDiv>
+                        )}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </>
+    );
+  }
 
   if (itemsData.length == 0) {
     return (
@@ -141,6 +194,11 @@ const Th = styled.th<{ index: string }>`
         `}
 `;
 
+const SKTh = styled(Th)`
+  height: 12px;
+  background-color: ${({ theme }) => theme.colors.hoverGrey};
+`;
+
 const Tr = styled.tr`
   transition: box-shadow 0.1s ease-out;
 
@@ -159,11 +217,35 @@ const Td = styled.td`
   color: ${({ theme }) => theme.colors.deepGrey};
 `;
 
+const SKDiv = styled.div`
+  width: 30px;
+  height: 30px;
+  background-color: ${({ theme }) => theme.colors.hoverGrey};
+`;
+
 const ImageBox = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 15px;
+`;
+
+const SKImageBox = styled(ImageBox)`
+  width: 100%;
+  height: 30px;
+
+  > div {
+    width: 20%;
+    height: 30px;
+    background-color: ${({ theme }) => theme.colors.hoverGrey};
+  }
+
+  > span {
+    display: block;
+    width: 50%;
+    height: 30px;
+    background-color: ${({ theme }) => theme.colors.hoverGrey};
+  }
 `;
 
 const CImage = styled(Image)`
@@ -204,6 +286,13 @@ const ETC = styled.div`
   &:hover {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   }
+`;
+
+const SKETC = styled(ETC)`
+  width: 40%;
+  height: 30px;
+  background-color: ${({ theme }) => theme.colors.hoverGrey};
+  border: none;
 `;
 
 export const EmptyDiv = styled.section`

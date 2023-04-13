@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import addHead from '../../util/addHead';
+import dynamic from 'next/dynamic';
 
 import Link from 'next/link';
 import Router from 'next/router';
@@ -38,6 +39,8 @@ import { rootReducerType } from '../../reducers/types';
 import { usePagination, SWRResult } from '../../hooks/usePagination';
 import EmptyData from '../../components/recycle/EmptyData';
 
+const SkeletonStore = dynamic(() => import('../../components/store/SkeletonStore'));
+
 interface StoreProps {
   device: 'phone' | 'desktop';
 }
@@ -45,7 +48,7 @@ interface StoreProps {
 const store = ({ device }: StoreProps) => {
   const dispatch = useDispatch();
   const observerTargetElement = useRef<HTMLDivElement>(null);
-  const { userItems, indexArray, deleteItemDone } = useSelector((state: rootReducerType) => state.post);
+  const { userItems, indexArray, deleteItemDone, loadItemsLoding, deleteItemLoding } = useSelector((state: rootReducerType) => state.post);
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
   const [segment, setSegment] = useState<string | number>('Table');
@@ -60,6 +63,7 @@ const store = ({ device }: StoreProps) => {
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, mutateFetcher);
   const { items, paginationPosts, setSize, isReachedEnd, isItemsLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
 
+  console.log('cacacaa', data);
   useEffect(() => {
     setHydrated(true);
   }, []);
@@ -168,31 +172,11 @@ const store = ({ device }: StoreProps) => {
     return null;
   }
 
-  if (isLoading || isItemsLoading) {
-    return (
-      <PageLayout>
-        <PageMainLayout istitle={false} hasEmpty={true}>
-          <HandleContainer>
-            <CustomBread separator='>'>
-              <Breadcrumb.Item>
-                <Link href='/closet/overview'>Home</Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>Store</Breadcrumb.Item>
-            </CustomBread>
-          </HandleContainer>
-          <SpinDiv>
-            <Spin style={{ fontSize: '100px' }} />
-          </SpinDiv>
-        </PageMainLayout>
-      </PageLayout>
-    );
-  }
-
   if (
     !userItems ||
     userItems?.items.length === 0 ||
-    (windowWidth === 'desktop' && categoriName === '' && Object.keys(data[0]).length === 0) ||
-    (windowWidth === 'phone' && categoriName === '' && paginationPosts?.length === 0)
+    (!isLoading && windowWidth === 'desktop' && categoriName === '' && data && Object.keys(data).length === 0) ||
+    (!isItemsLoading && windowWidth === 'phone' && categoriName === '' && paginationPosts && paginationPosts?.length === 0)
   ) {
     return (
       <PageLayout>
@@ -212,81 +196,82 @@ const store = ({ device }: StoreProps) => {
   }
 
   return (
-    <PageLayout>
-      <PageMainLayout istitle={false}>
-        <HandleContainer>
-          <CustomBread separator='>'>
-            <Breadcrumb.Item>
-              <Link href='/closet/overview'>Home</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Store</Breadcrumb.Item>
-          </CustomBread>
-        </HandleContainer>
-        <TitleSection>
-          <dl>
-            <Title>CHECK YOUR ITEMS</Title>
-            <SubTitle>
-              저장하신 전체 의류를 확인하실 수 있습니다.
-              <br />
-              카테고리별로 분류가 가능하며 원하시면 삭제도 가능합니다만 삭제는 신중하게 결정하시길 바랍니다.
-              <br />
-              개별 의류를 선택하시면 상세페이지로 이동합니다.
-            </SubTitle>
-          </dl>
-        </TitleSection>
-        <CardSection>
-          <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={userItems?.lastTotal} CurrentData={userItems?.total} />
-          <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Price' LastData={userItems?.lastPrice} CurrentData={userItems?.price} />
-          <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastMaxCategori} CurrentData={maxCategori} Categori={maxCategoriName} />
-        </CardSection>
-        <AddSection>
-          <DictionaryBox>
-            <dt>CLOTHES TABLE</dt>
-            <dd>현재까지 저장된 보관 의류표</dd>
-          </DictionaryBox>
-          <AddButton onClick={moveToAddPage}>
-            <AiOutlinePlus style={{ width: '20px', height: '20px' }} />
-            <div>ADD PRODUCT</div>
-          </AddButton>
-        </AddSection>
-        <MenuSection>
-          <DropdownBox>
-            <Dropdown menu={{ items: segmentItems, onClick: handleCategori }}>
-              <CButton>
-                <IoFilterCircleOutline className='icon' />
-                Categori
-              </CButton>
-            </Dropdown>
-            <CategoriSpan>분류 : {categoriName}</CategoriSpan>
-          </DropdownBox>
-          <div>
-            {windowWidth === 'desktop' ? (
-              <Segmented
-                options={[
-                  { value: 'Table', icon: <BarsOutlined /> },
-                  { value: 'Kanban', icon: <AppstoreOutlined /> },
-                ]}
-                value={segment}
-                onChange={setSegment}
-              />
-            ) : null}
-          </div>
-        </MenuSection>
-        <ItemsStoreSection>
-          {windowWidth === 'desktop' && segment === 'Table' ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
-          {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} /> : null}
-          {windowWidth === 'phone' && !isItemsLoading ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={false} isItemsLoading={false} /> : null}
-          {windowWidth === 'phone' && isItemsLoading ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={true} isItemsLoading={true} /> : null}
-          {windowWidth === 'desktop' ? (
+    <SkeletonStore loadItemsLoading={loadItemsLoding} deleteItemLoding={deleteItemLoding} windowWidth={device}>
+      <PageLayout>
+        <PageMainLayout istitle={false}>
+          <HandleContainer>
+            <CustomBread separator='>'>
+              <Breadcrumb.Item>
+                <Link href='/closet/overview'>Home</Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>Store</Breadcrumb.Item>
+            </CustomBread>
+          </HandleContainer>
+          <TitleSection>
+            <dl>
+              <Title>CHECK YOUR ITEMS</Title>
+              <SubTitle>
+                저장하신 전체 의류를 확인하실 수 있습니다.
+                <br />
+                카테고리별로 분류가 가능하며 원하시면 삭제도 가능합니다만 삭제는 신중하게 결정하시길 바랍니다.
+                <br />
+                개별 의류를 선택하시면 상세페이지로 이동합니다.
+              </SubTitle>
+            </dl>
+          </TitleSection>
+          <CardSection>
+            <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={userItems?.lastTotal} CurrentData={userItems?.total} />
+            <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Price' LastData={userItems?.lastPrice} CurrentData={userItems?.price} />
+            <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastMaxCategori} CurrentData={maxCategori} Categori={maxCategoriName} />
+          </CardSection>
+          <AddSection>
+            <DictionaryBox>
+              <dt>CLOTHES TABLE</dt>
+              <dd>현재까지 저장된 보관 의류표</dd>
+            </DictionaryBox>
+            <AddButton onClick={moveToAddPage}>
+              <AiOutlinePlus style={{ width: '20px', height: '20px' }} />
+              <div>ADD PRODUCT</div>
+            </AddButton>
+          </AddSection>
+          <MenuSection>
+            <DropdownBox>
+              <Dropdown menu={{ items: segmentItems, onClick: handleCategori }}>
+                <CButton>
+                  <IoFilterCircleOutline className='icon' />
+                  Categori
+                </CButton>
+              </Dropdown>
+              <CategoriSpan>분류 : {categoriName}</CategoriSpan>
+            </DropdownBox>
             <div>
-              <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} />
+              {windowWidth === 'desktop' ? (
+                <Segmented
+                  options={[
+                    { value: 'Table', icon: <BarsOutlined /> },
+                    { value: 'Kanban', icon: <AppstoreOutlined /> },
+                  ]}
+                  value={segment}
+                  onChange={setSegment}
+                />
+              ) : null}
             </div>
-          ) : null}
-        </ItemsStoreSection>
-        <Space></Space>
-        <div ref={observerTargetElement}>store</div>
-      </PageMainLayout>
-    </PageLayout>
+          </MenuSection>
+          <ItemsStoreSection>
+            {windowWidth === 'desktop' && segment === 'Table' ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
+            {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
+            {windowWidth === 'phone' ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={isLoading} isItemsLoading={isItemsLoading} /> : null}
+            {windowWidth === 'desktop' ? (
+              <div>
+                <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} />
+              </div>
+            ) : null}
+          </ItemsStoreSection>
+          <Space></Space>
+          <div ref={observerTargetElement}>store</div>
+        </PageMainLayout>
+      </PageLayout>
+    </SkeletonStore>
   );
 };
 

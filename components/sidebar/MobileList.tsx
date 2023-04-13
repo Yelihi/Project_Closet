@@ -142,7 +142,7 @@ const DropListBox = styled.div<{ clickDrop: boolean }>`
   padding: 0 30px;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  transition: all 0.5s ease-out;
+  transition: all 0.2s ease-out;
 
   > div {
     opacity: 0;

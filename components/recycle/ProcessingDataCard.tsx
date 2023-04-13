@@ -13,10 +13,28 @@ type Props = {
   LastData?: number;
   CurrentData?: number;
   Categori?: string;
+  isLoading?: boolean;
 };
 
-const ProcessingDataCard = ({ Icon, DataTitle, LastData = 0, CurrentData = 0, Categori }: Props) => {
+const ProcessingDataCard = ({ Icon, DataTitle, LastData = 0, CurrentData = 0, Categori, isLoading }: Props) => {
   let percent = Math.floor(((CurrentData - LastData) / LastData) * 100);
+
+  if (isLoading) {
+    return (
+      <CardBox>
+        <DataBox>
+          <SKIconBox></SKIconBox>
+          <TitleBox>
+            <SKTitle></SKTitle>
+            <SKCurrent></SKCurrent>
+          </TitleBox>
+        </DataBox>
+        <PercentBox>
+          <SKPercentBorder></SKPercentBorder>
+        </PercentBox>
+      </CardBox>
+    );
+  }
 
   return (
     <CardBox>
@@ -97,6 +115,16 @@ const IconBox = styled.div`
   }
 `;
 
+const SKIconBox = styled(IconBox)`
+  border: none;
+  background-color: ${({ theme }) => theme.colors.hoverGrey};
+
+  ${media.tablet} {
+    border: none;
+    background-color: ${({ theme }) => theme.colors.hoverGrey};
+  }
+`;
+
 const TitleBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -115,11 +143,23 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
+const SKTitle = styled(Title)`
+  width: 100px;
+  height: 12px;
+  background-color: ${({ theme }) => theme.colors.hoverGrey};
+`;
+
 const Current = styled.div`
   font-size: clamp(20px, 2.5vw, 27px);
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Light};
   color: ${({ theme }) => theme.colors.black};
+`;
+
+const SKCurrent = styled(Current)`
+  width: 150px;
+  height: 25px;
+  background-color: ${({ theme }) => theme.colors.hoverGrey};
 `;
 
 const PercentBox = styled.div`
@@ -157,4 +197,11 @@ const PercentBorder = styled.div`
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Medium};
   color: ${({ theme }) => theme.colors.black};
+`;
+
+const SKPercentBorder = styled(PercentBorder)`
+  width: 30%;
+  height: 20px;
+  background-color: ${({ theme }) => theme.colors.hoverGrey};
+  border: none;
 `;
