@@ -10,7 +10,7 @@ import Router from 'next/router';
 import * as t from '../../reducers/type';
 import { backUrl, mutateFetcher } from '../../config/config';
 
-import { visionAI, categoriToVisionAI } from '../add/VisionAIData';
+import { visionAI, categoriToVisionAI, visionAICardData } from '../add/VisionAIData';
 import { clothData, categori, descriptionData } from '../add/ElementData';
 import { topMeasureName, bottomMeasureName, shoesMeasureName, mufflerMeasureName } from '../add/ElementData';
 import { topMeasureSub, bottomMeasureSub, shoesMeasureSub, mufflerMeasureSub } from '../add/ElementData';
@@ -225,33 +225,28 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                         return (
                           <SkeletonImage isLoading={imageUploadLoding} imageLength={imagePath.length}>
                             <PreviewContainer key={v.src} border={isClothes}>
-                              {/* <img src={`${backUrl}/${v.filename}`} alt={v.filename} style={{ width: '250px' }} /> */}
-                              <PreviewImage src={`${backUrl}/${v.src}`} alt={v.src} width={250} height={250} />
+                              <PreviewImage
+                                src={`${backUrl}/${v.src}`}
+                                alt={v.src}
+                                width={600}
+                                height={600}
+                                placeholder='blur'
+                                blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
+                              />
                               <PreviewTextContainer>
                                 <PreviewText>
-                                  <TextBox>
-                                    <span>의류 사진여부 판단</span>
-                                    <Text>
-                                      <CheckCircleTwoTone twoToneColor={isClothes ? '#52c41a' : '#E7373C'} />
-                                      {isClothes ? '적절한 사진입니다.' : '의류 사진을 넣어주세요'}
-                                    </Text>
-                                  </TextBox>
-                                  <TextBox>
-                                    <span>카테고리 적합성</span>
-                                    <Text>
-                                      <CheckCircleTwoTone twoToneColor={isCategori ? '#52c41a' : '#F4A100'} />
-                                      {isCategori ? '카테고리에 적합한 의류입니다' : '저장하실 순 있지만 적합의류는 아닙니다.'}
-                                    </Text>
-                                  </TextBox>
-                                  <TextBox>
-                                    <span>사진 내 카테고리 이미지 차지 비율</span>
-                                    <Text>
-                                      <CheckCircleTwoTone twoToneColor={confidence ? '#52c41a' : '#F4A100'} />
-                                      {confidence ? '의류 비중이 적합합니다.' : '좀 더 적합의류의 비중이 높은 사진을 올려주세요'}
-                                    </Text>
-                                  </TextBox>
+                                  {[isClothes, isCategori, confidence].map((state, idx) => {
+                                    return (
+                                      <TextBox>
+                                        <span>{visionAICardData[idx].intro}</span>
+                                        <Text>
+                                          <CheckCircleTwoTone twoToneColor={state ? visionAICardData[idx].good : visionAICardData[idx].bad} />
+                                          {state ? visionAICardData[idx].goodExplain : visionAICardData[idx].badExplain}
+                                        </Text>
+                                      </TextBox>
+                                    );
+                                  })}
                                 </PreviewText>
-
                                 <ButtonBox>
                                   <AButton color='' disabled={false} dest='제거' onClick={onRemoveImage(i)} />
                                 </ButtonBox>
@@ -331,6 +326,7 @@ const PreviewSection = styled.section`
 
 const PreviewContainer = styled.div<{ border: boolean }>`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -347,6 +343,10 @@ const PreviewContainer = styled.div<{ border: boolean }>`
 
   ${media.desktop} {
     width: 49.5%;
+  }
+
+  ${media.middlePhone} {
+    flex-direction: row;
   }
 `;
 

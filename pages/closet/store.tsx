@@ -175,7 +175,7 @@ const store = ({ device }: StoreProps) => {
   if (
     !userItems ||
     userItems?.items.length === 0 ||
-    (!isLoading && windowWidth === 'desktop' && categoriName === '' && data && Object.keys(data).length === 0) ||
+    (!isLoading && windowWidth === 'desktop' && categoriName === '' && data.hasOwnProperty('items') && data.items.length === 0) ||
     (!isItemsLoading && windowWidth === 'phone' && categoriName === '' && paginationPosts && paginationPosts?.length === 0)
   ) {
     return (

@@ -34,7 +34,14 @@ const LastItem = ({ item }: LastItemProps) => {
           <ThumbnailWrapper>
             <Thumbnail>
               <Centered>
-                <CImage src={`${backUrl}/${item.Images[0].src}`} alt={item.productName} width={100} height={100} priority={true} />
+                <CImage
+                  src={`${backUrl}/${item.Images[0].src}`}
+                  alt={item.productName}
+                  width={100}
+                  height={100}
+                  placeholder='blur'
+                  blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
+                />
               </Centered>
             </Thumbnail>
           </ThumbnailWrapper>
