@@ -63,7 +63,6 @@ const store = ({ device }: StoreProps) => {
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, mutateFetcher);
   const { items, paginationPosts, setSize, isReachedEnd, isItemsLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
 
-  console.log('cacacaa', data);
   useEffect(() => {
     setHydrated(true);
   }, []);

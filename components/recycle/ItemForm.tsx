@@ -1,16 +1,12 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import styled from 'styled-components';
-import { FieldValues, useForm, FormProvider, FieldPath } from 'react-hook-form';
-import { WarningTwoTone, CheckCircleTwoTone, CloseCircleTwoTone } from '@ant-design/icons';
+import { FieldValues, useForm, FormProvider } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Image from 'next/image';
-import Router from 'next/router';
+import dynamic from 'next/dynamic';
 
-import * as t from '../../reducers/type';
-import { backUrl, mutateFetcher } from '../../config/config';
-
-import { visionAI, categoriToVisionAI, visionAICardData } from '../add/VisionAIData';
+import { visionAI, categoriToVisionAI } from '../add/VisionAIData';
 import { clothData, categori, descriptionData } from '../add/ElementData';
 import { topMeasureName, bottomMeasureName, shoesMeasureName, mufflerMeasureName } from '../add/ElementData';
 import { topMeasureSub, bottomMeasureSub, shoesMeasureSub, mufflerMeasureSub } from '../add/ElementData';
@@ -22,7 +18,6 @@ import InputBackground from './add/InputBackgroud';
 import AInputElement from './element/AInputElement';
 import AButton from './element/button/AButton';
 import Measure from './add/Measure';
-import SkeletonImage from '../add/SkeletonImage';
 
 import DropImageInput from './element/DropImageInput';
 
@@ -31,7 +26,8 @@ import SortingResultComponent from './submitSuccess/SortingResultComponent';
 import type { ImagePathObject } from '../../reducers/types/post';
 import type { rootReducerType } from '../../reducers/types';
 import { media } from '../../styles/media';
-import VisionAICard from './VisionAICard';
+
+const VisionAICard = dynamic(() => import('./VisionAICard'));
 
 export interface Measures {
   shoulder?: number;
@@ -145,16 +141,6 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
     }
   }, [imagePath]);
 
-  const onRemoveImage = useCallback(
-    (index: number) => () => {
-      dispatch({
-        type: t.REMOVE_IMAGE,
-        data: index,
-      });
-    },
-    []
-  );
-
   const backDetailsPage = useCallback(() => {
     if (setState) {
       setState(prev => !prev);
@@ -217,6 +203,7 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                     <DropImageInput />
                   </InputPartial>
                   <PreviewSection>
+                    {imageUploadLoding ? <VisionAICard imageUploadLoding={true} src={'src'} index={1} isClothes={true} isCategori={true} confidence={true} /> : null};
                     {imagePath.length > 0 &&
                       imagePath.map((v, i) => {
                         let cate = watch('categori');
@@ -224,37 +211,9 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                         let isCategori = v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate]?.includes(item));
                         let confidence = categoriToVisionAI[cate]?.includes(v.visionSearch[0].name);
                         return (
-                          <VisionAICard imagePath={imagePath} imageUploadLoding={imageUploadLoding} src={v.src} index={i} isClothes={isClothes} isCategori={isCategori} confidence={confidence} />
-                          // <SkeletonImage isLoading={imageUploadLoding} imageLength={imagePath.length}>
-                          //   <PreviewContainer key={v.src} border={isClothes}>
-                          //     <PreviewImage
-                          //       src={`${backUrl}/${v.src}`}
-                          //       alt={v.src}
-                          //       width={600}
-                          //       height={600}
-                          //       placeholder='blur'
-                          //       blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
-                          //     />
-                          //     <PreviewTextContainer>
-                          //       <PreviewText>
-                          //         {[isClothes, isCategori, confidence].map((state, idx) => {
-                          //           return (
-                          //             <TextBox>
-                          //               <span>{visionAICardData[idx].intro}</span>
-                          //               <Text>
-                          //                 <CheckCircleTwoTone twoToneColor={state ? visionAICardData[idx].good : visionAICardData[idx].bad} />
-                          //                 {state ? visionAICardData[idx].goodExplain : visionAICardData[idx].badExplain}
-                          //               </Text>
-                          //             </TextBox>
-                          //           );
-                          //         })}
-                          //       </PreviewText>
-                          //       <ButtonBox>
-                          //         <AButton color='' disabled={false} dest='제거' onClick={onRemoveImage(i)} />
-                          //       </ButtonBox>
-                          //     </PreviewTextContainer>
-                          //   </PreviewContainer>
-                          // </SkeletonImage>
+                          <>
+                            <VisionAICard imageUploadLoding={imageUploadLoding} src={v.src} index={i} isClothes={isClothes} isCategori={isCategori} confidence={confidence} />
+                          </>
                         );
                       })}
                   </PreviewSection>

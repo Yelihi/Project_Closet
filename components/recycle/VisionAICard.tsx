@@ -9,14 +9,11 @@ import AButton from './element/button/AButton';
 
 import { visionAICardData } from '../add/VisionAIData';
 import { media } from '../../styles/media';
-import { backUrl } from '../../config/config';
+import { backUrl, base64URL } from '../../config/config';
 import { CheckCircleTwoTone } from '@ant-design/icons';
-
-import { ImagePathObject } from '../../reducers/types/post';
 
 interface VisionAiCardProps {
   imageUploadLoding: boolean;
-  imagePath: ImagePathObject[];
   src: string;
   index: number;
   isClothes: boolean;
@@ -24,7 +21,7 @@ interface VisionAiCardProps {
   confidence: boolean;
 }
 
-const VisionAICard = ({ imageUploadLoding, imagePath, src, index, isClothes, isCategori, confidence }: VisionAiCardProps) => {
+const VisionAICard = ({ imageUploadLoding, src, index, isClothes, isCategori, confidence }: VisionAiCardProps) => {
   const dispatch = useDispatch();
 
   const onRemoveImage = useCallback(
@@ -38,16 +35,9 @@ const VisionAICard = ({ imageUploadLoding, imagePath, src, index, isClothes, isC
   );
 
   return (
-    <SkeletonImage isLoading={imageUploadLoding} imageLength={imagePath.length}>
+    <SkeletonImage isLoading={imageUploadLoding}>
       <PreviewContainer key={src} border={isClothes}>
-        <PreviewImage
-          src={`${backUrl}/${src}`}
-          alt={src}
-          width={600}
-          height={600}
-          placeholder='blur'
-          blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
-        />
+        <PreviewImage src={`${backUrl}/${src}`} alt={src} width={600} height={600} placeholder='blur' blurDataURL={`data:image/gif;base64,${base64URL}`} />
         <PreviewTextContainer>
           <PreviewText>
             {[isClothes, isCategori, confidence].map((state, idx) => {

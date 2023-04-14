@@ -8,7 +8,13 @@ const SideProfile = () => {
   const { desktop } = useBreakpoints();
 
   return (
-    <ImageContainer>{desktop ? <Image src='/images/newClosetLogo.png' alt='로고' width={120} height={130} /> : <Image src='/images/smallLogo.png' alt='로고' width={50} height={50} />}</ImageContainer>
+    <ImageContainer>
+      {desktop ? (
+        <Image src='/images/newClosetLogo.png' alt='로고' width={120} height={130} priority={true} />
+      ) : (
+        <Image src='/images/smallLogo.png' alt='로고' width={50} height={50} priority={true} />
+      )}
+    </ImageContainer>
   );
 };
 

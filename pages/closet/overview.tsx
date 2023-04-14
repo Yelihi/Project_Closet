@@ -26,7 +26,6 @@ import { backUrl, mutateFetcher } from '../../config/config';
 
 const Overview = () => {
   const { data, error, isLoading } = useSWR(`${backUrl}/posts/overview`, mutateFetcher);
-  console.log('overview data', data);
 
   if (isLoading) return null;
   return (
@@ -120,13 +119,6 @@ export const NavRow = styled.div`
     border-radius: 10px;
   }
 `;
-
-// export const Intersection = styled.div`
-//   grid-area: inter;
-//   width: 100%;
-//   height: 1px;
-//   background-color: rgba(30, 40, 51, 0.0671438);
-// `;
 
 const IntroRow = styled.div`
   grid-area: intro;

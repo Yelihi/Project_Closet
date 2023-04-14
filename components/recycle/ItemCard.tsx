@@ -6,7 +6,7 @@ import Router from 'next/router';
 import { FaTrashRestoreAlt } from 'react-icons/fa';
 import { BiDetail } from 'react-icons/bi';
 
-import { backUrl } from '../../config/config';
+import { backUrl, base64URL } from '../../config/config';
 
 interface CardProps {
   src: string;
@@ -25,14 +25,7 @@ const ItemCard = ({ src, id, onSubmit }: CardProps) => {
     <ThumbnailWrapper>
       <Thumbnail>
         <Centered>
-          <CImage
-            src={`${backUrl}/${src}`}
-            alt={src}
-            width={600}
-            height={600}
-            placeholder='blur'
-            blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
-          />
+          <CImage src={`${backUrl}/${src}`} alt={src} width={600} height={600} placeholder='blur' blurDataURL={`data:image/gif;base64,${base64URL}`} />
           <HoverTumnail>
             <IconBox>
               <BiDetail className='icon' onClick={moveToDetailsPage(id)} />

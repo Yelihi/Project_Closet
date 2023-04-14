@@ -6,7 +6,7 @@ import SwiperCore, { Navigation, Virtual, Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Image from 'next/image';
-import { backUrl } from '../../config/config';
+import { backUrl, base64URL } from '../../config/config';
 
 type Image = {
   id: number;
@@ -50,7 +50,7 @@ const Slice = ({ src }: Props) => {
                 <ThumbnailWrapper>
                   <Thumbnail>
                     <Centered>
-                      <CImage src={`${backUrl}/${v.src}`} alt={v.src} width={600} height={600} />
+                      <CImage src={`${backUrl}/${v.src}`} alt={v.src} width={600} height={600} placeholder='blur' blurDataURL={`data:image/gif;base64,${base64URL}`} />
                     </Centered>
                   </Thumbnail>
                 </ThumbnailWrapper>
@@ -66,7 +66,7 @@ const Slice = ({ src }: Props) => {
                 <ThumbnailWrapper>
                   <Thumbnail>
                     <Centered>
-                      <CImage src={`${backUrl}/${v.src}`} alt={v.src} width={200} height={200} onClick={moveToSlide(i)} />
+                      <CImage src={`${backUrl}/${v.src}`} alt={v.src} width={200} height={200} onClick={moveToSlide(i)} placeholder='blur' blurDataURL={`data:image/gif;base64,${base64URL}`} />
                     </Centered>
                   </Thumbnail>
                 </ThumbnailWrapper>

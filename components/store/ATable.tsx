@@ -2,10 +2,10 @@ import Image from 'next/image';
 import Router from 'next/router';
 import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import { Empty, Spin } from 'antd';
-import { StoreHeaderType, StoreItemsType, ItemsArray } from './TableData';
+import { Empty } from 'antd';
+import { StoreHeaderType, ItemsArray } from './TableData';
 
-import { backUrl } from '../../config/config';
+import { backUrl, base64URL } from '../../config/config';
 
 import { FaTrashRestoreAlt } from 'react-icons/fa';
 import { BiDetail } from 'react-icons/bi';
@@ -125,14 +125,7 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
                   <Td key={headKey + index}>
                     {headKey === 'productName' && data.Images.length > 0 ? (
                       <ImageBox>
-                        <CImage
-                          src={`${backUrl}/${data.Images[0].src}`}
-                          alt={headKey}
-                          width={100}
-                          height={100}
-                          placeholder='blur'
-                          blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
-                        />
+                        <CImage src={`${backUrl}/${data.Images[0].src}`} alt={headKey} width={100} height={100} placeholder='blur' blurDataURL={`data:image/gif;base64,${base64URL}`} />
                         {data[headKey]}
                       </ImageBox>
                     ) : headKey === 'price' ? (

@@ -6,49 +6,34 @@ import { media } from '../../styles/media';
 interface SkeletonProps {
   children: React.ReactElement;
   isLoading: boolean;
-  imageLength: number;
 }
 
-const SkeletonImage = ({ children, isLoading, imageLength }: SkeletonProps) => {
-  const RepeatArray = useMemo(
-    () =>
-      Array(imageLength + 1)
-        .fill(0)
-        .map((_, idx) => idx),
-    [imageLength]
-  );
-
-  const testArray = [0, 1, 2];
-
+const SkeletonImage = ({ children, isLoading }: SkeletonProps) => {
   if (isLoading) {
     return (
       <>
-        {testArray.map(item => {
-          return (
-            <PreviewContainer>
-              <PreviewImage></PreviewImage>
-              <PreviewTextContainer>
-                <PreviewText>
-                  <TextBox>
-                    <span></span>
-                    <Text></Text>
-                  </TextBox>
-                  <TextBox>
-                    <span></span>
-                    <Text></Text>
-                  </TextBox>
-                  <TextBox>
-                    <span></span>
-                    <Text></Text>
-                  </TextBox>
-                </PreviewText>
-                <ButtonBox>
-                  <div></div>
-                </ButtonBox>
-              </PreviewTextContainer>
-            </PreviewContainer>
-          );
-        })}
+        <PreviewContainer>
+          <PreviewImage></PreviewImage>
+          <PreviewTextContainer>
+            <PreviewText>
+              <TextBox>
+                <span></span>
+                <Text></Text>
+              </TextBox>
+              <TextBox>
+                <span></span>
+                <Text></Text>
+              </TextBox>
+              <TextBox>
+                <span></span>
+                <Text></Text>
+              </TextBox>
+            </PreviewText>
+            <ButtonBox>
+              <div></div>
+            </ButtonBox>
+          </PreviewTextContainer>
+        </PreviewContainer>
       </>
     );
   } else {

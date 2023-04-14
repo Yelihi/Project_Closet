@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import OverviewCL from '../recycle/element/overview/OverviewCL';
 import { ItemsArray } from '../store/TableData';
-import { backUrl } from '../../config/config';
+import { backUrl, base64URL } from '../../config/config';
 
 import { media } from '../../styles/media';
 import EmptyData from '../recycle/EmptyData';
@@ -34,14 +34,7 @@ const LastItem = ({ item }: LastItemProps) => {
           <ThumbnailWrapper>
             <Thumbnail>
               <Centered>
-                <CImage
-                  src={`${backUrl}/${item.Images[0].src}`}
-                  alt={item.productName}
-                  width={100}
-                  height={100}
-                  placeholder='blur'
-                  blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
-                />
+                <CImage src={`${backUrl}/${item.Images[0].src}`} alt={item.productName} width={100} height={100} placeholder='blur' blurDataURL={`data:image/gif;base64,${base64URL}`} />
               </Centered>
             </Thumbnail>
           </ThumbnailWrapper>
