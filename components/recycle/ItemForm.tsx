@@ -31,6 +31,7 @@ import SortingResultComponent from './submitSuccess/SortingResultComponent';
 import type { ImagePathObject } from '../../reducers/types/post';
 import type { rootReducerType } from '../../reducers/types';
 import { media } from '../../styles/media';
+import VisionAICard from './VisionAICard';
 
 export interface Measures {
   shoulder?: number;
@@ -223,36 +224,37 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                         let isCategori = v.visionSearch.map(v => v.name).some(item => categoriToVisionAI[cate]?.includes(item));
                         let confidence = categoriToVisionAI[cate]?.includes(v.visionSearch[0].name);
                         return (
-                          <SkeletonImage isLoading={imageUploadLoding} imageLength={imagePath.length}>
-                            <PreviewContainer key={v.src} border={isClothes}>
-                              <PreviewImage
-                                src={`${backUrl}/${v.src}`}
-                                alt={v.src}
-                                width={600}
-                                height={600}
-                                placeholder='blur'
-                                blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
-                              />
-                              <PreviewTextContainer>
-                                <PreviewText>
-                                  {[isClothes, isCategori, confidence].map((state, idx) => {
-                                    return (
-                                      <TextBox>
-                                        <span>{visionAICardData[idx].intro}</span>
-                                        <Text>
-                                          <CheckCircleTwoTone twoToneColor={state ? visionAICardData[idx].good : visionAICardData[idx].bad} />
-                                          {state ? visionAICardData[idx].goodExplain : visionAICardData[idx].badExplain}
-                                        </Text>
-                                      </TextBox>
-                                    );
-                                  })}
-                                </PreviewText>
-                                <ButtonBox>
-                                  <AButton color='' disabled={false} dest='제거' onClick={onRemoveImage(i)} />
-                                </ButtonBox>
-                              </PreviewTextContainer>
-                            </PreviewContainer>
-                          </SkeletonImage>
+                          <VisionAICard imagePath={imagePath} imageUploadLoding={imageUploadLoding} src={v.src} index={i} isClothes={isClothes} isCategori={isCategori} confidence={confidence} />
+                          // <SkeletonImage isLoading={imageUploadLoding} imageLength={imagePath.length}>
+                          //   <PreviewContainer key={v.src} border={isClothes}>
+                          //     <PreviewImage
+                          //       src={`${backUrl}/${v.src}`}
+                          //       alt={v.src}
+                          //       width={600}
+                          //       height={600}
+                          //       placeholder='blur'
+                          //       blurDataURL='data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=='
+                          //     />
+                          //     <PreviewTextContainer>
+                          //       <PreviewText>
+                          //         {[isClothes, isCategori, confidence].map((state, idx) => {
+                          //           return (
+                          //             <TextBox>
+                          //               <span>{visionAICardData[idx].intro}</span>
+                          //               <Text>
+                          //                 <CheckCircleTwoTone twoToneColor={state ? visionAICardData[idx].good : visionAICardData[idx].bad} />
+                          //                 {state ? visionAICardData[idx].goodExplain : visionAICardData[idx].badExplain}
+                          //               </Text>
+                          //             </TextBox>
+                          //           );
+                          //         })}
+                          //       </PreviewText>
+                          //       <ButtonBox>
+                          //         <AButton color='' disabled={false} dest='제거' onClick={onRemoveImage(i)} />
+                          //       </ButtonBox>
+                          //     </PreviewTextContainer>
+                          //   </PreviewContainer>
+                          // </SkeletonImage>
                         );
                       })}
                   </PreviewSection>

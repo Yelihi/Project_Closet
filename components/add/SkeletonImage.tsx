@@ -17,10 +17,13 @@ const SkeletonImage = ({ children, isLoading, imageLength }: SkeletonProps) => {
         .map((_, idx) => idx),
     [imageLength]
   );
+
+  const testArray = [0, 1, 2];
+
   if (isLoading) {
     return (
       <>
-        {RepeatArray.map(item => {
+        {testArray.map(item => {
           return (
             <PreviewContainer>
               <PreviewImage></PreviewImage>
