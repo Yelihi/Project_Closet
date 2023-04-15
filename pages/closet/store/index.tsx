@@ -134,10 +134,6 @@ const store = ({ device }: StoreProps) => {
   const itemRender = (page: number, type: 'page' | 'prev' | 'next' | 'jump-prev' | 'jump-next', originalElement: React.ReactNode) => {
     if (type === 'page') {
       return <div aria-labels={`${page} 페이지 입니다`}>{page}</div>;
-    } else if (type === 'prev') {
-      return <div aria-label='이전으로 가기 입니다'>{page}</div>;
-    } else if (type === 'next') {
-      return <div aria-label='다음으로 가기 입니다'>{page}</div>;
     }
 
     return originalElement;
@@ -274,7 +270,7 @@ const store = ({ device }: StoreProps) => {
             {windowWidth === 'phone' ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={isLoading} isItemsLoading={isItemsLoading} /> : null}
             {windowWidth === 'desktop' ? (
               <div>
-                <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} itemRender={itemRender} aria-label='Pagination Navigation' />
+                <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} itemRender={itemRender} aria-label='페이지네이션 입니다' />
               </div>
             ) : null}
           </ItemsStoreSection>
