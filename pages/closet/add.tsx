@@ -10,7 +10,7 @@ import type { SagaStore } from '../../store/configureStore';
 
 import wrapper from '../../store/configureStore';
 
-import PageLayout from '../../components/recycle/PageLayout';
+import PageLayout from '../../components/recycle/layout/PageLayout';
 import ItemForm from '../../components/recycle/ItemForm';
 
 import { useSelector } from 'react-redux';

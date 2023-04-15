@@ -26,8 +26,8 @@ import { GiPayMoney } from 'react-icons/gi';
 import { CgRowFirst } from 'react-icons/cg';
 import { IoFilterCircleOutline } from 'react-icons/io5';
 
-import PageLayout from '../../components/recycle/PageLayout';
-import PageMainLayout from '../../components/recycle/main/PageMainLayout';
+import PageLayout from '../../components/recycle/layout/PageLayout';
+import PageMainLayout from '../../components/recycle/layout/PageMainLayout';
 import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
 import ATable from '../../components/store/ATable';
 import CardBoard from '../../components/store/CardBoard';

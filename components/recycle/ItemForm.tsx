@@ -11,7 +11,7 @@ import { clothData, categori, descriptionData } from '../add/ElementData';
 import { topMeasureName, bottomMeasureName, shoesMeasureName, mufflerMeasureName } from '../add/ElementData';
 import { topMeasureSub, bottomMeasureSub, shoesMeasureSub, mufflerMeasureSub } from '../add/ElementData';
 
-import PageMainLayout from './main/PageMainLayout';
+import PageMainLayout from './layout/PageMainLayout';
 
 import InputPartial from './add/InputPartial';
 import InputBackground from './add/InputBackgroud';
@@ -217,23 +217,16 @@ const ItemForm = ({ title, subTitle, type, itemId, Submit, resultNumber, setStat
                         );
                       })}
                   </PreviewSection>
-                  {type === 'add' && (
-                    <Float>
-                      <SubmitButton>
-                        <AButton type='submit' color='black' dest='저장하기' disabled={!isClothes} />
-                      </SubmitButton>
-                    </Float>
-                  )}
-                  {type === 'details' && (
-                    <Float>
-                      <SubmitButton>
-                        <AButton type='submit' color='black' dest='수정하기' disabled={!isClothes} />
-                      </SubmitButton>
+                  <Float>
+                    <SubmitButton>
+                      <AButton type='submit' color='black' dest={type === 'add' ? '저장하기' : '수정하기'} disabled={!isClothes} />
+                    </SubmitButton>
+                    {type === 'details' && (
                       <SubmitButton>
                         <AButton color='' dest='이전으로' onClick={backDetailsPage} disabled={false} />
                       </SubmitButton>
-                    </Float>
-                  )}
+                    )}
+                  </Float>
                 </AddForm>
               </FormProvider>
             </AddSection>

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { media } from '../../styles/media';
 import { AiOutlineDatabase } from 'react-icons/ai';
 
-import PageLayout from '../recycle/PageLayout';
-import PageMainLayout from '../recycle/main/PageMainLayout';
+import PageLayout from '../recycle/layout/PageLayout';
+import PageMainLayout from '../recycle/layout/PageMainLayout';
 import ProcessingDataCard from '../recycle/ProcessingDataCard';
 import ATable from './ATable';
 import CardBoard from './CardBoard';

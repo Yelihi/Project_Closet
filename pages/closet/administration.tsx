@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import addHead from '../../util/addHead';
 
-import PageLayout from '../../components/recycle/PageLayout';
+import PageLayout from '../../components/recycle/layout/PageLayout';
 import KeepWorking from '../../components/recycle/KeepWorking';
 
 const Administration = () => {
