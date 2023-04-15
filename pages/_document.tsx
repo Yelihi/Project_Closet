@@ -32,6 +32,10 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+          <meta name='Keywords' content='Closet, closet, 옷장정리, 클로젯, 의류정리, 웹앱 옷장 서비스' />
+          <meta name='Robots' content='all' />
+          <meta http-equiv='X-UA-Compatible' content='IE=edge' />
           <link rel='preconnect' href='https://fonts.googleapis.com' />
           <link rel='preconnect' href='https://fonts.gstatic.com' />
           <link href='https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&family=Roboto:wght@100;300;400;500;700&display=swap' rel='stylesheet' />
