@@ -133,7 +133,11 @@ const store = ({ device }: StoreProps) => {
 
   const itemRender = (page: number, type: 'page' | 'prev' | 'next' | 'jump-prev' | 'jump-next', originalElement: React.ReactNode) => {
     if (type === 'page') {
-      return <div aria-labels={`${page} 페이지 입니다`}>{page}</div>;
+      return (
+        <div aria-label={`${page} 페이지 입니다`} role='button'>
+          {page}
+        </div>
+      );
     }
 
     return originalElement;

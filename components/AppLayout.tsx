@@ -4,7 +4,6 @@ import { media } from '../styles/media';
 import { Layout } from 'antd';
 
 import Footer from './Footer';
-import { useDispatch } from 'react-redux';
 
 import SideList from './sidebar/SideList';
 import SideProfile from './sidebar/SideProfile';
@@ -15,8 +14,6 @@ interface AppLayoutProps {
 }
 
 const AppLayout = ({ children }: AppLayoutProps) => {
-  const dispatch = useDispatch();
-
   return (
     <>
       <AppLay>

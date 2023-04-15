@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import Link from 'next/link';
-import * as t from '../../reducers/type';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { logoutRequestAction } from '../../reducers/user';
-import { rootReducerType } from '../../reducers/types';
 
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
@@ -13,7 +11,7 @@ import { sidebarList, dropList } from './ListName';
 
 const MobileList = () => {
   const [clickDrop, setClickDrop] = useState<boolean>(false);
-  const { isPhoneMenuClick } = useSelector((state: rootReducerType) => state.screenEvent);
+
   const dispatch = useDispatch();
 
   const onClickDrop = useCallback(() => {

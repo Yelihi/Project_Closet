@@ -4,7 +4,6 @@ import {
   MdOutlineInsertChartOutlined,
   MdNoteAdd,
   MdOutlineAdminPanelSettings,
-  MdOutlineKeyboardArrowDown,
   MdOutlineColorLens,
   MdOutlineAttachMoney,
   MdSortByAlpha,

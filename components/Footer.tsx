@@ -27,11 +27,11 @@ const Footer = () => {
       <FooterBox>
         <CopyRightDiv>&copy;2023Yelihi.All rights reserved.</CopyRightDiv>
         <FooterLinkBox>
-          <a href='https://github.com/Yelihi' target='_blank'>
+          <a href='https://github.com/Yelihi' target='_blank' aria-label='깃허브페이지로'>
             <FaGithub />
           </a>
 
-          <a href='https://twitter.com/yelihi19_lg' target='_blank'>
+          <a href='https://twitter.com/yelihi19_lg' target='_blank' aria-label='트위터페이지로'>
             <FaTwitter />
           </a>
         </FooterLinkBox>
