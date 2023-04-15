@@ -1,28 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import { media } from '../../styles/media';
-import addHead from '../../util/addHead';
+import { media } from '../../../styles/media';
+import addHead from '../../../util/addHead';
 
 import axios from 'axios';
 import { END } from 'redux-saga';
 
 import { GetServerSidePropsContext } from 'next';
-import type { SagaStore } from '../../store/configureStore';
+import type { SagaStore } from '../../../store/configureStore';
 
-import wrapper from '../../store/configureStore';
+import wrapper from '../../../store/configureStore';
 
-import * as t from '../../reducers/type';
+import * as t from '../../../reducers/type';
 
-import IntroSection from '../../components/main/IntroSection';
-import TotalData from '../../components/main/TotalData';
-import RecentlyItem from '../../components/main/RecentlyItem';
-import CurrentYearPrice from '../../components/main/CurrentYearPrice';
-import LastItem from '../../components/main/LastItem';
-import Nav from '../../components/Nav';
+import IntroSection from '../../../components/main/IntroSection';
+import TotalData from '../../../components/main/TotalData';
+import RecentlyItem from '../../../components/main/RecentlyItem';
+import CurrentYearPrice from '../../../components/main/CurrentYearPrice';
+import LastItem from '../../../components/main/LastItem';
+import Nav from '../../../components/Nav';
 
-import Intersection from '../../components/recycle/element/Intersection';
-import { backUrl, mutateFetcher } from '../../config/config';
+import Intersection from '../../../components/recycle/element/Intersection';
+import { backUrl, mutateFetcher } from '../../../config/config';
 
 const Overview = () => {
   const { data, error, isLoading } = useSWR(`${backUrl}/posts/overview`, mutateFetcher);

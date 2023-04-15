@@ -9,7 +9,7 @@ import Intersection from '../element/Intersection';
 
 import { media } from '../../../styles/media';
 
-import { NavRow } from '../../../pages/closet/overview';
+import { NavRow } from '../../../pages/closet/overview/overview';
 
 type Props = {
   children: React.ReactNode;
