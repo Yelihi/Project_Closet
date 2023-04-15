@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import addHead from '../../../util/addHead';
+import addHead from '../../../../util/addHead';
 
-import PageLayout from '../../../components/recycle/layout/PageLayout';
-import KeepWorking from '../../../components/recycle/KeepWorking';
+import PageLayout from '../../../../components/recycle/layout/PageLayout';
+import KeepWorking from '../../../../components/recycle/KeepWorking';
 
 const price = () => {
   return (

@@ -1,22 +1,22 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import addHead from '../../util/addHead';
+import addHead from '../../../util/addHead';
 import dynamic from 'next/dynamic';
 
 import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch } from 'react-redux';
-import * as t from '../../reducers/type';
+import * as t from '../../../reducers/type';
 
 import axios from 'axios';
-import { fetcher, backUrl, mutateFetcher } from '../../config/config';
+import { fetcher, backUrl, mutateFetcher } from '../../../config/config';
 import { END } from 'redux-saga';
 
 import { GetServerSidePropsContext } from 'next';
-import type { SagaStore } from '../../store/configureStore';
+import type { SagaStore } from '../../../store/configureStore';
 
-import wrapper from '../../store/configureStore';
+import wrapper from '../../../store/configureStore';
 
 import { Breadcrumb, Pagination, PaginationProps, Segmented, Dropdown, Button, MenuProps, Spin } from 'antd';
 import { AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
@@ -26,20 +26,20 @@ import { GiPayMoney } from 'react-icons/gi';
 import { CgRowFirst } from 'react-icons/cg';
 import { IoFilterCircleOutline } from 'react-icons/io5';
 
-import PageLayout from '../../components/recycle/layout/PageLayout';
-import PageMainLayout from '../../components/recycle/layout/PageMainLayout';
-import ProcessingDataCard from '../../components/recycle/ProcessingDataCard';
-import ATable from '../../components/store/ATable';
-import CardBoard from '../../components/store/CardBoard';
+import PageLayout from '../../../components/recycle/layout/PageLayout';
+import PageMainLayout from '../../../components/recycle/layout/PageMainLayout';
+import ProcessingDataCard from '../../../components/recycle/ProcessingDataCard';
+import ATable from '../../../components/store/ATable';
+import CardBoard from '../../../components/store/CardBoard';
 
-import { media } from '../../styles/media';
-import { StoreHeader, segmentItems, ItemsArray } from '../../components/store/TableData';
+import { media } from '../../../styles/media';
+import { StoreHeader, segmentItems, ItemsArray } from '../../../components/store/TableData';
 import { useSelector } from 'react-redux';
-import { rootReducerType } from '../../reducers/types';
-import { usePagination, SWRResult } from '../../hooks/usePagination';
-import EmptyData from '../../components/recycle/EmptyData';
+import { rootReducerType } from '../../../reducers/types';
+import { usePagination, SWRResult } from '../../../hooks/usePagination';
+import EmptyData from '../../../components/recycle/EmptyData';
 
-const SkeletonStore = dynamic(() => import('../../components/store/SkeletonStore'));
+const SkeletonStore = dynamic(() => import('../../../components/store/SkeletonStore'));
 
 interface StoreProps {
   device: 'phone' | 'desktop';

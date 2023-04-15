@@ -5,17 +5,17 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import Head from 'next/head';
 
-import authImage from '../public/images/authRightImage.jpg';
+import authImage from '../../public/images/authRightImage.jpg';
 
-import Login from '../components/auth/Login';
-import Signup from '../components/auth/Signup';
+import Login from '../../components/auth/Login';
+import Signup from '../../components/auth/Signup';
 
 import { GetServerSidePropsContext } from 'next';
-import { SagaStore } from '../store/configureStore';
-import * as t from '../reducers/type';
+import { SagaStore } from '../../store/configureStore';
+import * as t from '../../reducers/type';
 
-import wrapper from '../store/configureStore';
-import AuthLayout from '../components/AuthLayout';
+import wrapper from '../../store/configureStore';
+import AuthLayout from '../../components/AuthLayout';
 
 const UserLogin = () => {
   const [gotoAccount, setGotoAccount] = useState<boolean>(false);
