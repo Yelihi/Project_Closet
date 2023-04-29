@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { FieldValues, useForm, FormProvider } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
 import { visionAI, categoriToVisionAI } from '../add/VisionAIData';
@@ -25,7 +24,6 @@ import SortingResultComponent from './submitSuccess/SortingResultComponent';
 
 import type { ImagePathObject } from '../../reducers/types/post';
 import type { rootReducerType } from '../../reducers/types';
-import { media } from '../../styles/media';
 
 const VisionAICard = dynamic(() => import('./VisionAICard'));
 
@@ -256,11 +254,6 @@ const AddSection = styled.div`
   height: auto;
 `;
 
-const Row = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
 const AddForm = styled.form`
   display: grid;
   grid-template-columns: 1fr;
@@ -276,81 +269,6 @@ const PreviewSection = styled.section`
   align-items: center;
   gap: 5px;
   flex-wrap: wrap;
-`;
-
-const PreviewContainer = styled.div<{ border: boolean }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  padding: 10px;
-  border: 1px solid ${({ theme, border }) => (border ? theme.colors.success : theme.colors.red)};
-  border-radius: 5px;
-  gap: 30px;
-  transition: box-shadow 0.25s ease-out;
-
-  &:hover {
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  }
-
-  ${media.desktop} {
-    width: 49.5%;
-  }
-
-  ${media.middlePhone} {
-    flex-direction: row;
-  }
-`;
-
-const PreviewImage = styled(Image)`
-  width: 55%;
-  height: auto;
-  object-fit: cover;
-`;
-
-const PreviewTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: c;
-  height: 100%;
-  margin-right: 3%;
-`;
-
-const PreviewText = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-`;
-
-const TextBox = styled.div`
-  display: inline-block;
-  margin-bottom: 5px;
-
-  > span {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: ${({ theme }) => theme.fontWeight.Light};
-    font-family: ${({ theme }) => theme.font.Efont};
-    color: ${({ theme }) => theme.colors.deepGrey};
-    margin-bottom: 5px;
-  }
-`;
-
-const Text = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: ${({ theme }) => theme.fontWeight.Medium};
-  font-family: ${({ theme }) => theme.font.Efont};
-`;
-
-const ButtonBox = styled.div`
-  margin-top: 20px;
 `;
 
 const Float = styled.div`
