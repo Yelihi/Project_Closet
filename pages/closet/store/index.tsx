@@ -62,7 +62,7 @@ const store = ({ device }: StoreProps) => {
   let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
   const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, mutateFetcher);
-  const { items, paginationPosts, setSize, isReachedEnd, isItemsLoading, infinitiMutate } = usePagination<ItemsArray>(categoriName, windowWidth);
+  const { items, paginationPosts, setSize, isReachedEnd, isItemsLoading, infinitiMutate, infinitiValidating } = usePagination<ItemsArray>(categoriName, windowWidth);
 
   useEffect(() => {
     setHydrated(true);
@@ -284,7 +284,9 @@ const store = ({ device }: StoreProps) => {
           <ItemsStoreSection>
             {windowWidth === 'desktop' && segment === 'Table' ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
             {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
-            {windowWidth === 'phone' ? <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={isLoading} isItemsLoading={isItemsLoading} /> : null}
+            {windowWidth === 'phone' ? (
+              <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={isLoading} isItemsLoading={isItemsLoading} infinitiValidating={infinitiValidating} />
+            ) : null}
             {windowWidth === 'desktop' ? (
               <div>
                 <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} itemRender={itemRender} aria-label='페이지네이션 입니다' />
