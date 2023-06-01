@@ -1,7 +1,7 @@
 import Head from 'next/head';
 
 export interface WrapperProps {
-  device: 'phone' | 'desktop';
+  device?: 'phone' | 'desktop';
 }
 
 const addHead = <P extends WrapperProps>(Components: React.ComponentType<P>, title: string, description: string) => {
