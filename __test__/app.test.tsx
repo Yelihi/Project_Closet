@@ -6,5 +6,3 @@ describe('Test', () => {
     expect(Test()).toBe('hi');
   });
 });
-
-export {};
