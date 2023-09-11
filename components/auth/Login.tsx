@@ -48,10 +48,10 @@ const Login = (props: SIprops) => {
             <div>{email && !isEmailValid && `이메일이 올바르지 않습니다`}</div>
             <input type='password' value={password} onChange={onChangePassword} placeholder='Password' />
             <div>{password && !isPasswordValid && `비밀번호가 올바르지 않습니다`}</div>
-            <AButton color='black' ref={buttonRef} onClick={onSubmit} disabled={!(isEmailValid && isPasswordValid)} dest='Sign in' />
-            <AButton ref={buttonRef} color='' onClick={toggleGotoAccount} disabled={false} dest='Create account' />
+            <AButton color='black' innerRef={buttonRef} onClick={onSubmit} disabled={!(isEmailValid && isPasswordValid)} dest='Sign in' />
+            <AButton innerRef={buttonRef} color='' onClick={toggleGotoAccount} disabled={false} dest='Create account' />
             <LDivider plain>OR</LDivider>
-            <AButton As='a' ref={LinkRef} color='' disabled={false} dest='Sign in Google' src={google} href='http://localhost:3065/auth/google' />
+            <AButton As='a' innerRef={LinkRef} color='' disabled={false} dest='Sign in Google' src={google} href='http://localhost:3065/auth/google' />
           </LoginForm>
         </LoginSection>
       </LoginBox>
