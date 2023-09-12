@@ -66,7 +66,7 @@ const Signup = (props: SIprops) => {
         <span>Closet</span>
       </LeftTopBrand>
       <SignupSection>
-        <SignupForm>
+        <SignupForm data-testid='Signup Form'>
           <h1>Create an account</h1>
           <span>
             이메일 양식에 적합하게 작성해주시고,
@@ -81,7 +81,7 @@ const Signup = (props: SIprops) => {
           <div>{password && !isPasswordValid && `비밀번호가 올바르지 않습니다`}</div>
           <input type='password' value={passwordCheck} onChange={onChangePasswordCheck} placeholder='Password Check' />
           <div>{passwordCheck && !isCollect && `비밀번호가 일치하지 않습니다`}</div>
-          <AButton innerRef={divref} color='black' disabled={!(isEmailValid && isPasswordValid && isCollect)} onClick={onSubmit} dest='Create account' />
+          <AButton innerRef={divref} color='black' disabled={!(isEmailValid && isPasswordValid && isCollect)} onClick={onSubmit} dest='Create account' data-testid='submitButton' />
           <AButton innerRef={divref} color='' disabled={false} onClick={toggleGotoAccount} dest='back' />
           <div></div>
           <div></div>
