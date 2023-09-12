@@ -1,7 +1,7 @@
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
-import { renderWithRedux } from '../../util/TestUtils/renderWithRedux';
+import { renderWithRedux } from '../../../util/TestUtils/renderWithRedux';
 
-import UserLogin from '.';
+import UserLogin from '..';
 
 describe('userLogin', () => {
   it.skip('성공적으로 렌더링 됩니다.', () => {
