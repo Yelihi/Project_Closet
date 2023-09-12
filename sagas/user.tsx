@@ -57,7 +57,7 @@ function signInAPI(data: UserInfo) {
 
 function* signIn(action: AnyAction) {
   try {
-    console.log('saga signIn');
+    console.log('saga signUp');
     const result: AxiosResponse<LoginSuccess> = yield call(signInAPI, action.data);
     yield put({
       type: t.SIGNIN_SUCCESE,
