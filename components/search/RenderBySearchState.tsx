@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { Player, Controls } from '@lottiefiles/react-lottie-player';
-import useLottieAnimation from '../../hooks/useLottieAnimation';
+import { useSelector } from 'react-redux';
+import { rootReducerType } from '../../reducers/types';
 
-import searchLoading from '../../public/AnimaionJson/searchLoading.json';
+import useLottieAnimation from '../../hooks/useLottieAnimation';
 
 import { useLottiePropsByState } from './Data';
 
@@ -12,13 +12,12 @@ type RenderBySearchStateProps = {
 };
 
 const RenderBySearchState = ({ state }: RenderBySearchStateProps) => {
-  const View = useLottieAnimation(useLottiePropsByState[state].options);
+  const { isSearchClick } = useSelector((state: rootReducerType) => state.screenEvent);
+  const View = useLottieAnimation(useLottiePropsByState[state].options, isSearchClick);
 
   return (
     <StateContainer>
-      <Player src={searchLoading} autoplay loop style={{ width: '10rem', height: '10rem' }}>
-        <Controls visible={false} buttons={['play', 'repeat', 'frame', 'debug']} />
-      </Player>
+      {View}
       <p>{useLottiePropsByState[state].Notify}</p>
     </StateContainer>
   );

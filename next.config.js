@@ -7,17 +7,11 @@ const nextConfig = {
   webpack(config, { webpack }) {
     const prod = process.env.NODE_ENV === 'production';
     const plugins = [...config.plugins];
-    const rules = config.module.rules;
-    rules.push({
-      test: /\.json$/,
-      use: 'json-loader',
-    });
     return {
       ...config,
       mode: prod ? 'production' : 'development',
       devtool: prod ? 'hidden-source-map' : 'eval',
       plugins,
-      rules,
     };
   },
   reactStrictMode: false,

@@ -34,8 +34,8 @@ const defaultStyle = {
 export const useLottiePropsByState = {
   Loading: {
     options: {
-      src: { ...searchLoading },
-      loop: true,
+      src: searchLoading,
+      loop: false,
       autoplay: true,
       style: defaultStyle,
     },
@@ -43,8 +43,8 @@ export const useLottiePropsByState = {
   },
   Error: {
     options: {
-      src: '../../public/AnimaionJson/error.json',
-      loop: true,
+      src: error,
+      loop: false,
       autoplay: true,
       style: defaultStyle,
     },
@@ -52,8 +52,8 @@ export const useLottiePropsByState = {
   },
   NoFound: {
     options: {
-      src: '../../public/AnimaionJson/noFoundData.json',
-      loop: true,
+      src: noFoundData,
+      loop: false,
       autoplay: true,
       style: defaultStyle,
     },
@@ -61,8 +61,8 @@ export const useLottiePropsByState = {
   },
   Initial: {
     options: {
-      src: '../../public/AnimaionJson/noFoundData.json',
-      loop: true,
+      src: noFoundData,
+      loop: false,
       autoplay: true,
       style: defaultStyle,
     },
