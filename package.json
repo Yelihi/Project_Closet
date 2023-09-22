@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "@heroicons/react": "^2.0.13",
+    "@lottiefiles/react-lottie-player": "^3.4.9",
     "@next/bundle-analyzer": "^13.3.0",
     "@nivo/bar": "^0.80.0",
     "@nivo/core": "^0.80.0",
@@ -28,6 +29,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "formik": "^2.2.9",
     "immer": "^9.0.16",
+    "json-loader": "^0.5.7",
+    "lottie-react": "^2.4.0",
     "moment": "^2.29.4",
     "next": "13.0.3",
     "next-redux-wrapper": "^8.0.0",
