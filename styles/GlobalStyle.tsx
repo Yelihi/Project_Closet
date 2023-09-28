@@ -60,6 +60,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${({ theme }) => theme.font.Efont};
   }
 
+  p {
+    margin: 0;
+  }
+
   ul,
   li,
   li:active,
