@@ -6,8 +6,8 @@ import FinishAni from '../public/AnimaionJson/finish.json';
 type Style = { [Key in keyof React.CSSProperties]: React.CSSProperties[Key] };
 
 const deafultStyle: Style = {
-  width: '25rem',
-  height: '25rem',
+  width: '50%',
+  height: '50%',
 };
 
 const defaultProps: IPlayerProps = {

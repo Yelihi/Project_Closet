@@ -23,7 +23,10 @@ type MatchedDataArray = {
 };
 
 const SearchResultsList = ({ isDelayed, delayedValue }: SearchResultsProps) => {
-  const { data, error, isLoading } = useSWR<MatchedDataArray>(() => (delayedValue ? `${backUrl}/posts/clothes/search?searchWord=${delayedValue}` : null), mutateFetcher);
+  const { data, error, isLoading } = useSWR<MatchedDataArray>(
+    () => (delayedValue ? `${backUrl}/posts/clothes/search?searchWord=${delayedValue}` : null),
+    mutateFetcher
+  );
   const router = useRouter();
 
   const moveToDetailPage: (id: number) => () => void = useCallback(
@@ -66,7 +69,6 @@ const ResultsListContainer = styled.section`
 
   h4 {
     display: block;
-    margin-bottom: 1rem;
     color: ${({ theme }) => theme.colors.symbol};
   }
 `;
@@ -77,6 +79,7 @@ const Flex = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
+  margin-bottom: 1rem;
 
   ${media.tablet} {
     flex-direction: row;
@@ -112,6 +115,6 @@ const ResultsList = styled.div`
   scrollbar-width: none; /* 파이어폭스 */
 
   ${media.tablet} {
-    height: 230px;
+    height: 25rem;
   }
 `;

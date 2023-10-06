@@ -1,7 +1,7 @@
 import React, { useRef, useReducer } from 'react';
 
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import 'antd/dist/reset.css';
 import { Divider } from 'antd';
 
@@ -15,8 +15,9 @@ import { loginRequestAction } from '../../reducers/user';
 
 import type { SIprops } from './Signup';
 import type { MemberInfoProps, IsValiedInfoProps, PartialMemberInfoProps, PartialIsValiedInfoProps } from './type';
-
+import buttonLoading from '../../public/AnimaionJson/buttonLoading.gif';
 import { LoginContext } from './MemberContext';
+import { rootReducerType } from '../../reducers/types';
 
 export const memberInfo = {
   email: '',
@@ -30,6 +31,7 @@ const isValiedInfo = Object.keys(memberInfo).reduce((obj, key) => {
 
 const Login = (props: SIprops) => {
   const dispatch = useDispatch();
+  const { logInLoading } = useSelector((state: rootReducerType) => state.user);
   const { toggleGotoAccount } = props;
   const buttonRef = useRef<HTMLButtonElement>(null);
   const LinkRef = useRef<HTMLAnchorElement>(null);
@@ -87,6 +89,7 @@ const Login = (props: SIprops) => {
               disabled={disabled}
               dest='Sign in'
               data-testid='SignIn'
+              src={logInLoading ? buttonLoading : undefined}
             />
             <AButton
               type='button'
@@ -165,27 +168,6 @@ const LoginForm = styled.form`
     font-size: 14px;
     font-weight: ${({ theme }) => theme.fontWeight.Light};
     margin-bottom: 40px;
-  }
-
-  > input {
-    width: 300px;
-    height: 30px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-    margin-bottom: 10px;
-
-    :focus {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-    }
-  }
-
-  > div {
-    width: 100%;
-    height: 20px;
-    margin-bottom: 5px;
-    font-family: ${({ theme }) => theme.font.Kfont};
-    font-weight: ${({ theme }) => theme.fontWeight.Light};
-    font-size: 12px;
-    color: red;
   }
 `;
 
