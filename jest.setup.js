@@ -16,3 +16,17 @@ afterAll(() => {
   cache.clear();
   server.close();
 });
+
+// {
+//   "presets": ["next/babel"],
+//   "plugins": [
+//     [
+//       "babel-plugin-styled-components",
+//       {
+//         "ssr": true,
+//         "displayName": true,
+//         "pure": true
+//       }
+//     ]
+//   ]
+// }

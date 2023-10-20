@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import useSWR from 'swr';
 import { media } from '../../../styles/media';
 import addHead from '../../../util/addHead';
 
@@ -20,14 +19,19 @@ import RecentlyItem from '../../../components/main/RecentlyItem';
 import CurrentYearPrice from '../../../components/main/CurrentYearPrice';
 import LastItem from '../../../components/main/LastItem';
 import Nav from '../../../components/Nav';
+import RenderEmptyPage from '../../../components/state/empty/RenderEmptyPage';
+import RenderErrorPage from '../../../components/state/error/RenderErrorPage';
 
 import Intersection from '../../../components/recycle/element/Intersection';
-import { backUrl, mutateFetcher } from '../../../config/config';
+import { SWR } from '../../../util/SWR/API';
 
 const Overview = () => {
-  const { data, error, isLoading } = useSWR(`${backUrl}/posts/overview`, mutateFetcher);
+  const { data, error, isLoading } = SWR.getSummuryInUserItems();
 
   if (isLoading) return null;
+  if (error) return <RenderErrorPage state='OverView' />;
+  if (!data || data.theOldestData === undefined) return <RenderEmptyPage state='OverView' />;
+
   return (
     <Container>
       <NavRow>
@@ -120,7 +124,7 @@ export const NavRow = styled.div`
   }
 `;
 
-const IntroRow = styled.div`
+export const IntroRow = styled.div`
   grid-area: intro;
   display: flex;
   align-items: center;

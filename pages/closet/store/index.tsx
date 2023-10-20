@@ -1,17 +1,14 @@
 import React, { useCallback, useEffect, useState, useRef, useMemo } from 'react';
 import styled from 'styled-components';
-import useSWR from 'swr';
 import addHead from '../../../util/addHead';
 import dynamic from 'next/dynamic';
 import useOnScreen from '../../../hooks/useOnScreen';
 
-import Link from 'next/link';
 import Router from 'next/router';
 import { useDispatch } from 'react-redux';
 import * as t from '../../../reducers/type';
 
 import axios from 'axios';
-import { fetcher, backUrl, mutateFetcher } from '../../../config/config';
 import { END } from 'redux-saga';
 
 import { GetServerSidePropsContext } from 'next';
@@ -32,13 +29,19 @@ import PageMainLayout from '../../../components/recycle/layout/PageMainLayout';
 import ProcessingDataCard from '../../../components/recycle/ProcessingDataCard';
 import ATable from '../../../components/store/ATable';
 import CardBoard from '../../../components/store/CardBoard';
+import CustomBread from '../../../components/recycle/CustomBread';
+import RenderErrorPage from '../../../components/state/error/RenderErrorPage';
+import RenderEmptyPage from '../../../components/state/empty/RenderEmptyPage';
 
 import { media } from '../../../styles/media';
-import { StoreHeader, segmentItems, ItemsArray } from '../../../components/store/TableData';
+import { StoreHeader, segmentItems } from '../../../components/store/TableData';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../../reducers/types';
-import { usePagination, SWRResult } from '../../../hooks/usePagination';
+import useDeviceWidth from '../../../hooks/useDeviceWidth';
 import EmptyData from '../../../components/recycle/EmptyData';
+import { SWR } from '../../../util/SWR/API';
+import { detectMobileDevice } from '../../../util/PrimitiveUtils/string';
+import { getSelectorsByUserAgent } from 'react-device-detect';
 
 const SkeletonStore = dynamic(() => import('../../../components/store/SkeletonStore'));
 
@@ -49,38 +52,35 @@ interface StoreProps {
 const Store = ({ device }: StoreProps) => {
   const dispatch = useDispatch();
   const observerTargetElement: any = useRef<HTMLDivElement>(null);
-  const { userItems, indexArray, deleteItemDone, loadItemsLoding, deleteItemLoding } = useSelector((state: rootReducerType) => state.post);
+  const { userItems, indexArray, deleteItemDone, loadItemsLoding, deleteItemLoding } = useSelector(
+    (state: rootReducerType) => state.post
+  );
   const [hydrated, setHydrated] = useState(false);
   const [current, setCurrent] = useState(1);
   const [segment, setSegment] = useState<string | number>('Table');
   const [categoriName, setCategoriName] = useState('');
-  const [windowWidth, setWindowWidth] = useState(device);
+
+  const { windowWidth } = useDeviceWidth(device);
 
   let itemsIdArray = indexArray;
   if (categoriName) itemsIdArray = indexArray.filter(item => item.categori === categoriName);
   let pageIndex = (current - 1) * 9 - 1;
   let lastId = pageIndex >= 0 ? itemsIdArray[pageIndex].id : 0;
 
-  const { data, error, isLoading, mutate } = useSWR(`${backUrl}/posts/clothes/store?lastId=${lastId}&categori=${categoriName}&deviceType=${windowWidth}`, mutateFetcher);
-  const { items, paginationPosts, setSize, isReachedEnd, isItemsLoading, infinitiMutate, infinitiValidating } = usePagination<ItemsArray>(categoriName, windowWidth);
+  const FetchInDesktop = SWR.getItemsPerPagenation(lastId, categoriName, windowWidth);
+  const FetchInMobile = SWR.getInfiniteItems(categoriName, windowWidth);
 
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    function updateWindowWidth() {
-      if (window.innerWidth <= 786) {
-        setWindowWidth('phone');
-      } else {
-        setWindowWidth('desktop');
-      }
-    }
-    window.addEventListener('resize', updateWindowWidth);
-    return () => {
-      window.removeEventListener('resize', updateWindowWidth);
-    };
-  }, []);
+  const { itemsInDesk, itemsArrayInDesk, errorInDesk, isLoadingDesk, mutateInDesk } = FetchInDesktop;
+  const {
+    itemsInMobile,
+    itemsArrayInMobile,
+    setSize,
+    isReachedEnd,
+    isLoadingMobile,
+    infinitiMutate,
+    infinitiValidating,
+    errorInMobile,
+  } = FetchInMobile;
 
   const option = useMemo(() => {
     return { root: null, threshold: 0.3 };
@@ -94,39 +94,15 @@ const Store = ({ device }: StoreProps) => {
     }
   }, [isIntersecting]);
 
-  // useEffect(() => {
-  //   if (windowWidth === 'desktop') return;
-  //   if (!observerTargetElement.current || isReachedEnd) return;
-
-  //   const option = {
-  //     root: null,
-  //     threshold: 0.3,
-  //   };
-
-  //   const io = new IntersectionObserver((entries, observer) => {
-  //     entries.forEach(entry => {
-  //       if (entry.intersectionRatio <= 0) return;
-  //       if (entry.isIntersecting) {
-  //         setSize(prev => prev + 1);
-  //       }
-  //     });
-  //   }, option);
-
-  //   io.observe(observerTargetElement.current);
-  //   return () => {
-  //     io.disconnect();
-  //   };
-  // }, [isReachedEnd, categoriName, windowWidth]);
-
   let modifiedItems = [];
   let accumulationItems = [];
-  if (windowWidth === 'desktop' && Array.isArray(data)) {
-    for (let cloth of data) {
+  if (windowWidth === 'desktop' && itemsArrayInDesk) {
+    for (let cloth of itemsArrayInDesk) {
       modifiedItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
     }
   }
-  if (windowWidth === 'phone' && paginationPosts) {
-    for (let cloth of paginationPosts) {
+  if (windowWidth === 'phone' && itemsArrayInMobile) {
+    for (let cloth of itemsArrayInMobile) {
       accumulationItems.push({ ...cloth, purchaseDay: cloth.purchaseDay.substring(0, 7) });
     }
   }
@@ -144,7 +120,11 @@ const Store = ({ device }: StoreProps) => {
     setCurrent(page);
   };
 
-  const itemRender = (page: number, type: 'page' | 'prev' | 'next' | 'jump-prev' | 'jump-next', originalElement: React.ReactNode) => {
+  const itemRender = (
+    page: number,
+    type: 'page' | 'prev' | 'next' | 'jump-prev' | 'jump-next',
+    originalElement: React.ReactNode
+  ) => {
     if (type === 'page') {
       return (
         <div aria-label={`${page} 페이지 입니다`} role='button'>
@@ -171,66 +151,43 @@ const Store = ({ device }: StoreProps) => {
         type: t.DELETE_ITEM_REQUEST,
         data: { clothId: id },
       });
-      if (Array.isArray(data)) {
-        let newData = [];
-        for (let item of data) {
-          if (item.id !== id) newData.push(item);
-        }
-        mutate([...newData], { revalidate: false });
+      if (Array.isArray(itemsArrayInDesk)) {
+        const newData = itemsArrayInDesk.filter(item => item.id !== id);
+        mutateInDesk({ ...itemsInDesk, items: newData }, { revalidate: false });
       }
-      if (Array.isArray(items)) {
-        let newPostitems = [];
-        for (let set of items) {
-          let newItems = { ...set };
-          let newPostData = set.items?.filter(item => item.id !== id);
-          newItems = { ...newItems, items: newPostData };
-          newPostitems.push(newItems);
-        }
-        infinitiMutate([...newPostitems], { revalidate: false });
+      if (Array.isArray(itemsInMobile)) {
+        const newPostItems = itemsInMobile.map(set => ({ ...set, items: set.items.filter(item => item.id !== id) }));
+        infinitiMutate([...newPostItems], { revalidate: false });
       }
     },
-    [data, items, paginationPosts, windowWidth]
+    [itemsInDesk, itemsArrayInDesk, itemsInMobile, itemsArrayInMobile, windowWidth]
   );
 
-  if (!hydrated) {
-    return null;
-  }
+  console.log('Store', itemsArrayInMobile);
 
+  if (errorInDesk || errorInMobile) return <RenderErrorPage state='OverView' />;
   if (
     !userItems ||
     userItems?.items.length === 0 ||
-    (!isLoading && windowWidth === 'desktop' && categoriName === '' && data.hasOwnProperty('items') && data.items.length === 0) ||
-    (!isItemsLoading && windowWidth === 'phone' && categoriName === '' && paginationPosts && paginationPosts?.length === 0)
+    (!isLoadingDesk &&
+      windowWidth === 'desktop' &&
+      !categoriName &&
+      itemsArrayInDesk &&
+      itemsArrayInDesk.length == 0) ||
+    (!isLoadingMobile &&
+      windowWidth === 'phone' &&
+      !categoriName &&
+      itemsArrayInMobile &&
+      itemsArrayInMobile.length == 0)
   ) {
-    return (
-      <PageLayout>
-        <PageMainLayout istitle={false} hasEmpty={true}>
-          <HandleContainer>
-            <CustomBread separator='>'>
-              <Breadcrumb.Item>
-                <Link href='/closet/overview'>Home</Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>Store</Breadcrumb.Item>
-            </CustomBread>
-          </HandleContainer>
-          <EmptyData height={130} />
-        </PageMainLayout>
-      </PageLayout>
-    );
+    return <RenderEmptyPage state='Store' />;
   }
 
   return (
     <SkeletonStore loadItemsLoading={loadItemsLoding} deleteItemLoding={deleteItemLoding} windowWidth={device}>
       <PageLayout>
         <PageMainLayout istitle={false}>
-          <HandleContainer>
-            <CustomBread separator='>'>
-              <Breadcrumb.Item>
-                <Link href='/closet/overview'>Home</Link>
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>Store</Breadcrumb.Item>
-            </CustomBread>
-          </HandleContainer>
+          <CustomBread nextPage='Store' />
           <TitleSection>
             <dl>
               <Title>CHECK YOUR ITEMS</Title>
@@ -244,9 +201,25 @@ const Store = ({ device }: StoreProps) => {
             </dl>
           </TitleSection>
           <CardSection>
-            <ProcessingDataCard Icon={<AiOutlineDatabase className='icon' />} DataTitle='Total Clothes' LastData={userItems?.lastTotal} CurrentData={userItems?.total} />
-            <ProcessingDataCard Icon={<GiPayMoney className='icon' />} DataTitle='Total Price' LastData={userItems?.lastPrice} CurrentData={userItems?.price} />
-            <ProcessingDataCard Icon={<CgRowFirst className='icon' />} DataTitle='Most Unit' LastData={lastMaxCategori} CurrentData={maxCategori} Categori={maxCategoriName} />
+            <ProcessingDataCard
+              Icon={<AiOutlineDatabase className='icon' />}
+              DataTitle='Total Clothes'
+              LastData={userItems?.lastTotal}
+              CurrentData={userItems?.total}
+            />
+            <ProcessingDataCard
+              Icon={<GiPayMoney className='icon' />}
+              DataTitle='Total Price'
+              LastData={userItems?.lastPrice}
+              CurrentData={userItems?.price}
+            />
+            <ProcessingDataCard
+              Icon={<CgRowFirst className='icon' />}
+              DataTitle='Most Unit'
+              LastData={lastMaxCategori}
+              CurrentData={maxCategori}
+              Categori={maxCategoriName}
+            />
           </CardSection>
           <AddSection>
             <DictionaryBox>
@@ -282,14 +255,37 @@ const Store = ({ device }: StoreProps) => {
             </div>
           </MenuSection>
           <ItemsStoreSection>
-            {windowWidth === 'desktop' && segment === 'Table' ? <ATable headData={StoreHeader} itemsData={modifiedItems} isDelete={true} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
-            {windowWidth === 'desktop' && segment === 'Kanban' ? <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} isLoading={isLoading} /> : null}
+            {windowWidth === 'desktop' && segment === 'Table' ? (
+              <ATable
+                headData={StoreHeader}
+                itemsData={modifiedItems}
+                isDelete={true}
+                onSubmit={deleteItemAtTable}
+                isLoading={isLoadingDesk}
+              />
+            ) : null}
+            {windowWidth === 'desktop' && segment === 'Kanban' ? (
+              <CardBoard itemData={modifiedItems} onSubmit={deleteItemAtTable} isLoading={isLoadingDesk} />
+            ) : null}
             {windowWidth === 'phone' ? (
-              <CardBoard itemData={accumulationItems} onSubmit={deleteItemAtTable} isLoading={isLoading} isItemsLoading={isItemsLoading} infinitiValidating={infinitiValidating} />
+              <CardBoard
+                itemData={accumulationItems}
+                onSubmit={deleteItemAtTable}
+                isLoading={isLoadingDesk}
+                isItemsLoading={isLoadingMobile}
+                infinitiValidating={infinitiValidating}
+              />
             ) : null}
             {windowWidth === 'desktop' ? (
               <div>
-                <Pagination current={current} onChange={pageChange} total={itemsIdArray?.length} defaultPageSize={9} itemRender={itemRender} aria-label='페이지네이션 입니다' />
+                <Pagination
+                  current={current}
+                  onChange={pageChange}
+                  total={itemsIdArray?.length}
+                  defaultPageSize={9}
+                  itemRender={itemRender}
+                  aria-label='페이지네이션 입니다'
+                />
               </div>
             ) : null}
           </ItemsStoreSection>
@@ -307,11 +303,10 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
-  const userAgent = context.req ? context.req.headers['user-agent'] : navigator.userAgent;
-  let isMobile = false;
-  if (userAgent) {
-    isMobile = Boolean(userAgent.match(/Android|BlackBerry|iPhone|iPod|Opera Mini|IEMobile|WPDesktop/i));
-  }
+
+  const userAgent = context.req ? context.req.headers['user-agent']! : '';
+
+  const { isMobile } = getSelectorsByUserAgent(userAgent);
   store.dispatch({
     // store에서 dispatch 하는 api
     type: t.LOAD_TO_MY_INFO_REQUEST,
@@ -331,28 +326,6 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
 });
 
 export default addHead(Store, 'closet', '이 페이지는 저장한 의류 전체를 보여주는 페이지입니다.');
-
-const HandleContainer = styled.section`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  padding: 15px 0;
-`;
-
-const CustomBread = styled(Breadcrumb)`
-  margin-bottom: 30px;
-  .ant-breadcrumb-link {
-    font-family: ${({ theme }) => theme.font.Efont};
-    font-weight: ${({ theme }) => theme.fontWeight.Medium};
-
-    > a {
-      font-family: ${({ theme }) => theme.font.Efont};
-      font-weight: ${({ theme }) => theme.fontWeight.Light};
-    }
-  }
-`;
 
 const TitleSection = styled.section`
   display: flex;

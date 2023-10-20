@@ -48,7 +48,8 @@ export const OverviewResponseData = {
   theOldestData: {
     id: 19,
     productName: '브라운 더블 코트',
-    description: '오버핏 브라운 더플 코트입니다. 울과 캐시미어 혼용이며 캐시미어가 10퍼 혼용되어있어 부드러운 촉감을 준다. 자주 입는 코트',
+    description:
+      '오버핏 브라운 더플 코트입니다. 울과 캐시미어 혼용이며 캐시미어가 10퍼 혼용되어있어 부드러운 촉감을 준다. 자주 입는 코트',
     price: 400000,
     color: '#664032',
     categori: 'Outer',

@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import useSWR from 'swr';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import { media } from '../../styles/media';
-import { ListItems } from '../main/RecentlyItem';
-import { backUrl, mutateFetcher } from '../../config/config';
+import ListItem from '../recycle/ListItem';
+import { SWR } from '../../util/SWR/API';
 
 const RenderBySearchState = dynamic(() => import('./RenderBySearchState'));
 
@@ -17,16 +16,8 @@ type SearchResultsProps = {
   delayedValue: string | undefined;
 };
 
-type MatchedDataArray = {
-  matchedDatas: ItemsArray[];
-  totalNumber: number;
-};
-
 const SearchResultsList = ({ isDelayed, delayedValue }: SearchResultsProps) => {
-  const { data, error, isLoading } = useSWR<MatchedDataArray>(
-    () => (delayedValue ? `${backUrl}/posts/clothes/search?searchWord=${delayedValue}` : null),
-    mutateFetcher
-  );
+  const { data, isLoading, error } = SWR.getItemsInSearchValue(delayedValue);
   const router = useRouter();
 
   const moveToDetailPage: (id: number) => () => void = useCallback(
@@ -53,7 +44,7 @@ const SearchResultsList = ({ isDelayed, delayedValue }: SearchResultsProps) => {
       </Flex>
       <ResultsList>
         {data?.matchedDatas.map((item: ItemsArray) => {
-          return <ListItems key={item.id} item={item} func={moveToDetailPage} />;
+          return <ListItem key={item.id} item={item} func={moveToDetailPage} />;
         })}
       </ResultsList>
     </ResultsListContainer>

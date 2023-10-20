@@ -10,7 +10,8 @@ export interface SWRResult<T> {
 export const usePagination = <T>(categoriName: string, windowWidth: string) => {
   const getKey = (pageIndex: number, previousPageData: SWRResult<T>) => {
     if (previousPageData && !previousPageData.items) return null;
-    if (pageIndex === 0) return `${backUrl}/posts/clothes/store?lastId=0&categori=${categoriName}&deviceType=${windowWidth}`;
+    if (pageIndex === 0)
+      return `${backUrl}/posts/clothes/store?lastId=0&categori=${categoriName}&deviceType=${windowWidth}`;
     return `${backUrl}/posts/clothes/store?lastId=${previousPageData.nextCursor}&categori=${categoriName}&deviceType=${windowWidth}`;
   };
 

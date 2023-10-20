@@ -17,6 +17,12 @@ const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
   compress: true,
+  compiler: {
+    styledComponents: {
+      ssr: true,
+      displayName: true,
+    },
+  },
   async redirects() {
     return [
       {
