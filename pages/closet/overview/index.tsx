@@ -24,6 +24,7 @@ import RenderErrorPage from '../../../components/state/error/RenderErrorPage';
 
 import Intersection from '../../../components/recycle/element/Intersection';
 import { SWR } from '../../../util/SWR/API';
+import { baseURL } from '../../../sagas';
 
 const Overview = () => {
   const { data, error, isLoading } = SWR.getSummuryInUserItems();
@@ -57,15 +58,27 @@ const Overview = () => {
   );
 };
 
+export const config = {
+  runtime: 'experimental-edge',
+};
+
 export const getServerSideProps = wrapper.getServerSideProps(store => async (context: GetServerSidePropsContext) => {
   const cookie = context.req ? context.req.headers.cookie : '';
-  axios.defaults.headers.Cookie = '';
+  const customHeaders = new Headers();
+  customHeaders.append('cookie', '');
   if (context.req && cookie) {
-    axios.defaults.headers.Cookie = cookie;
+    customHeaders.append('cookie', cookie);
   }
+  const respone = await fetch(`${baseURL}/user`, { method: 'GET', credentials: 'include', headers: customHeaders });
+  const data = await respone.json();
+  // axios.defaults.headers.Cookie = '';
+  // if (context.req && cookie) {
+  //   axios.defaults.headers.Cookie = cookie;
+  // }
   store.dispatch({
     // store에서 dispatch 하는 api
-    type: t.LOAD_TO_MY_INFO_REQUEST,
+    type: t.LOAD_TO_MY_INFO_SUCCESE,
+    data: data,
   });
 
   store.dispatch(END);

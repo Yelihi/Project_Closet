@@ -7,7 +7,7 @@ import Image from 'next/image';
 import SkeletonImage from '../add/SkeletonImage';
 import AButton from './element/button/AButton';
 
-import { visionAICardData } from '../add/VisionAIData';
+import { visionAICardData } from '../add/data/VisionAIData';
 import { media } from '../../styles/media';
 import { backUrl, base64URL } from '../../config/config';
 import { CheckCircleTwoTone } from '@ant-design/icons';
@@ -37,7 +37,14 @@ const VisionAICard = ({ imageUploadLoding, src, index, isClothes, isCategori, co
   return (
     <SkeletonImage isLoading={imageUploadLoding}>
       <PreviewContainer key={src} border={isClothes}>
-        <PreviewImage src={`${backUrl}/${src}`} alt='의류이미지' width={600} height={600} placeholder='blur' blurDataURL={`data:image/gif;base64,${base64URL}`} />
+        <PreviewImage
+          src={`${backUrl}/${src}`}
+          alt='의류이미지'
+          width={600}
+          height={600}
+          placeholder='blur'
+          blurDataURL={`data:image/gif;base64,${base64URL}`}
+        />
         <PreviewTextContainer>
           <PreviewText>
             {[isClothes, isCategori, confidence].map((state, idx) => {

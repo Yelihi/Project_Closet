@@ -4,6 +4,8 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:3065';
 axios.defaults.withCredentials = true;
 
+export const baseURL = 'http://localhost:3065';
+
 import userSaga from './user';
 import postSage from './post';
 
