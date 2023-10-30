@@ -1,3 +1,5 @@
+import { ImagePathObject } from './post';
+
 export interface User {
   id: number;
   email: string;
@@ -10,6 +12,13 @@ export interface User {
 }
 
 export interface UserInitialState {
+  updateUserInfoLoading: boolean;
+  updateUserInfoDone: boolean;
+  updateUserInfoError: string | null;
+  deletePreviewImageDone: boolean;
+  uploadPreviewImageLoading: boolean;
+  uploadPreviewImageDone: boolean;
+  uploadPreviewImageError: string | null;
   loadToMyInfoDone: boolean;
   loadToMyInfoError: string | null;
   logInLoading: boolean;
@@ -22,6 +31,7 @@ export interface UserInitialState {
   signInDone: boolean;
   signInError: string | null;
   me: User | null;
+  userProfileImages: string;
 }
 
 export interface UserInfo {
@@ -34,4 +44,10 @@ export interface UserSignUp {
   nickname: string;
   password: string;
   src: string;
+}
+
+export interface PatchUserInfo {
+  nickname: string;
+  src: string;
+  // 이후 추가될 예정
 }

@@ -16,7 +16,7 @@ import ItemForm from '../../../components/recycle/ItemForm';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../../reducers/types';
 
-import { addPageLayoutProps } from '../../../components/add/ElementData';
+import { addPageLayoutProps } from '../../../components/add/data/ElementData';
 
 const add = () => {
   const { lastAddDataIndex } = useSelector((state: rootReducerType) => state.post);
@@ -27,7 +27,13 @@ const add = () => {
 
   return (
     <PageLayout>
-      <ItemForm title={addPageLayoutProps.title} subTitle={addPageLayoutProps.subTitle} type='add' resultNumber={lastAddDataIndex} Submit={transferTypes} />
+      <ItemForm
+        title={addPageLayoutProps.title}
+        subTitle={addPageLayoutProps.subTitle}
+        type='add'
+        resultNumber={lastAddDataIndex}
+        Submit={transferTypes}
+      />
     </PageLayout>
   );
 };
