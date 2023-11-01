@@ -38,7 +38,6 @@ import { StoreHeader, segmentItems } from '../../../components/store/TableData';
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../../reducers/types';
 import useDeviceWidth from '../../../hooks/useDeviceWidth';
-import EmptyData from '../../../components/recycle/EmptyData';
 import { SWR } from '../../../util/SWR/API';
 import { detectMobileDevice } from '../../../util/PrimitiveUtils/string';
 import { getSelectorsByUserAgent } from 'react-device-detect';

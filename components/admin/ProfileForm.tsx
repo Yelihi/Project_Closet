@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -16,7 +16,6 @@ type RefObjType = {
 
 const ProfileForm = React.forwardRef<RefObjType>((_, ref) => {
   const dispatch = useDispatch();
-  const isReset = useRef<boolean>(false);
   const { me, userProfileImages, updateUserInfoLoading } = useSelector((state: rootReducerType) => state.user);
   const methods = useForm<DefaultValueInAdmin>({
     mode: 'onSubmit',
@@ -34,14 +33,13 @@ const ProfileForm = React.forwardRef<RefObjType>((_, ref) => {
   } = methods;
 
   let resetMyInfo = {};
-  if (me) {
-    const { nickname, src } = me;
-    resetMyInfo = { nickname, src };
-    if (!isReset.current) {
-      isReset.current = true;
+  useEffect(() => {
+    if (me) {
+      const { nickname, src } = me;
+      resetMyInfo = { nickname, src };
       reset(resetMyInfo);
     }
-  }
+  }, [me]);
 
   const onSubmit = (data: DefaultValueInAdmin) => {
     data.src = userProfileImages ? userProfileImages : '';

@@ -9,8 +9,6 @@ import { CirclePicker } from 'react-color';
 
 dayjs.extend(customParseFormat);
 const dateFormat = 'YYYY-MM';
-// 초기 날짜. 현재 날짜
-const currentDate = dayjs().format('YYYY-MM');
 
 const { TextArea } = Input;
 
@@ -20,12 +18,14 @@ type useControlAntdElementsProps<K extends keyof LibsElementsProps, T extends Fi
   value: PathValue<T, Path<T>>;
   onChange: (...event: any[]) => void;
   elementProps: LibsElementsProps[K];
+  currentDate?: string;
 };
 
 const useControlAntdElements = <K extends keyof LibsElementsProps, T extends FieldValues>(
   props: useControlAntdElementsProps<K, T>
 ) => {
-  const { elementType, name, value, onChange, elementProps } = props;
+  const { elementType, name, value, onChange, elementProps, currentDate } = props;
+  currentDate && console.log(currentDate);
 
   switch (elementType) {
     case 'Input': {
@@ -48,8 +48,10 @@ const useControlAntdElements = <K extends keyof LibsElementsProps, T extends Fie
       return (
         <DatePicker
           defaultValue={dayjs(value || currentDate, dateFormat)}
+          format={dateFormat}
           onChange={(date, dateString) => onChange(dateString)}
           picker='month'
+          id={name}
           {...(elementProps as LibsElementsProps['DatePicker'])}
         />
       );

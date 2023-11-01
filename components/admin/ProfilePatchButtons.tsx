@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 
-import AButton from '../recycle/element/button/AButton';
+import AButton from '../recycle/buttonElements/AButton';
 import { RefObjType } from '../../pages/closet/administration';
 
 type ProfilePatchButtons = {
