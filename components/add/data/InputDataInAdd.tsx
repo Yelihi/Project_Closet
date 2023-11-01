@@ -74,13 +74,13 @@ const defaultStyle = {
   height: '35px',
 };
 
-interface SpecificationElementProps<T extends keyof LibsElementsProps> {
+export type SpecificationElementProps<T extends keyof LibsElementsProps> = {
   elementType: T;
   subTitle: string;
   name: string;
   elementProps: LibsElementsProps[T];
   errorMessage: string;
-}
+};
 
 export const specificationElement: SpecificationElementProps<keyof LibsElementsProps>[] = [
   {
@@ -112,7 +112,7 @@ export const specificationElement: SpecificationElementProps<keyof LibsElementsP
     name: 'color',
     elementProps: {
       placeholder: 'color',
-      style: { width: '100%' },
+      width: '100%',
       circleSize: 25,
       colors: colors,
     },
@@ -132,7 +132,6 @@ export const specificationElement: SpecificationElementProps<keyof LibsElementsP
     subTitle: '월 단위로 언제 구매를 하셨는지 날짜를 기입해주세요',
     name: 'purchaseDay',
     elementProps: {
-      defaultValue: '',
       style: { width: '100%', height: '30px' },
     },
     errorMessage: '대략적인 구매시기를 선택해주세요(월)',
@@ -143,7 +142,7 @@ export const sortCategoriesElement: SpecificationElementProps<keyof LibsElements
   {
     elementType: 'Select',
     subTitle: `의류 분류를 위해 저장하려는 의류의 카테고리를 선택해주세요.
-    선택에 따라 기입해야할 수치가 다릅니다.`,
+선택에 따라 기입해야할 수치가 다릅니다.`,
     name: 'categori',
     elementProps: {
       defaultValue: '',
@@ -167,3 +166,47 @@ export const aboutItemElement: SpecificationElementProps<keyof LibsElementsProps
     errorMessage: '특이사항들에 대해서 기입해주세요',
   },
 ];
+
+export const TopMeasureElements = topMeasure.map<SpecificationElementProps<keyof LibsElementsProps>>(spec => ({
+  elementType: 'InputNumber',
+  subTitle: spec.subtitle,
+  name: spec.sort,
+  elementProps: {
+    placeholder: 'cm',
+    style: { height: '30px', width: '100%' },
+  },
+  errorMessage: '수치를 기입해주세요',
+}));
+
+export const BottomMeasureElements = bottomMeasure.map<SpecificationElementProps<keyof LibsElementsProps>>(spec => ({
+  elementType: 'InputNumber',
+  subTitle: spec.subtitle,
+  name: spec.sort,
+  elementProps: {
+    placeholder: 'cm',
+    style: { height: '30px', width: '100%' },
+  },
+  errorMessage: '수치를 기입해주세요',
+}));
+
+export const ShoesMeasureElements = shoesMeasure.map<SpecificationElementProps<keyof LibsElementsProps>>(spec => ({
+  elementType: 'InputNumber',
+  subTitle: spec.subtitle,
+  name: spec.sort,
+  elementProps: {
+    placeholder: 'mm',
+    style: { height: '30px', width: '100%' },
+  },
+  errorMessage: '수치를 기입해주세요',
+}));
+
+export const MufflerMeasureElements = mufflerMeasure.map<SpecificationElementProps<keyof LibsElementsProps>>(spec => ({
+  elementType: 'InputNumber',
+  subTitle: spec.subtitle,
+  name: spec.sort,
+  elementProps: {
+    placeholder: 'cm',
+    style: { height: '30px', width: '100%' },
+  },
+  errorMessage: '수치를 기입해주세요',
+}));

@@ -4,13 +4,14 @@ import Router from 'next/router';
 
 import LinkCardLayout from '../recycle/layout/LinkCardLayout';
 import { ItemsArray } from '../store/TableData';
-import ListItem from '../recycle/ListItem';
+import ListItem, { SkeletonListItem } from '../recycle/ListItem';
 
 type RecentlyProps = {
   items: ItemsArray[];
+  isLoading?: boolean;
 };
 
-const RecentlyItem = ({ items }: RecentlyProps) => {
+const RecentlyItem = ({ items, isLoading }: RecentlyProps) => {
   const moveToStore = useCallback(() => {
     Router.push('/closet/store');
   }, []);
@@ -36,7 +37,7 @@ const RecentlyItem = ({ items }: RecentlyProps) => {
 
 export default RecentlyItem;
 
-const ListSection = styled.section`
+export const ListSection = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -45,14 +46,14 @@ const ListSection = styled.section`
   height: auto;
 `;
 
-const DescriptionSpan = styled.span`
+export const DescriptionSpan = styled.span`
   font-size: 12px;
   font-family: ${({ theme }) => theme.font.Efont};
   font-weight: ${({ theme }) => theme.fontWeight.Medium};
   margin-top: 5px;
 `;
 
-const DescriptionDiv = styled(DescriptionSpan)`
+export const DescriptionDiv = styled(DescriptionSpan)`
   color: ${({ theme }) => theme.colors.middleGrey};
   margin-bottom: 5px;
 `;

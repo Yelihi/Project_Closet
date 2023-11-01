@@ -7,13 +7,13 @@ import AButton from '../../recycle/buttonElements/AButton';
 import Nav from '../../Nav';
 import Intersection from '../../recycle/Intersection';
 import { NavRow } from '../../main/state/OverviewInLoading';
-import { useLottiePropsByEmpty, PropsByEmpty } from './Data';
+import { useLottiePropsByDeveloping, PropsByEmpty } from './Data';
 
-const RenderEmptyPage = ({ state }: PropsByEmpty) => {
-  const View = useLottieAnimation(useLottiePropsByEmpty[state].options);
+const RenderDevelopingPage = ({ state }: PropsByEmpty) => {
+  const View = useLottieAnimation(useLottiePropsByDeveloping[state].options);
 
   return (
-    <IsErrorStateContainer>
+    <IsDevelopStateContainer>
       <NavRow>
         <Nav />
       </NavRow>
@@ -21,23 +21,23 @@ const RenderEmptyPage = ({ state }: PropsByEmpty) => {
       <Container>
         <IconContainer>
           {View}
-          <NotifiedSentence>{useLottiePropsByEmpty[state].Notify}</NotifiedSentence>
+          <NotifiedSentence>{useLottiePropsByDeveloping[state].Notify}</NotifiedSentence>
           <AButton
             color='black'
             disabled={false}
-            dest={useLottiePropsByEmpty[state].Button}
-            onClick={useLottiePropsByEmpty[state].Router}
+            dest={useLottiePropsByDeveloping[state].Button}
+            onClick={useLottiePropsByDeveloping[state].Router}
             style={{ maxWidth: '35rem' }}
           />
         </IconContainer>
       </Container>
-    </IsErrorStateContainer>
+    </IsDevelopStateContainer>
   );
 };
 
-export default RenderEmptyPage;
+export default RenderDevelopingPage;
 
-const IsErrorStateContainer = styled.section`
+const IsDevelopStateContainer = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -3,7 +3,7 @@ import Image from 'rc-image';
 import React from 'react';
 import styled from 'styled-components';
 
-import Intersection from './recycle/element/Intersection';
+import Intersection from './recycle/Intersection';
 import { sidebarList } from './sidebar/ListName';
 
 import { FaGithub, FaTwitter } from 'react-icons/fa';

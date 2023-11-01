@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import * as t from '../../reducers/type';
+import * as t from '../../../reducers/type';
 import Image from 'next/image';
 
-import SkeletonImage from '../add/SkeletonImage';
-import AButton from './element/button/AButton';
+import SkeletonImage from '../../add/SkeletonImage';
+import AButton from '../buttonElements/AButton';
 
-import { visionAICardData } from '../add/data/VisionAIData';
-import { media } from '../../styles/media';
-import { backUrl, base64URL } from '../../config/config';
+import { visionAICardData } from '../../add/data/VisionAIData';
+import { media } from '../../../styles/media';
+import { backUrl, base64URL } from '../../../config/config';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 
 interface VisionAiCardProps {

@@ -5,11 +5,10 @@ import * as t from '../../../reducers/type';
 
 import AppLayout from '../../AppLayout';
 import Nav from '../../Nav';
-import Intersection from '../element/Intersection';
+import Intersection from '../Intersection';
 
 import { media } from '../../../styles/media';
-
-import { NavRow } from '../../../pages/closet/overview';
+import { NavRow } from '../../main/state/OverviewInLoading';
 
 type Props = {
   children: React.ReactNode;

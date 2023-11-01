@@ -10,10 +10,7 @@ import * as t from '../../../reducers/type';
 
 import PageLayout from '../../../components/recycle/layout/PageLayout';
 import PageMainLayout from '../../../components/recycle/layout/PageMainLayout';
-import AButton from '../../../components/recycle/element/button/AButton';
-import KeepWorking from '../../../components/recycle/KeepWorking';
 import ProfileImage from '../../../components/admin/ProfileImage';
-import ProfileInput from '../../../components/admin/ProfileInput';
 import RenderErrorPage from '../../../components/state/error/RenderErrorPage';
 import { PiCameraLight } from 'react-icons/pi';
 

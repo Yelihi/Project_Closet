@@ -56,7 +56,7 @@ function* logOut(action: AnyAction) {
     console.error(err);
     yield put({
       type: t.LOGOUT_FAILURE,
-      error: axios.isAxiosError(err) ? err.response?.data : err.response.data,
+      error: axios.isAxiosError(err) ? err.response?.data : null,
     });
   }
 }
@@ -97,7 +97,7 @@ function* loadToMyInfo(action: AnyAction) {
     console.error(err);
     yield put({
       type: t.LOAD_TO_MY_INFO_FAILURE,
-      error: axios.isAxiosError(err) ? err.response?.data : err.response.data,
+      error: axios.isAxiosError(err) ? err.response?.data : null,
     });
   }
 }
