@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import styled from 'styled-components';
-import * as t from '../../../reducers/type';
+import useUnmountMenu from '../../../hooks/useUnmountMenu';
 
-import AppLayout from '../../AppLayout';
 import Nav from '../../Nav';
 import Intersection from '../Intersection';
 
@@ -15,11 +13,7 @@ type Props = {
 };
 
 const PageLayout = ({ children }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch({ type: t.UNMOUNT_BACKGROUND });
-  }, []);
+  useUnmountMenu();
 
   return (
     <Container>

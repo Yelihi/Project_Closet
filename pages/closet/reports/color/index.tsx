@@ -1,7 +1,8 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import addHead from '../../../../util/addHead';
 
-import RenderDevelopingPage from '../../../../components/state/developing/RenderDevelopingPage';
+const RenderDevelopingPage = dynamic(() => import('../../../../components/state/developing/RenderDevelopingPage'));
 
 const color = () => {
   return <RenderDevelopingPage state='Develop' />;

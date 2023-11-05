@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as t from '../../../../reducers/type';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import addHead from '../../../../util/addHead';
 
 import axios from 'axios';
@@ -14,21 +15,20 @@ import type { SagaStore } from '../../../../store/configureStore';
 import wrapper from '../../../../store/configureStore';
 
 import { Breadcrumb, ConfigProvider, Rate, Tabs } from 'antd';
-import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootReducerType } from '../../../../reducers/types';
 
 import PageLayout from '../../../../components/recycle/layout/PageLayout';
 import PageMainLayout from '../../../../components/recycle/layout/PageMainLayout';
-import Slice from '../../../../components/recycle/Slice';
 import AButton from '../../../../components/recycle/buttonElements/AButton';
-import TapChildren from '../../../../components/details/TapChidren';
 
 import { media } from '../../../../styles/media';
 import { addPageLayoutProps } from '../../../../components/details/ElementData';
 import useConfirm from '../../../../hooks/useComfirm';
 
 const ItemForm = dynamic(() => import('../../../../components/recycle/formElements/ItemForm'));
+const Slice = dynamic(() => import('../../../../components/recycle/Slice'));
+const TapChildren = dynamic(() => import('../../../../components/details/TapChidren'));
 const SortingResultComponent = dynamic(
   () => import('../../../../components/recycle/submitSuccess/SortingResultComponent')
 );
@@ -192,6 +192,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
+  context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   store.dispatch({
     // store에서 dispatch 하는 api
     type: t.LOAD_TO_MY_INFO_REQUEST,
