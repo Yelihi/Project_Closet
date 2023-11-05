@@ -16,7 +16,7 @@ import type { SagaStore } from '../../../store/configureStore';
 
 import wrapper from '../../../store/configureStore';
 
-import { Breadcrumb, Pagination, PaginationProps, Segmented, Dropdown, Button, MenuProps, Spin } from 'antd';
+import { Pagination, PaginationProps, Segmented, Dropdown, Button, MenuProps } from 'antd';
 import { AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
 
 import { AiOutlineDatabase, AiOutlinePlus } from 'react-icons/ai';
@@ -26,12 +26,7 @@ import { IoFilterCircleOutline } from 'react-icons/io5';
 
 import PageLayout from '../../../components/recycle/layout/PageLayout';
 import PageMainLayout from '../../../components/recycle/layout/PageMainLayout';
-import ProcessingDataCard from '../../../components/recycle/ProcessingDataCard';
-import ATable from '../../../components/store/ATable';
-import CardBoard from '../../../components/store/CardBoard';
 import CustomBread from '../../../components/recycle/CustomBread';
-import RenderErrorPage from '../../../components/state/error/RenderErrorPage';
-import RenderEmptyPage from '../../../components/state/empty/RenderEmptyPage';
 
 import { media } from '../../../styles/media';
 import { StoreHeader, segmentItems } from '../../../components/store/TableData';
@@ -43,6 +38,11 @@ import { detectMobileDevice } from '../../../util/PrimitiveUtils/string';
 import { getSelectorsByUserAgent } from 'react-device-detect';
 
 const SkeletonStore = dynamic(() => import('../../../components/store/SkeletonStore'));
+const ProcessingDataCard = dynamic(() => import('../../../components/recycle/ProcessingDataCard'));
+const ATable = dynamic(() => import('../../../components/store/ATable'));
+const CardBoard = dynamic(() => import('../../../components/store/CardBoard'));
+const RenderErrorPage = dynamic(() => import('../../../components/state/error/RenderErrorPage'));
+const RenderEmptyPage = dynamic(() => import('../../../components/state/empty/RenderEmptyPage'));
 
 interface StoreProps {
   device: 'phone' | 'desktop';
@@ -303,6 +303,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
     axios.defaults.headers.Cookie = cookie;
   }
 
+  context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   const userAgent = context.req ? context.req.headers['user-agent']! : '';
 
   const { isMobile } = getSelectorsByUserAgent(userAgent);

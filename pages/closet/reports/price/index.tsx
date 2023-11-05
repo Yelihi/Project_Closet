@@ -22,12 +22,18 @@ import PriceMonthlyItems from '../../../../components/chart/price/PriceMonthlyIt
 import Intersection from '../../../../components/recycle/Intersection';
 import ChartTitle from '../../../../components/chart/ChartTitle';
 import RenderErrorPage from '../../../../components/state/error/RenderErrorPage';
+import PriceDeskChartInLoading from '../../../../components/chart/price/PriceDeskChartInLoading';
+import PriceMobileChartInLoading from '../../../../components/chart/price/PriceMobileChartInLoading';
 import { SWR } from '../../../../util/SWR/API';
 
 const PriceChartAtDesktop = dynamic(() => import('../../../../components/chart/price/PriceChartDesktop'), {
   ssr: false,
+  loading: () => <PriceDeskChartInLoading />,
 });
-const PriceChartAtPhone = dynamic(() => import('../../../../components/chart/price/PriceChartMobile'), { ssr: false });
+const PriceChartAtPhone = dynamic(() => import('../../../../components/chart/price/PriceChartMobile'), {
+  ssr: false,
+  loading: () => <PriceMobileChartInLoading />,
+});
 
 type PriceProps = {
   device: 'desktop' | 'phone';
@@ -76,6 +82,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
+  context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   const userAgent = context.req ? context.req.headers['user-agent'] : navigator.userAgent;
   let isMobile = false;
   if (userAgent) {

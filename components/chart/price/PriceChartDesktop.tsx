@@ -9,6 +9,14 @@ import { convertDataToChart, lineColors } from '../../../util/Chart/Price/conver
 import PriceCustomToolTip from './PriceCustomToolTip';
 import { media } from '../../../styles/media';
 
+export const PriceDeskChartInLoadingState = () => {
+  return (
+    <PriceChartSection>
+      <SkeletonDiv />
+    </PriceChartSection>
+  );
+};
+
 type PriceChartDesktopProps = {
   fallback?: boolean;
   device: 'desktop' | 'phone';
@@ -29,11 +37,7 @@ const PriceChartDesktop = ({ fallback, device }: PriceChartDesktopProps) => {
   const length = Data[1] ? Data[1].id.length : 0;
 
   if (fallback) {
-    return (
-      <PriceChartSection>
-        <SkeletonDiv />
-      </PriceChartSection>
-    );
+    return <PriceDeskChartInLoadingState />;
   } else {
     return (
       <PriceChartSection>
@@ -112,7 +116,7 @@ const PriceChartDesktop = ({ fallback, device }: PriceChartDesktopProps) => {
           ]}
           animate={false}
           motionConfig='wobbly'
-          sliceTooltip={PriceCustomToolTip}
+          sliceTooltip={PriceCustomToolTip(device)}
         />
       </PriceChartSection>
     );

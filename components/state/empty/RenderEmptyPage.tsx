@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import useUnmountMenu from '../../../hooks/useUnmountMenu';
 import useLottieAnimation from '../../../hooks/useLottieAnimation';
 
 import { media } from '../../../styles/media';
@@ -10,6 +11,7 @@ import { NavRow } from '../../main/state/OverviewInLoading';
 import { useLottiePropsByEmpty, PropsByEmpty } from './Data';
 
 const RenderEmptyPage = ({ state }: PropsByEmpty) => {
+  useUnmountMenu();
   const View = useLottieAnimation(useLottiePropsByEmpty[state].options);
 
   return (

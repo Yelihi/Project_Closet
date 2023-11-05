@@ -8,6 +8,14 @@ import { convertDataToChart } from '../../../util/Chart/Price/convertData';
 
 import PriceCustomToolTip from './PriceCustomToolTip';
 
+export const PriceMobileChartInLoadingState = () => {
+  return (
+    <PriceChartSection>
+      <SkeletonDiv />
+    </PriceChartSection>
+  );
+};
+
 type PriceChartMobileProps = {
   fallback?: boolean;
   device: 'desktop' | 'phone';
@@ -25,11 +33,7 @@ const PriceChartMobile = ({ fallback, device }: PriceChartMobileProps) => {
   const length = Data[1] ? Data[1].id.length : 0;
 
   if (fallback) {
-    return (
-      <PriceChartSection>
-        <SkeletonDiv />
-      </PriceChartSection>
-    );
+    return <PriceMobileChartInLoadingState />;
   } else {
     return (
       <PriceChartSection>
@@ -108,7 +112,7 @@ const PriceChartMobile = ({ fallback, device }: PriceChartMobileProps) => {
           ]}
           animate={false}
           motionConfig='wobbly'
-          sliceTooltip={PriceCustomToolTip}
+          sliceTooltip={PriceCustomToolTip(device)}
         />
       </PriceChartSection>
     );

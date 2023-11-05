@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
 import addHead from '../../../util/addHead';
 import wrapper, { SagaStore } from '../../../store/configureStore';
 import { GetServerSidePropsContext } from 'next';
@@ -10,14 +11,14 @@ import * as t from '../../../reducers/type';
 
 import PageLayout from '../../../components/recycle/layout/PageLayout';
 import PageMainLayout from '../../../components/recycle/layout/PageMainLayout';
-import ProfileImage from '../../../components/admin/ProfileImage';
-import RenderErrorPage from '../../../components/state/error/RenderErrorPage';
-import { PiCameraLight } from 'react-icons/pi';
-
-import { media } from '../../../styles/media';
-import ProfileForm from '../../../components/admin/ProfileForm';
 import ProfilePatchButtons from '../../../components/admin/ProfilePatchButtons';
+import ProfileForm from '../../../components/admin/ProfileForm';
+import { PiCameraLight } from 'react-icons/pi';
+import { media } from '../../../styles/media';
 import { rootReducerType } from '../../../reducers/types';
+
+const ProfileImage = dynamic(() => import('../../../components/admin/ProfileImage'));
+const RenderErrorPage = dynamic(() => import('../../../components/state/error/RenderErrorPage'));
 
 export type RefObjType = {
   childSaveButtonRef: HTMLButtonElement | null;
@@ -78,6 +79,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
+  context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   store.dispatch({
     // store에서 dispatch 하는 api
     type: t.LOAD_TO_MY_INFO_REQUEST,

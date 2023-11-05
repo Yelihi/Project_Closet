@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import * as t from '../../../reducers/type';
 import addHead from '../../../util/addHead';
 
@@ -11,12 +12,12 @@ import type { SagaStore } from '../../../store/configureStore';
 import wrapper from '../../../store/configureStore';
 
 import PageLayout from '../../../components/recycle/layout/PageLayout';
-import ItemForm from '../../../components/recycle/formElements/ItemForm';
 
 import { useSelector } from 'react-redux';
 import { rootReducerType } from '../../../reducers/types';
-
 import { addPageLayoutProps } from '../../../components/add/data/InputDataInAdd';
+
+const ItemForm = dynamic(() => import('../../../components/recycle/formElements/ItemForm'));
 
 const add = () => {
   const { lastAddDataIndex } = useSelector((state: rootReducerType) => state.post);
@@ -44,6 +45,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async (con
   if (context.req && cookie) {
     axios.defaults.headers.Cookie = cookie;
   }
+  context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
   store.dispatch({
     // store에서 dispatch 하는 api
     type: t.LOAD_TO_MY_INFO_REQUEST,

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import useUnmountMenu from '../../../hooks/useUnmountMenu';
 import useLottieAnimation from '../../../hooks/useLottieAnimation';
 
 import { media } from '../../../styles/media';
@@ -10,6 +11,7 @@ import { NavRow } from '../../main/state/OverviewInLoading';
 import { useLottiePropsByError, PropsByError } from './Data';
 
 const RenderErrorPage = ({ state }: PropsByError) => {
+  useUnmountMenu();
   const View = useLottieAnimation(useLottiePropsByError[state].options);
 
   return (
