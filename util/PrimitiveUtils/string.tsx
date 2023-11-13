@@ -1,4 +1,4 @@
-export const convertNumberToLocales = (number: number, locales: string) => {
+export const convertNumberToLocales = (number: number, locales?: string) => {
   return new Intl.NumberFormat(locales).format(number);
 };
 
@@ -13,4 +13,8 @@ export const detectMobileDevice = (userAgent: string | undefined) => {
       /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i
     )
   );
+};
+
+export const capitalizeFirstWord = (word: string) => {
+  return word.replace(/\b[a-z]/g, letter => letter.toUpperCase());
 };

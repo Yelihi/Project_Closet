@@ -22,7 +22,7 @@ const SkeletonArray = Array(9)
   .fill(0)
   .map((_, idx) => idx);
 
-const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: TableProps) => {
+const StoreTable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: TableProps) => {
   const headerKey = headData.map(v => v.value);
   const moveToDetailsPage = useCallback(
     (id: number) => () => {
@@ -125,7 +125,14 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
                   <Td key={headKey + index}>
                     {headKey === 'productName' && data.Images.length > 0 ? (
                       <ImageBox>
-                        <CImage src={`${backUrl}/${data.Images[0].src}`} alt={data[headKey]} width={100} height={100} placeholder='blur' blurDataURL={`data:image/gif;base64,${base64URL}`} />
+                        <CImage
+                          src={`${backUrl}/${data.Images[0].src}`}
+                          alt={data[headKey]}
+                          width={100}
+                          height={100}
+                          placeholder='blur'
+                          blurDataURL={`data:image/gif;base64,${base64URL}`}
+                        />
                         {data[headKey]}
                       </ImageBox>
                     ) : headKey === 'price' ? (
@@ -135,7 +142,13 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
                         <ETC onClick={moveToDetailsPage(data.id)}>
                           <BiDetail className='icon' /> 상세보기
                         </ETC>
-                        <ETC onClick={() => (window.confirm('삭제하시겠습니까?') ? onSubmit(data.id)() : () => console.log('취소했씁니다'))}>
+                        <ETC
+                          onClick={() =>
+                            window.confirm('삭제하시겠습니까?')
+                              ? onSubmit(data.id)()
+                              : () => console.log('취소했씁니다')
+                          }
+                        >
                           <FaTrashRestoreAlt className='icon' /> 삭제하기
                         </ETC>
                       </EtcBox>
@@ -153,7 +166,7 @@ const ATable = ({ headData, itemsData = [], isDelete, onSubmit, isLoading }: Tab
   );
 };
 
-export default ATable;
+export default StoreTable;
 
 const Table = styled.table`
   width: 100%;

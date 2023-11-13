@@ -7,8 +7,8 @@ import { AiOutlineDatabase } from 'react-icons/ai';
 import PageLayout from '../recycle/layout/PageLayout';
 import PageMainLayout from '../recycle/layout/PageMainLayout';
 import ProcessingDataCard from '../recycle/ProcessingDataCard';
-import ATable from './ATable';
-import CardBoard from './CardBoard';
+import ATable from './StoreTable';
+import CardBoard from './StoreCardBoard';
 
 import { StoreHeader } from './TableData';
 
@@ -50,7 +50,9 @@ const SkeletonStore = ({ children, loadItemsLoading, deleteItemLoding, windowWid
             </AddSection>
             <MenuSection></MenuSection>
             <ItemsStoreSection>
-              {windowWidth === 'desktop' ? <ATable headData={StoreHeader} itemsData={[]} isDelete={true} isLoading={true} /> : null}
+              {windowWidth === 'desktop' ? (
+                <ATable headData={StoreHeader} itemsData={[]} isDelete={true} isLoading={true} />
+              ) : null}
               {windowWidth === 'phone' ? <CardBoard itemData={[]} isLoading={true} isItemsLoading={true} /> : null}
             </ItemsStoreSection>
             <Space></Space>
